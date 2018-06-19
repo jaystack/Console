@@ -1,10 +1,12 @@
 # Console
 
-## Problem
+### Problem
 As a project manager, managing multiple projects through multiple channels of communication can get extremely difficult and things get missed. Additional, unnecessary time is spent trying to track down files, emails and contact details, which is horribly inefficient.
 
-## Solution
+### Solution
 A new communications aggregator application. This application will serve as a platform for plugins to be developed (hereafter refer to as "Connectors"), integrating new forms of communication into one chronologically ordered, digestible, efficiently searchable feed. Initially the application will ship with only a few connectors, such as email integration, Google Drive, HipChat and Slack.
+
+---
 
 ### UI
 The main UI will mimic popular "infiniscroll" style feeds, such as that of Facebook or Twitter, with a large search bar at the top allowing users to easily search through the various messages, emails, files that been aggregated. Additionally filters based on metadata collected at the time of import to the database will allow the user to finely tune the data they see.
