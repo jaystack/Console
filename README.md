@@ -15,13 +15,13 @@ There will also be a dashboard screen, where users can configure their services 
 With multiple email providers this could get sticky. We have a few main options so far:
 
 * ##### Integrating Azure Logic Apps (Hi-tech)
-Azure Logic Apps allows us to create workflows of serverless functions from a variety of triggers ranging from a HTTP request to a tweet with a certain hashtag. It includes a number of connectors integrating services like Office365, so it's possible a solution could be build like this.
+  Azure Logic Apps allows us to create workflows of serverless functions from a variety of triggers ranging from a HTTP request to a tweet with a certain hashtag. It includes a number of connectors integrating services like Office365, so it's possible a solution could be build like this.
 
 * ##### Forwarding all incoming email to a capture account (Lo-tech)
-We could configure dynamically generated mailboxes for each account and instruct them to configure a rule on their email provider to forward all incoming mail to that account, which would be captured by our system and populated into the database. Whilst this is more compatible than the Azure solution in the long run, it doesn't synchronise between the email server and the application in terms of deletion, read status, etc.
+  We could configure dynamically generated mailboxes for each account and instruct them to configure a rule on their email provider to forward all incoming mail to that account, which would be captured by our system and populated into the database. Whilst this is more compatible than the Azure solution in the long run, it doesn't synchronise between the email server and the application in terms of deletion, read status, etc.
 
 * ##### Integrating IMAP/POP3 (and SMTP later on, most resilient)
-We could also allow users to configure mail accounts through their IMAP/POP3 details. This would allow full integration into the system, and would allow for the greatest compatibility.
+  We could also allow users to configure mail accounts through their IMAP/POP3 details. This would allow full integration into the system, and would allow for the greatest compatibility.
 
 ### Search
 The search functionality will be powered by a cloud search solution like elasticsearch and will index multiple fields.
