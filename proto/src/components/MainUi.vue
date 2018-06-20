@@ -189,7 +189,7 @@ export default {
     ...mapActions({
       updateFilter: "feed/updateFilter",
       clearFilters: "feed/clearFilters",
-      setIncludes: "feed/setIncludes",
+      setIncludes: "feed/setIncludes"
     })
   },
   directives: {
@@ -211,6 +211,11 @@ export default {
     },
     contact(value) {
       this.updateFilter({ filter: "contact", value });
+    },
+    filterSelections(value) {
+      this.client = value.client;
+      this.project = value.project;
+      this.contact = value.contact;
     },
     tech(newVal) {
       this.setIncludes(newVal);

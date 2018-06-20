@@ -1,7 +1,7 @@
 <template>
-    <div class="margin-top">
-        <div class="columns">
-            <div class="column is-one-quarter">
+    <div>
+        <div class="columns" style="margin-top:0!important;min-height: calc(100vh - 52px);">
+            <div class="column is-one-quarter" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:1em;">
                 <aside class="menu" v-sticky="{zIndex:10,stickyTop:84,enabled:true}">
                     <p class="menu-label">
                         My Dashboard
@@ -40,6 +40,24 @@
                             </router-link>
                         </li>
                         <li>
+                            <router-link
+                                :to="{name:'dashboard.drive'}"
+                                active-class="is-active"
+                                exact
+                            >
+                                Google Drive
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link
+                                :to="{name:'dashboard.github'}"
+                                 active-class="is-active"
+                                exact
+                            >
+                                GitHub
+                            </router-link>
+                        </li>
+                        <li>
                             <a style="opacity:.5">
                                 Add New Connector
                             </a>
@@ -47,7 +65,7 @@
                     </ul>
                 </aside>
             </div>
-            <div class="column">
+            <div class="column" style="padding-top:2em;">
                 <slot></slot>
             </div>
         </div>
