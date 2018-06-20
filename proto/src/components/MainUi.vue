@@ -4,13 +4,15 @@
             <div class="column is-one-fifth">
                 <div v-sticky="{zIndex:10,stickyTop:84,enabled:true}"> <!-- STICKY WRAPPER -->
                     <b-field label="Projects">
-                        <b-dropdown v-model="filterOne">
+                        <b-dropdown v-model="project">
                             <button
-                                    :class="'button is-fluid' + (filterOne ? ' is-primary' : '')"
+                                    :class="'button is-fluid' + (filterSelections.project ? ' is-primary' : '')"
                                     slot="trigger"
                             >
                                 <b-icon icon="filter is-small"></b-icon>
-                                <span>{{ filterOne ? filterOne : 'Projects' }}</span>
+                                <span>
+                                    {{ filterSelections.project ? filterSelections.project : 'Projects' }}
+                                </span>
                                 <b-icon icon="menu-down"></b-icon>
                             </button>
 
@@ -24,13 +26,13 @@
                         </b-dropdown>
                     </b-field>
                     <b-field label="Clients">
-                        <b-dropdown v-model="filterTwo">
+                        <b-dropdown v-model="client">
                             <button
-                                    :class="'button is-fluid' + (filterTwo ? ' is-primary' : '')"
+                                    :class="'button is-fluid' + (filterSelections.client ? ' is-primary' : '')"
                                     slot="trigger"
                             >
                                 <b-icon icon="filter is-small"></b-icon>
-                                <span>{{ filterTwo ? filterTwo : 'Clients' }}</span>
+                                <span>{{ filterSelections.client ? filterSelections.client : 'Clients' }}</span>
                                 <b-icon icon="menu-down"></b-icon>
                             </button>
 
@@ -44,13 +46,13 @@
                         </b-dropdown>
                     </b-field>
                     <b-field label="Contacts">
-                        <b-dropdown v-model="filterThree">
+                        <b-dropdown v-model="contact">
                             <button
-                                    :class="'button is-fluid' + (filterThree ? ' is-primary' : '')"
+                                    :class="'button is-fluid' + (filterSelections.contact ? ' is-primary' : '')"
                                     slot="trigger"
                             >
                                 <b-icon icon="filter is-small"></b-icon>
-                                <span>{{ filterThree ? filterThree : 'Contacts' }}</span>
+                                <span>{{ filterSelections.contact ? filterSelections.contact : 'Contacts' }}</span>
                                 <b-icon icon="menu-down"></b-icon>
                             </button>
 
@@ -62,6 +64,15 @@
                                 {{ filter }}
                             </b-dropdown-item>
                         </b-dropdown>
+                    </b-field>
+                    <b-field label="Reset Filters">
+                        <button
+                            class="button"
+                            @click="clearFilters"
+                        >
+                            <b-icon icon="eraser is-small"></b-icon>
+                            <span>Reset Filters</span>
+                        </button>
                     </b-field>
                 </div>
             </div>
@@ -98,19 +109,15 @@
 </style>
 <script>
 import VueSticky from "vue-sticky";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "MainUI",
   data: () => ({
-    filterOne: null,
-    filterTwo: null,
-    filterThree: null,
+    client: null,
+    project: null,
+    contact: null,
     tags: [],
     filteredTags: [],
-    filters: {
-      project: ["Project One", "Project Two", "Project Three"],
-      client: ["Client One", "Client Two", "Client Three"],
-      contact: ["Contact One", "Contact Two", "Contact Three"]
-    },
     totalTags: [
       "Tag One",
       "Tag Two",
@@ -123,6 +130,10 @@ export default {
     ]
   }),
   methods: {
+    ...mapActions({
+      updateFilter: "feed/updateFilter",
+      clearFilters: "feed/clearFilters",
+    }),
     getFilteredTags(text) {
       this.filteredTags = this.totalTags.filter(
         tag =>
@@ -133,6 +144,23 @@ export default {
   },
   directives: {
     sticky: VueSticky
+  },
+  computed: {
+    ...mapGetters({
+      filters: "feed/getFilters",
+      filterSelections: "feed/getFilterSelections"
+    })
+  },
+  watch: {
+    project(value) {
+      this.updateFilter({ filter: "project", value });
+    },
+    client(value) {
+      this.updateFilter({ filter: "client", value });
+    },
+    contact(value) {
+      this.updateFilter({ filter: "contact", value });
+    }
   }
 };
 </script>

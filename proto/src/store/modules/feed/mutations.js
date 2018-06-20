@@ -6,7 +6,14 @@
 import * as types from "./mutation-types";
 
 export default {
-  [types.A_MUTATION](state) {
-    state.thing = null;
+  [types.CLEAR_FILTERS](state) {
+    state.filterSelections = {
+      project: null,
+      client: null,
+      contact: null
+    };
+  },
+  [types.UPDATE_FILTER](state, payload) {
+    state.filterSelections[payload.filter] = payload.value;
   }
 };

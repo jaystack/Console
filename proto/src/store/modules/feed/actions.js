@@ -5,10 +5,15 @@
 
 import * as types from "./mutation-types";
 
-export const anAction = ({ commit }) => {
-  commit(types.A_MUTATION);
+export const clearFilters = ({ commit }) => {
+  commit(types.CLEAR_FILTERS);
+};
+
+export const updateFilter = ({ commit }, payload) => {
+  commit(types.UPDATE_FILTER, payload);
 };
 
 export default {
-  anAction
+  clearFilters,
+  updateFilter
 };

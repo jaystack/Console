@@ -4,7 +4,6 @@
  */
 
 export default {
-  getThing: state => {
-    return state.thing;
-  }
+  getFilters: state => state.filters,
+  getFilterSelections: state => state.filterSelections
 };
