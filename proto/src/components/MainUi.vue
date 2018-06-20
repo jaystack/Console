@@ -1,9 +1,11 @@
 <template>
-    <div class="margin-top">
-        <div class="columns">
-            <div class="column is-one-fifth">
-                <div v-sticky="{zIndex:10,stickyTop:84,enabled:true}"> <!-- STICKY WRAPPER -->
-                    <b-field label="Projects">
+    <div>
+        <div class="columns" style="margin-top:0!important;">
+            <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.05);padding-top:1em;">
+                <div v-sticky="{zIndex:10,stickyTop:68,enabled:true}" > <!-- STICKY WRAPPER -->
+                    <label class="label">Filters</label>
+                    <div class="box">
+                    <b-field label="Projects" class="long-dropdown">
                         <b-dropdown v-model="project">
                             <button
                                     :class="'button is-fluid' + (filterSelections.project ? ' is-primary' : '')"
@@ -25,7 +27,7 @@
                             </b-dropdown-item>
                         </b-dropdown>
                     </b-field>
-                    <b-field label="Clients">
+                    <b-field label="Clients" class="long-dropdown">
                         <b-dropdown v-model="client">
                             <button
                                     :class="'button is-fluid' + (filterSelections.client ? ' is-primary' : '')"
@@ -45,7 +47,7 @@
                             </b-dropdown-item>
                         </b-dropdown>
                     </b-field>
-                    <b-field label="Contacts">
+                    <b-field label="Contacts" class="long-dropdown">
                         <b-dropdown v-model="contact">
                             <button
                                     :class="'button is-fluid' + (filterSelections.contact ? ' is-primary' : '')"
@@ -65,33 +67,66 @@
                             </b-dropdown-item>
                         </b-dropdown>
                     </b-field>
-                    <b-field label="Reset Filters">
+                        <hr class="divider">
                         <button
-                            class="button"
-                            @click="clearFilters"
+                                class="button"
+                                @click="clearFilters"
                         >
                             <b-icon icon="eraser is-small"></b-icon>
                             <span>Reset Filters</span>
                         </button>
-                    </b-field>
+                    </div>
                 </div>
             </div>
             <div class="column">
                 <slot></slot>
             </div>
-            <div class="column is-one-fifth">
-                <div v-sticky="{zIndex:10,stickyTop:84,enabled:true}">
-                    <b-field label="Enter some tags">
-                        <b-taginput
-                                v-model="tags"
-                                :data="filteredTags"
-                                autocomplete
-                                allow-new
-                                icon="label"
-                                placeholder="Add a tag"
-                                @typing="getFilteredTags">
-                        </b-taginput>
-                    </b-field>
+            <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.05);">
+                <div v-sticky="{zIndex:10,stickyTop:68,enabled:true}">
+                    <label class="label">Include</label>
+
+                    <div class="box">
+                    <div class="field">
+                        <b-checkbox
+                            v-model="tech"
+                            native-value="slack"
+                        >
+                            Slack
+                        </b-checkbox>
+                    </div>
+
+                    <div class="field">
+                        <b-checkbox
+                            v-model="tech"
+                            native-value="email"
+                        >
+                            Email
+                        </b-checkbox>
+                    </div>
+
+                    <div class="field">
+                        <b-checkbox
+                            v-model="tech"
+                            native-value="files"
+                        >
+                            Files
+                        </b-checkbox>
+                    </div>
+
+                    <div class="field">
+                        <b-checkbox
+                            v-model="tech"
+                            native-value="git"
+                        >
+                            GIT
+                        </b-checkbox>
+                    </div>
+
+                        <hr class="divider">
+                        <button class="button " style="width:100%;">
+                            Add More
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,11 +136,27 @@
 .margin-top {
   margin-top: 2em;
 }
-/*.is-right-aligned {*/
-/*.field {*/
-/*text-align: right;*/
-/*}*/
-/*}*/
+.box {
+  hr {
+    margin: 1rem -1.25rem;
+  }
+}
+.long-dropdown {
+  .dropdown,
+  .dropdown-trigger {
+    width: 100%;
+    button,
+    .button {
+      width: 100%;
+      .icon:last-child {
+        margin-left: auto;
+      }
+    }
+  }
+  .dropdown-menu {
+    right: 0;
+  }
+}
 </style>
 <script>
 import VueSticky from "vue-sticky";
@@ -116,6 +167,7 @@ export default {
     client: null,
     project: null,
     contact: null,
+    tech: [],
     tags: [],
     filteredTags: [],
     totalTags: [
@@ -132,15 +184,8 @@ export default {
   methods: {
     ...mapActions({
       updateFilter: "feed/updateFilter",
-      clearFilters: "feed/clearFilters",
+      clearFilters: "feed/clearFilters"
     }),
-    getFilteredTags(text) {
-      this.filteredTags = this.totalTags.filter(
-        tag =>
-          tag.toLowerCase().indexOf(text.toLowerCase()) >= 0 &&
-          this.tags.indexOf(tag) === -1
-      );
-    }
   },
   directives: {
     sticky: VueSticky
