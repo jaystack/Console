@@ -1,7 +1,13 @@
 <template>
   <div>
     <transition-group name="list" mode="out-in">
-      <div class="card" v-for="item in computedFeed" :key="item.id" style="margin-bottom:1em;">
+      <div
+        class="card"
+        v-for="item in computedFeed"
+        v-if="includes.indexOf(item.type) >= 0"
+        :key="item.id"
+        style="margin-bottom:1em;"
+      >
         <header class="card-header">
           <p class="card-header-title">
             <img :src="`/img/${item.type}.png`" style="max-width:16px;margin-right:.5em;">
@@ -51,7 +57,8 @@ export default {
   computed: {
     ...mapGetters({
       search: "feed/getSearch",
-      filters: "feed/getFilterSelections"
+      filters: "feed/getFilterSelections",
+      includes: "feed/getIncludes"
     }),
     computedFeed() {
       return this.feed.filter(el => {

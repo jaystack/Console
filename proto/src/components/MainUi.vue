@@ -182,11 +182,15 @@ export default {
       "Tag Eight"
     ]
   }),
+  created() {
+    this.tech = this.includes;
+  },
   methods: {
     ...mapActions({
       updateFilter: "feed/updateFilter",
-      clearFilters: "feed/clearFilters"
-    }),
+      clearFilters: "feed/clearFilters",
+      setIncludes: "feed/setIncludes",
+    })
   },
   directives: {
     sticky: VueSticky
@@ -194,7 +198,8 @@ export default {
   computed: {
     ...mapGetters({
       filters: "feed/getFilters",
-      filterSelections: "feed/getFilterSelections"
+      filterSelections: "feed/getFilterSelections",
+      includes: "feed/getIncludes"
     })
   },
   watch: {
@@ -206,6 +211,9 @@ export default {
     },
     contact(value) {
       this.updateFilter({ filter: "contact", value });
+    },
+    tech(newVal) {
+      this.setIncludes(newVal);
     }
   }
 };

@@ -13,6 +13,10 @@ export const updateFilter = ({ commit }, payload) => {
   commit(types.UPDATE_FILTER, payload);
 };
 
+export const setIncludes = ({ commit }, includes) => {
+  commit(types.SET_INCLUDES, includes);
+};
+
 export const setSearch = ({ commit }, search) => {
   commit(types.SET_SEARCH, search);
 };
@@ -20,5 +24,6 @@ export const setSearch = ({ commit }, search) => {
 export default {
   clearFilters,
   updateFilter,
+  setIncludes,
   setSearch
 };

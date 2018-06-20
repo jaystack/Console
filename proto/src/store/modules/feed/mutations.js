@@ -16,6 +16,9 @@ export default {
   [types.UPDATE_FILTER](state, payload) {
     state.filterSelections[payload.filter] = payload.value;
   },
+  [types.SET_INCLUDES](state, includes) {
+    state.includes = includes;
+  },
   [types.SET_SEARCH](state, search) {
     state.search = search;
   }

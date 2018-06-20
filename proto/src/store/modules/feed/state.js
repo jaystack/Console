@@ -14,5 +14,6 @@ export default {
     client: null,
     contact: null
   },
-  search: null,
+  includes: ["slack", "email", "files", "git"],
+  search: null
 };
