@@ -1,25 +1,27 @@
 <template>
   <div>
-    <div class="card" v-for="item in computedFeed" :key="item.id" style="margin-bottom:1em;">
-      <header class="card-header">
-        <p class="card-header-title">
-          <img :src="`/img/${item.type}.png`" style="max-width:16px;margin-right:.5em;">
-          {{toTitleCase(item.type)}}
-        </p>
-        <a href="#" class="card-header-icon" aria-label="more options">
-      <span class="icon">
-        <b-icon icon="dots-horizontal"></b-icon>
-      </span>
-        </a>
-      </header>
+    <transition-group name="list" mode="out-in">
+      <div class="card" v-for="item in computedFeed" :key="item.id" style="margin-bottom:1em;">
+        <header class="card-header">
+          <p class="card-header-title">
+            <img :src="`/img/${item.type}.png`" style="max-width:16px;margin-right:.5em;">
+            {{toTitleCase(item.type)}}
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+        <span class="icon">
+          <b-icon icon="dots-horizontal"></b-icon>
+        </span>
+          </a>
+        </header>
 
-      <div class="card-content">
-        <div class="content">
-          <p>{{item.content}}</p>
-          <time>{{item.when.toLocaleString()}}</time>
+        <div class="card-content">
+          <div class="content">
+            <p>{{item.content}}</p>
+            <time>{{item.when.toLocaleString()}}</time>
+          </div>
         </div>
       </div>
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -28,6 +30,9 @@ time {
   opacity: 0.5;
   font-size: 80%;
   padding-top: 1em;
+}
+.list-move {
+  transition: transform .5s;
 }
 </style>
 
@@ -110,6 +115,23 @@ export default {
         type: "slack",
         image: "http://via.placeholder.com/100x100",
         client: "Client Three",
+        contact: "Contact Three",
+        project: "Project Two",
+        when: new Date(),
+        content:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
+          "dolore magna aliqua. Non quam lacus suspendisse faucibus interdum posuere lorem ipsum. Lorem donec massa " +
+          "sapien faucibus et molestie ac feugiat. Nec ullamcorper sit amet risus nullam eget felis eget. Fringilla " +
+          "ut morbi tincidunt augue interdum velit euismod in pellentesque. Amet est placerat in egestas. " +
+          "Adipiscing bibendum est ultricies integer quis auctor. Tortor vitae purus faucibus ornare suspendisse " +
+          "sed nisi. Non blandit massa enim nec dui nunc mattis enim. Congue mauris rhoncus aenean vel elit " +
+          "scelerisque. Enim ut tellus elementum sagittis vitae. Consequat nisl vel pretium lectus quam id."
+      },
+      {
+        id: 5,
+        type: "slack",
+        image: "http://via.placeholder.com/100x100",
+        client: "Client Two",
         contact: "Contact Three",
         project: "Project Two",
         when: new Date(),

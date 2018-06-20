@@ -16,9 +16,12 @@
         <div class="navbar-menu">
           <div class="navbar-search">
             <b-field>
-              <b-input placeholder="Search..."
-                       type="search"
-                       icon="magnify">
+              <b-input
+                placeholder="Search..."
+                type="search"
+                icon="magnify"
+                v-model="localSearch"
+              >
               </b-input>
             </b-field>
           </div>
@@ -86,3 +89,23 @@
   opacity: 0;
 }
 </style>
+
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  data: () => ({
+    localSearch: null
+  }),
+  methods: {
+    ...mapActions({
+      setSearch: "feed/setSearch"
+    })
+  },
+  watch: {
+    localSearch(newValue) {
+      this.setSearch(newValue);
+    }
+  }
+};
+</script>

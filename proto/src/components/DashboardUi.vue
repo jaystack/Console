@@ -9,9 +9,9 @@
                     <ul class="menu-list">
                         <li>
                             <router-link
-                                    :to="{name:'dashboard'}"
-                                    active-class="is-active"
-                                    exact
+                                :to="{name:'dashboard'}"
+                                active-class="is-active"
+                                exact
                             >
                                 Dashboard
                             </router-link>

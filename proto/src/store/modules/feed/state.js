@@ -13,5 +13,6 @@ export default {
     project: null,
     client: null,
     contact: null
-  }
+  },
+  search: null,
 };

@@ -5,5 +5,6 @@
 
 export default {
   getFilters: state => state.filters,
-  getFilterSelections: state => state.filterSelections
+  getFilterSelections: state => state.filterSelections,
+  getSearch: state => state.search
 };

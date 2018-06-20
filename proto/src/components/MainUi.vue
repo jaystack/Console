@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <div class="column">
+            <div class="column" style="min-height:calc(100% - 52px)">
                 <slot></slot>
             </div>
             <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.05);">

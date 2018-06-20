@@ -1,7 +1,8 @@
 <template>
     <div>
-        <h1 class="title">Email</h1>
         <div class="box">
+            <h4 class="title is-4">Email</h4>
+            <hr>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
                 dolore magna aliqua. Elementum eu facilisis sed odio morbi quis commodo odio. Accumsan in nisl nisi
