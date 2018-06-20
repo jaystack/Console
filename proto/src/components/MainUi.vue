@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="columns" style="margin-top:0!important;">
-            <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.05);padding-top:1em;">
+        <div class="columns" style="margin-top:0!important;min-height: calc(100vh - 52px);">
+            <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:1em;">
                 <div v-sticky="{zIndex:10,stickyTop:68,enabled:true}" > <!-- STICKY WRAPPER -->
                     <label class="label">Filters</label>
                     <div class="box">
@@ -78,10 +78,10 @@
                     </div>
                 </div>
             </div>
-            <div class="column" style="min-height:calc(100% - 52px)">
+            <div class="column" style="background:#fafafa">
                 <slot></slot>
             </div>
-            <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.05);">
+            <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.1);">
                 <div v-sticky="{zIndex:10,stickyTop:68,enabled:true}">
                     <label class="label">Include</label>
 

@@ -1,12 +1,11 @@
 <template>
-  <div>
+  <div class="feed">
     <transition-group name="list" mode="out-in">
       <div
         class="card"
         v-for="item in computedFeed"
         v-if="includes.indexOf(item.type) >= 0"
         :key="item.id"
-        style="margin-bottom:1em;"
       >
         <header class="card-header">
           <p class="card-header-title">
@@ -38,7 +37,15 @@ time {
   padding-top: 1em;
 }
 .list-move {
-  transition: transform .5s;
+  transition: transform 0.5s;
+}
+.feed {
+  .card {
+    margin-bottom: 1em;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 </style>
 
