@@ -123,8 +123,9 @@
                     </div>
 
                         <hr class="divider">
-                        <button class="button " style="width:100%;">
-                            Add More
+                        <button class="button">
+                            <b-icon icon="plus is-small"></b-icon>
+                            <span>Add More</span>
                         </button>
                     </div>
                 </div>

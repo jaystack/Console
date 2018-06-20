@@ -1,7 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-import About from "./views/About.vue";
+
+import Home from "./views/Home";
+import Dashboard from "./views/Dashboard";
+import Connectors from "./connectors";
 
 Vue.use(Router);
 
@@ -13,9 +15,9 @@ export default new Router({
       component: Home
     },
     {
-      path: "/settings",
-      name: "about",
-      component: About
+      path: "/dashboard",
+      component: Dashboard,
+      children: Connectors
     }
   ]
 });

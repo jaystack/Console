@@ -1,0 +1,28 @@
+<template>
+<div class="columns">
+    <div class="column is-one-quarter">
+        <div class="box aspect">
+            <div class="aspect-inner">
+                <img src="/img/slack.png" class="image">
+            </div>
+        </div>
+    </div>
+    <div class="column is-one-quarter">
+        <div class="box aspect">
+            <div class="aspect-inner">
+                <img src="/img/email.png" class="image">
+            </div>
+        </div>
+    </div>
+    <div class="column is-one-quarter">
+        <div class="box aspect empty">
+            <div class="aspect-inner">
+                <b-icon icon="plus" size="is-large"></b-icon>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+<script>
+export default {};
+</script>

@@ -29,7 +29,7 @@
                       size="is-small">
               </b-icon>
             </router-link>
-            <router-link to="/settings" class="navbar-item">
+            <router-link to="/dashboard" class="navbar-item">
               <b-icon
                       icon="settings"
                       size="is-small">
