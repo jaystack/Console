@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card" v-for="item in feed" :key="item.id" style="margin-bottom:1em;">
+    <div class="card" v-for="item in computedFeed" :key="item.id" style="margin-bottom:1em;">
       <header class="card-header">
         <p class="card-header-title">
           <img :src="`/img/${item.type}.png`" style="max-width:16px;margin-right:.5em;">
@@ -16,7 +16,7 @@
       <div class="card-content">
         <div class="content">
           <p>{{item.content}}</p>
-          <time datetime="2016-1-1">{{item.when.toLocaleString()}}</time>
+          <time>{{item.when.toLocaleString()}}</time>
         </div>
       </div>
     </div>
@@ -32,6 +32,7 @@ time {
 </style>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Feed",
   methods: {
@@ -42,12 +43,33 @@ export default {
       );
     }
   },
+  computed: {
+    ...mapGetters({
+      search: "feed/getSearch",
+      filters: "feed/getFilterSelections"
+    }),
+    computedFeed() {
+      return this.feed.filter(el => {
+        let isMatch = true;
+        if (this.filters.client !== null)
+          if (this.filters.client !== el.client) isMatch = false;
+        if (this.filters.project !== null)
+          if (this.filters.project !== el.project) isMatch = false;
+        if (this.filters.contact !== null)
+          if (this.filters.contact !== el.contact) isMatch = false;
+        return isMatch;
+      });
+    }
+  },
   data: () => ({
     feed: [
       {
         id: 1,
         type: "slack",
         image: "http://via.placeholder.com/100x100",
+        client: "Client One",
+        contact: "Contact Two",
+        project: "Project Three",
         when: new Date(),
         content:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
@@ -59,6 +81,9 @@ export default {
         id: 2,
         type: "email",
         image: "http://via.placeholder.com/100x100",
+        client: "Client One",
+        contact: "Contact Two",
+        project: "Project Three",
         when: new Date(),
         content:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
@@ -70,6 +95,9 @@ export default {
         id: 3,
         type: "email",
         image: "http://via.placeholder.com/100x100",
+        client: "Client Two",
+        contact: "Contact One",
+        project: "Project One",
         when: new Date(),
         content:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
@@ -81,6 +109,9 @@ export default {
         id: 4,
         type: "slack",
         image: "http://via.placeholder.com/100x100",
+        client: "Client Three",
+        contact: "Contact Three",
+        project: "Project Two",
         when: new Date(),
         content:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
