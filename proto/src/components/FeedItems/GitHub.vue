@@ -6,7 +6,7 @@
     >
         <header class="card-header">
             <p class="card-header-title">
-                <img :src="`/img/${object.type}.png`" style="max-width:16px;margin-right:.5em;">
+                <img src="/img/github-dark.png" style="max-width:16px;margin-right:.5em;">
                 GitHub
             </p>
             <a href="#" class="card-header-icon" aria-label="more options">
@@ -18,7 +18,10 @@
 
         <div class="card-content">
             <div class="content">
-                <p ref="theContent">{{object.content}}</p>
+                <div>
+                    <b-table :data="data" :columns="columns"></b-table>
+                </div>
+                <br>
                 <time>{{object.when.toLocaleString()}}</time>
             </div>
         </div>
@@ -27,6 +30,8 @@
 <script>
 import { mapGetters } from "vuex";
 import Mark from "mark.js";
+import GitHubCommitTransformer from '../../transformers/GitHubCommitTransformer';
+import FakeGitHubData from '../fakeGitHubData';
 
 export default {
   name: "SlackItem",
@@ -43,7 +48,22 @@ export default {
   },
   data: () => ({
     markInstance: null,
-    canMark: false
+    canMark: false,
+    data: [GitHubCommitTransformer(FakeGitHubData[0])],
+    columns: [
+      {
+        field: 'message',
+        label: 'Message',
+      },
+      {
+        field: 'committer.name',
+        label: 'Committer',
+      },
+      {
+        field: 'short_commit_id',
+        label: 'Commit ID',
+      },
+    ]
   }),
   mounted() {
     this.markInstance = new Mark(this.$refs.theContent);

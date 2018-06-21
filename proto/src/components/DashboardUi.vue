@@ -18,6 +18,20 @@
                         </li>
                     </ul>
                     <p class="menu-label">
+                        Account
+                    </p>
+                    <ul class="menu-list">
+                        <li>
+                            <router-link
+                                    :to="{name:'dashboard.account'}"
+                                    active-class="is-active"
+                                    exact
+                            >
+                                Overview
+                            </router-link>
+                        </li>
+                    </ul>
+                    <p class="menu-label">
                         My Connectors
                     </p>
                     <ul class="menu-list">

@@ -18,10 +18,11 @@
 
         <div class="card-content">
             <div class="content">
-                <b-message type="is-success">
-                    <strong>Fantastic news!</strong> The thing uploaded!
+                <b-message type="is-info" has-icon>
+                    <strong>File Update:</strong> The thing uploaded! And now you can go and get it at the link below.
                 </b-message>
                 <p ref="theContent">{{object.content}}</p>
+                <p><a href="#">{{object.link}}</a></p>
                 <time>{{object.when.toLocaleString()}}</time>
             </div>
         </div>

@@ -110,6 +110,47 @@ export default {
       },
       {
         id: 3,
+        type: "drive",
+        from: "z",
+        image: "http://via.placeholder.com/100x100",
+        client: "Client Two",
+        contact: "Contact Three",
+        project: "Project Two",
+        when: new Date(),
+        link: "http://someexampleurlatgoogledrive.com/path/to/file?param=value",
+        content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
+        "dolore magna aliqua."
+      },
+      {
+        id: 4,
+        type: "drive",
+        from: "z",
+        image: "http://via.placeholder.com/100x100",
+        client: "Client Two",
+        contact: "Contact Three",
+        project: "Project Two",
+        when: new Date(),
+        link: "http://someexampleurlatgoogledrive.com/path/to/file?param=value",
+        content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
+        "dolore magna aliqua."
+      },
+      {
+        id: 5,
+        type: "github",
+        image: "http://via.placeholder.com/100x100",
+        client: "Client Two",
+        contact: "Contact Three",
+        project: "Project Two",
+        when: new Date(),
+        link: "http://someexampleurlatgoogledrive.com/path/to/file?param=value",
+        content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
+        "dolore magna aliqua."
+      },
+      {
+        id: 6,
         type: "email",
         image: "http://via.placeholder.com/100x100",
         client: "Client Two",
@@ -123,7 +164,7 @@ export default {
           "scelerisque. Enim ut tellus elementum sagittis vitae. Consequat nisl vel pretium lectus quam id."
       },
       {
-        id: 4,
+        id: 7,
         type: "slack",
         from: "z",
         image: "http://via.placeholder.com/100x100",
@@ -141,7 +182,7 @@ export default {
           "scelerisque. Enim ut tellus elementum sagittis vitae. Consequat nisl vel pretium lectus quam id."
       },
       {
-        id: 5,
+        id: 8,
         type: "slack",
         from: "z",
         image: "http://via.placeholder.com/100x100",
@@ -157,20 +198,6 @@ export default {
           "Adipiscing bibendum est ultricies integer quis auctor. Tortor vitae purus faucibus ornare suspendisse " +
           "sed nisi. Non blandit massa enim nec dui nunc mattis enim. Congue mauris rhoncus aenean vel elit " +
           "scelerisque. Enim ut tellus elementum sagittis vitae. Consequat nisl vel pretium lectus quam id."
-      },
-      {
-        id: 6,
-        type: "drive",
-        from: "z",
-        image: "http://via.placeholder.com/100x100",
-        client: "Client Two",
-        contact: "Contact Three",
-        project: "Project Two",
-        when: new Date(),
-        content:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
-        "dolore magna aliqua. Non quam lacus suspendisse faucibus interdum posuere lorem ipsum. Lorem donec massa " +
-        "sapien faucibus et molestie ac feugiat. Nec ullamcorper sit amet risus nullam eget felis eget. "
       }
     ]
   })

@@ -1,5 +1,6 @@
 // IMPORTS
 import DashHome from "./views/Dashboard/DashHome";
+import AccountPanel from "./views/Dashboard/DashAccount";
 import EmailPanel from "./views/Dashboard/DashEmail";
 import SlackPanel from "./views/Dashboard/DashSlack";
 import DrivePanel from "./views/Dashboard/DashDrive";
@@ -10,6 +11,12 @@ export const dashboard = {
   path: "",
   name: "dashboard",
   component: DashHome
+};
+
+export const account = {
+  path: "account",
+  name: "dashboard.account",
+  component: AccountPanel
 };
 
 export const slack = {
@@ -36,4 +43,4 @@ export const github = {
   component: GitHubPanel
 };
 
-export default [dashboard, slack, email, drive, github];
+export default [dashboard, account, slack, email, drive, github];
