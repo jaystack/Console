@@ -53,6 +53,12 @@
 </template>
 
 <style lang="scss">
+mark {
+  background: #7957d5;
+  color: white;
+  border-radius: 2px;
+  padding: 0 3px;
+}
 .navbar {
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
   .navbar-brand {

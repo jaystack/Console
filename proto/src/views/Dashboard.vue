@@ -1,6 +1,6 @@
 <template>
   <DashboardUi>
-    <transition name="fade" mode="out-in">
+    <transition name="fadezoom" mode="out-in" >
       <router-view></router-view>
     </transition>
   </DashboardUi>
@@ -34,6 +34,24 @@
     content: "";
     padding-top: 60%;
     display: block;
+  }
+}
+
+.fadezoom-enter-active {
+  animation: enter 0.2s;
+}
+
+.fadezoom-leave-active {
+  animation: enter 0.2s reverse;
+}
+@keyframes enter {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 </style>

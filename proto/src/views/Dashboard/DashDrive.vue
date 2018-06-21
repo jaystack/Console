@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="fadezoom">
         <div class="box">
             <h4 class="title is-4">Google Drive</h4>
             <hr>

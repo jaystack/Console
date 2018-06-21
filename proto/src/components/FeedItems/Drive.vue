@@ -7,7 +7,7 @@
         <header class="card-header">
             <p class="card-header-title">
                 <img src="/img/google-drive.png" style="max-width:16px;margin-right:.5em;">
-                {{toTitleCase(object.type)}}
+                Google Drive
             </p>
             <a href="#" class="card-header-icon" aria-label="more options">
         <span class="icon">
@@ -21,7 +21,7 @@
                 <b-message type="is-success">
                     <strong>Fantastic news!</strong> The thing uploaded!
                 </b-message>
-                <p>{{object.content}}</p>
+                <p ref="theContent">{{object.content}}</p>
                 <time>{{object.when.toLocaleString()}}</time>
             </div>
         </div>
@@ -29,6 +29,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import Mark from "mark.js";
 
 export default {
   name: "SlackItem",
@@ -39,15 +40,37 @@ export default {
   },
   computed: {
     ...mapGetters({
-      includes: "feed/getIncludes"
+      includes: "feed/getIncludes",
+      search: "feed/getSearch"
     })
   },
+  data: () => ({
+    markInstance: null,
+    canMark: false
+  }),
+  mounted() {
+    this.markInstance = new Mark(this.$refs.theContent);
+    this.canMark = true;
+  },
   methods: {
-    toTitleCase(str) {
-      return str.replace(
-        /\w\S*/g,
-        txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-      );
+    mark(value) {
+      const that = this;
+      if (this.canMark && this.search) {
+        that.markInstance.unmark({
+          done: function () {
+            that.markInstance.mark(value);
+          }
+        });
+      }
+    },
+    unmark() {
+      this.markInstance.unmark();
+    }
+  },
+  watch: {
+    search(newVal) {
+      if (newVal) this.mark(newVal);
+      else this.unmark();
     }
   }
 };

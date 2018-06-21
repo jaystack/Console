@@ -123,7 +123,7 @@
                     </div>
 
                         <hr class="divider">
-                        <button class="button">
+                        <button class="button" @click="$router.push({name:'dashboard'})">
                             <b-icon icon="plus is-small"></b-icon>
                             <span>Add More</span>
                         </button>

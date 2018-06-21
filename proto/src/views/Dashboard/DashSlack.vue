@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="fadezoom">
         <div class="box">
             <h4 class="title is-4">Slack</h4>
             <hr>

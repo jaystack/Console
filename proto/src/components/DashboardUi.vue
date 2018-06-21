@@ -74,6 +74,8 @@
         </div>
     </div>
 </template>
+<style lang="scss">
+</style>
 <script>
 import VueSticky from "vue-sticky";
 export default {
