@@ -7,7 +7,8 @@
         <header class="card-header">
             <p class="card-header-title">
                 <img :src="`/img/${object.type}.png`" style="max-width:16px;margin-right:.5em;">
-                Slack - from @{{ object.from }}
+                Slack
+                <span style="opacity:.6;font-size:80%;">&nbsp;from @{{ object.from }}</span>
             </p>
             <a href="#" class="card-header-icon" aria-label="more options">
         <span class="icon">

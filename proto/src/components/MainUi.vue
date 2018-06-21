@@ -1,10 +1,10 @@
 <template>
     <div>
         <div class="columns" style="margin-top:0!important;min-height: calc(100vh - 52px);">
-            <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:1em;">
-                <div v-sticky="{zIndex:10,stickyTop:68,enabled:true}" > <!-- STICKY WRAPPER -->
-                    <label class="label">Filters</label>
-                    <div class="box">
+            <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:2em">
+                <div v-sticky="{zIndex:10,stickyTop:84,enabled:true}" > <!-- STICKY WRAPPER -->
+                    <!--<label class="label">Filters</label>-->
+                    <!--<div class="box">-->
                     <b-field label="Projects" class="long-dropdown">
                         <b-dropdown v-model="project">
                             <button
@@ -75,17 +75,17 @@
                             <b-icon icon="eraser is-small"></b-icon>
                             <span>Reset Filters</span>
                         </button>
-                    </div>
+                    <!--</div>-->
                 </div>
             </div>
-            <div class="column" style="background:#fafafa;padding:3em 1em;">
+            <div class="column" style="background:#fafafa;padding:2em 1em;">
                 <slot></slot>
             </div>
-            <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.1);">
-                <div v-sticky="{zIndex:10,stickyTop:68,enabled:true}">
-                    <label class="label">Include</label>
+            <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.1);padding-top:2em">
+                <div v-sticky="{zIndex:10,stickyTop:84,enabled:true}">
+                    <!--<label class="label">Include</label>-->
 
-                    <div class="box">
+                    <!--<div class="box">-->
                     <div class="field">
                         <b-checkbox
                             v-model="tech"
@@ -128,7 +128,7 @@
                             <span>Add More</span>
                         </button>
                     </div>
-                </div>
+                <!--</div>-->
             </div>
         </div>
     </div>
