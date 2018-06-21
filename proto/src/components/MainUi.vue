@@ -107,18 +107,18 @@
                     <div class="field">
                         <b-checkbox
                             v-model="tech"
-                            native-value="files"
+                            native-value="drive"
                         >
-                            Files
+                            Google Drive
                         </b-checkbox>
                     </div>
 
                     <div class="field">
                         <b-checkbox
                             v-model="tech"
-                            native-value="git"
+                            native-value="github"
                         >
-                            GIT
+                            GitHub
                         </b-checkbox>
                     </div>
 

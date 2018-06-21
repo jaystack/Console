@@ -1,18 +1,18 @@
 <template>
   <MainUi>
-    <HelloWorld/>
+    <Feed/>
   </MainUi>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import Feed from "@/components/Feed";
 import MainUi from "@/components/MainUi";
 
 export default {
   name: "home",
   components: {
-    HelloWorld,
+    Feed,
     MainUi
   }
 };
