@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-            <div class="column" style="background:#fafafa">
+            <div class="column" style="background:#fafafa;padding:3em 1em;">
                 <slot></slot>
             </div>
             <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.1);">

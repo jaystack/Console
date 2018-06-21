@@ -43,6 +43,7 @@ time {
 .feed {
   .card {
     margin-bottom: 1em;
+    border-radius: 6px;
     &:last-child {
       margin-bottom: 0;
     }
@@ -169,11 +170,7 @@ export default {
         content:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " +
         "dolore magna aliqua. Non quam lacus suspendisse faucibus interdum posuere lorem ipsum. Lorem donec massa " +
-        "sapien faucibus et molestie ac feugiat. Nec ullamcorper sit amet risus nullam eget felis eget. Fringilla " +
-        "ut morbi tincidunt augue interdum velit euismod in pellentesque. Amet est placerat in egestas. " +
-        "Adipiscing bibendum est ultricies integer quis auctor. Tortor vitae purus faucibus ornare suspendisse " +
-        "sed nisi. Non blandit massa enim nec dui nunc mattis enim. Congue mauris rhoncus aenean vel elit " +
-        "scelerisque. Enim ut tellus elementum sagittis vitae. Consequat nisl vel pretium lectus quam id."
+        "sapien faucibus et molestie ac feugiat. Nec ullamcorper sit amet risus nullam eget felis eget. "
       }
     ]
   })

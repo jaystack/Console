@@ -18,6 +18,9 @@
 
         <div class="card-content">
             <div class="content">
+                <b-message type="is-success">
+                    <strong>Fantastic news!</strong> The thing uploaded!
+                </b-message>
                 <p>{{object.content}}</p>
                 <time>{{object.when.toLocaleString()}}</time>
             </div>

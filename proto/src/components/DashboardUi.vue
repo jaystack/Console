@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="columns" style="margin-top:0!important;min-height: calc(100vh - 52px);">
-            <div class="column is-one-quarter" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:1em;">
+            <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:1em;">
                 <aside class="menu" v-sticky="{zIndex:10,stickyTop:84,enabled:true}">
                     <p class="menu-label">
                         My Dashboard
@@ -65,8 +65,11 @@
                     </ul>
                 </aside>
             </div>
-            <div class="column" style="padding-top:2em;">
+            <div class="column" style="padding:3em 1em;background: rgb(250, 250, 250);">
                 <slot></slot>
+            </div>
+            <div class="column is-one-fifth" style="border-left: 1px solid rgba(10,10,10,.1);padding-top:1em;">
+
             </div>
         </div>
     </div>
