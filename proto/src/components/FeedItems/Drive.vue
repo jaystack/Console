@@ -58,7 +58,7 @@ export default {
       const that = this;
       if (this.canMark && this.search) {
         that.markInstance.unmark({
-          done: function () {
+          done: () => {
             that.markInstance.mark(value);
           }
         });

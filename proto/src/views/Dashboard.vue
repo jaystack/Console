@@ -25,8 +25,8 @@
     position: absolute;
     align-items: center;
     justify-content: center;
+    padding: 0.5em;
     .image {
-      max-width: 100%;
       max-height: 100%;
     }
   }

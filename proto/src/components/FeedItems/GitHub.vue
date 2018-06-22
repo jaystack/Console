@@ -30,8 +30,8 @@
 <script>
 import { mapGetters } from "vuex";
 import Mark from "mark.js";
-import GitHubCommitTransformer from '../../transformers/GitHubCommitTransformer';
-import FakeGitHubData from '../fakeGitHubData';
+import GitHubCommitTransformer from "../../transformers/GitHubCommitTransformer";
+import FakeGitHubData from "../../mockData/fakeGitHubData";
 
 export default {
   name: "SlackItem",
@@ -52,17 +52,17 @@ export default {
     data: [GitHubCommitTransformer(FakeGitHubData[0])],
     columns: [
       {
-        field: 'message',
-        label: 'Message',
+        field: "message",
+        label: "Message"
       },
       {
-        field: 'committer.name',
-        label: 'Committer',
+        field: "committer.name",
+        label: "Committer"
       },
       {
-        field: 'short_commit_id',
-        label: 'Commit ID',
-      },
+        field: "short_commit_id",
+        label: "Commit ID"
+      }
     ]
   }),
   mounted() {
@@ -74,7 +74,7 @@ export default {
       const that = this;
       if (this.canMark && this.search) {
         that.markInstance.unmark({
-          done: function () {
+          done: () => {
             that.markInstance.mark(value);
           }
         });

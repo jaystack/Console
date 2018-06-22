@@ -5,44 +5,27 @@
             <hr>
             <div class="columns">
                 <div class="column">
-                    <b-field label="Name">
-                        <b-input value="John Appleseed"></b-input>
+                    <b-field label="First Name">
+                        <b-input value="John"></b-input>
                     </b-field>
                 </div>
                 <div class="column">
-                    <b-field label="Email"
-                             type="is-danger"
-                             message="This email is invalid">
-                        <b-input type="email"
-                                 value="john@apple.com"
-                                 maxlength="30">
-                        </b-input>
+                    <b-field label="Last Name">
+                        <b-input value="Appleseed"></b-input>
                     </b-field>
                 </div>
             </div>
             <div class="columns">
                 <div class="column">
-                    <b-field label="Username"
-                             type="is-success"
-                             message="This username is available">
-                        <b-input value="johnsilver" maxlength="30"></b-input>
+                    <b-field label="Username">
+                        <b-input value="johnsilver" maxlength="30" disabled></b-input>
                     </b-field>
                 </div>
-                <div class="column">
-                    <b-field label="Password"
-                             type="is-warning"
-                             :message="['Password is too short', 'Password must have at least 8 characters']">
-                        <b-input value="123" type="password" maxlength="30"></b-input>
-                    </b-field>
-                </div>
-            </div>
-            <div class="columns">
                 <div class="column">
                     <b-field label="Subject">
-                        <Selector :options="options" label="label"></Selector>
+                        <Selector :options="options" label="label" expanded></Selector>
                     </b-field>
                 </div>
-                <div class="column"></div>
             </div>
         </div>
     </div>
