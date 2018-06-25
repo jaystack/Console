@@ -18,18 +18,6 @@ export const check = ({ commit }) => {
 };
 
 export const register = ({ commit }) => {
-  /*
-   * Normally you would use a proxy to register the user:
-   *
-   * new Proxy()
-   *  .register(payload)
-   *  .then((response) => {
-   *    commit(types.REGISTER, response);
-   *  })
-   *  .catch(() => {
-   *    console.log('Request failed...');
-   *  });
-   */
 
 
   commit(types.LOGIN, 'RandomGeneratedToken');
@@ -40,22 +28,22 @@ export const register = ({ commit }) => {
 
 export const login = ({ commit }, data) => {
 
+  commit(types.LOGIN, 'RandomGeneratedToken');
+  Vue.router.push({
+    name: 'home',
+  });
 
-  Auth.login(data)
-    .then(response => {
-      console.log(response);
-      commit(types.LOGIN, response);
-      // store.dispatch('account/find');
-      Vue.router.push({
-        name: 'home',
-      });
-    }).catch((err) => {
-      console.error(err);
-      // Error.store({
-      //   id: 'login',
-      //   errors: err.errors,
-      // });
-    });
+  // Auth.login(data)
+  //   .then(response => {
+  //     console.log(response);
+  //     commit(types.LOGIN, response);
+  //     // store.dispatch('account/find');
+  //     Vue.router.push({
+  //       name: 'home',
+  //     });
+  //   }).catch((err) => {
+  //     console.error(err);
+  //   });
 
 
 };

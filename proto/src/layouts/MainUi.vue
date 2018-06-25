@@ -5,7 +5,9 @@
                 <div v-sticky="{zIndex:10,stickyTop:84,enabled:true}" > <!-- STICKY WRAPPER -->
                     <!--<label class="label">Filters</label>-->
                     <!--<div class="box">-->
-                    <b-field label="Projects" class="long-dropdown">
+                    <b-field
+                        class="long-dropdown"
+                    >
                         <b-dropdown v-model="project">
                             <button
                                     :class="'button is-fluid' + (filterSelections.project ? ' is-primary' : '')"
@@ -27,7 +29,9 @@
                             </b-dropdown-item>
                         </b-dropdown>
                     </b-field>
-                    <b-field label="Clients" class="long-dropdown">
+                    <b-field
+                        class="long-dropdown"
+                    >
                         <b-dropdown v-model="client">
                             <button
                                     :class="'button is-fluid' + (filterSelections.client ? ' is-primary' : '')"
@@ -47,7 +51,9 @@
                             </b-dropdown-item>
                         </b-dropdown>
                     </b-field>
-                    <b-field label="Contacts" class="long-dropdown">
+                    <b-field
+                        class="long-dropdown"
+                    >
                         <b-dropdown v-model="contact">
                             <button
                                     :class="'button is-fluid' + (filterSelections.contact ? ' is-primary' : '')"
