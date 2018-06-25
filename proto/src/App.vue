@@ -38,16 +38,29 @@
                       size="is-small">
               </b-icon>
             </router-link>
+            <b-dropdown position="is-bottom-left">
+              <a class="navbar-item" slot="trigger">
+                <b-icon
+                        icon="account"
+                        size="is-small">
+                </b-icon>
+              </a>
+
+              <b-dropdown-item>
+                One
+              </b-dropdown-item>
+              <b-dropdown-item>
+                Two
+              </b-dropdown-item>
+            </b-dropdown>
           </div>
         </div>
       </div>
     </nav>
     <div class="navbar-offset">
-      <div class="container">
         <transition name="fade" mode="out-in">
           <router-view/>
         </transition>
-      </div>
     </div>
   </div>
 </template>

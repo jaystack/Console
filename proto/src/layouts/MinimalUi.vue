@@ -1,5 +1,5 @@
 <template>
-    <div style="min-height:100%;display:flex;">
+    <div style="min-height:calc(100vh - 52px);display:flex;align-items:center;justify-content:center;background:#7957d5">
         <slot></slot>
     </div>
 </template>

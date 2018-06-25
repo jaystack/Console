@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div class="columns" style="margin-top:0!important;min-height: calc(100vh - 52px);">
             <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:2em">
                 <div v-sticky="{zIndex:10,stickyTop:84,enabled:true}" > <!-- STICKY WRAPPER -->
@@ -11,7 +11,7 @@
                                     :class="'button is-fluid' + (filterSelections.project ? ' is-primary' : '')"
                                     slot="trigger"
                             >
-                                <b-icon icon="filter is-small"></b-icon>
+                                <b-icon icon="folder" size="is-small"></b-icon>
                                 <span>
                                     {{ filterSelections.project ? filterSelections.project : 'Projects' }}
                                 </span>
@@ -33,7 +33,7 @@
                                     :class="'button is-fluid' + (filterSelections.client ? ' is-primary' : '')"
                                     slot="trigger"
                             >
-                                <b-icon icon="filter is-small"></b-icon>
+                                <b-icon icon="account-multiple" size="is-small"></b-icon>
                                 <span>{{ filterSelections.client ? filterSelections.client : 'Clients' }}</span>
                                 <b-icon icon="menu-down"></b-icon>
                             </button>
@@ -53,7 +53,7 @@
                                     :class="'button is-fluid' + (filterSelections.contact ? ' is-primary' : '')"
                                     slot="trigger"
                             >
-                                <b-icon icon="filter is-small"></b-icon>
+                                <b-icon icon="account-card-details" size="is-small"></b-icon>
                                 <span>{{ filterSelections.contact ? filterSelections.contact : 'Contacts' }}</span>
                                 <b-icon icon="menu-down"></b-icon>
                             </button>
@@ -72,7 +72,7 @@
                                 class="button"
                                 @click="clearFilters"
                         >
-                            <b-icon icon="eraser is-small"></b-icon>
+                            <b-icon icon="close"></b-icon>
                             <span>Reset Filters</span>
                         </button>
                     <!--</div>-->
@@ -124,7 +124,7 @@
 
                         <hr class="divider">
                         <button class="button" @click="$router.push({name:'dashboard'})">
-                            <b-icon icon="plus is-small"></b-icon>
+                            <b-icon icon="plus"></b-icon>
                             <span>Add More</span>
                         </button>
                     </div>

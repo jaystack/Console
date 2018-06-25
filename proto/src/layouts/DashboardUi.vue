@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div class="columns" style="margin-top:0!important;min-height: calc(100vh - 52px);">
             <div class="column is-one-fifth" style="border-right: 1px solid rgba(10,10,10,.1);padding-top:2em;">
                 <aside class="menu" v-sticky="{zIndex:10,stickyTop:84,enabled:true}">

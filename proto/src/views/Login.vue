@@ -1,25 +1,34 @@
 <template>
   <MinimalUi>
-    <form @submit.prevent="login(credentials)">
+    <div class="box" style="min-width:400px;">
 
-      <b-field label="Email">
-        <b-input
-          v-model="credentials.email"
-        ></b-input>
-      </b-field>
+      <h2 class="subtitle">Login</h2>
 
-      <b-field label="Password">
-        <b-input
-          type="password"
-          v-model="credentials.password"
-        ></b-input>
-      </b-field>
+      <hr class="divider">
 
-      <button class="button is-primary">
-        Submit
-      </button>
+      <form @submit.prevent="login(credentials)">
 
-    </form>
+        <b-field label="Email">
+          <b-input
+            v-model="credentials.email"
+          ></b-input>
+        </b-field>
+
+        <b-field label="Password">
+          <b-input
+            type="password"
+            v-model="credentials.password"
+          ></b-input>
+        </b-field>
+
+        <hr class="divider">
+
+        <button class="button is-primary">
+          Login
+        </button>
+
+      </form>
+    </div>
   </MinimalUi>
 </template>
 
