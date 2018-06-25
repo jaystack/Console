@@ -57,7 +57,7 @@
 </style>
 
 <script>
-import DashboardUi from "@/components/DashboardUi";
+import DashboardUi from "@/layouts/DashboardUi";
 export default {
   name: "Settings",
   data: () => ({}),

@@ -3,17 +3,15 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import Buefy from "buefy";
+import bootstrapper from "./bootstrap/bootstrapper";
 import "./registerServiceWorker";
 import "buefy/lib/buefy.css";
 import "@mdi/font/css/materialdesignicons.min.css";
 
+bootstrapper();
+
 Vue.use(Buefy);
 Vue.config.productionTip = false;
-
-router.beforeEach((to, from, next) => {
-  document.title = `Console${to.meta.title ? ` - ${to.meta.title}` : ""}`;
-  next();
-});
 
 new Vue({
   router,

@@ -4,6 +4,7 @@ import Connectors from "./connectors";
 
 import Home from "../views/Home";
 import Dashboard from "../views/Dashboard";
+import Login from "../views/Login";
 
 Vue.use(Router);
 
@@ -13,12 +14,26 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      meta: {
+        auth: true,
+      }
     },
     {
       path: "/dashboard",
       component: Dashboard,
-      children: Connectors
-    }
+      children: Connectors,
+      meta: {
+        auth: true,
+      }
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login,
+      meta: {
+        guest: true,
+      }
+    },
   ]
 });

@@ -7,7 +7,7 @@
 <script>
 // @ is an alias to /src
 import Feed from "@/components/Feed";
-import MainUi from "@/components/MainUi";
+import MainUi from "@/layouts/MainUi";
 
 export default {
   name: "home",

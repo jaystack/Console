@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@mdi/font": "^2.4.85",
+    "axios": "^0.18.0",
     "buefy": "^0.6.6",
     "choices.js": "^3.0.4",
+    "dotenv": "^6.0.0",
     "mark.js": "^8.11.1",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.16",
