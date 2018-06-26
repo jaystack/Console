@@ -1,1 +1,1 @@
-export const getGreeting = state => state.greeting;
+export const getOptions = state => state.options;

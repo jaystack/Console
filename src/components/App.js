@@ -1,25 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getGreeting } from '../selectors';
-import { increaseDots, fetchDataViaMockConnector } from '../actions';
+import { getOptions } from '../selectors';
+import { updateOptions } from '../actions';
 
-@connect(state => ({ greeting: getGreeting(state) }), { increaseDots, fetchDataViaMockConnector })
+@connect(state => ({ options: getOptions(state) }), { updateOptions })
 export default class extends React.PureComponent {
-  handleMoreDotClick = () => {
-    this.props.increaseDots();
+  state = {
+    options: JSON.stringify(this.props.options, null, 2)
   };
 
-  handleAsyncStuffClick = () => {
-    this.props.fetchDataViaMockConnector(Date.parse('2018-01-01T00:00:00.000Z'));
+  handleChange = evt => {
+    this.setState({ options: evt.target.value });
+  };
+
+  handleSave = () => {
+    this.props.updateOptions(JSON.parse(this.state.options));
   };
 
   render() {
-    const { greeting } = this.props;
+    const { options } = this.state;
     return (
       <div>
-        <h1>{greeting}</h1>
-        <button onClick={this.handleMoreDotClick}>More dot</button>
-        <button onClick={this.handleAsyncStuffClick}>Some async stuff</button>
+        <button onClick={this.handleSave}>Save</button>
+        <textarea value={options} onChange={this.handleChange} style={{ width: '100%', height: '300px' }} />
       </div>
     );
   }

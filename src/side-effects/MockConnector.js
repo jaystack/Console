@@ -1,5 +1,5 @@
 export default class MockConnector {
-  constructor(credentials, options) {
+  init(credentials, options) {
     this.credentials = credentials;
     this.options = options;
   }

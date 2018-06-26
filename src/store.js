@@ -2,10 +2,20 @@ import Store, { thunk } from 'repatch';
 import MockConnector from './side-effects/MockConnector';
 
 const initialState = {
-  greeting: 'Hello World'
+  greeting: 'Hello World',
+  options: {
+    slack: {
+      account: {},
+      channels: [{ name: 'console' }]
+    },
+    github: {
+      account: {},
+      repos: [{ name: 'Console' }]
+    }
+  }
 };
 
-const mockConnector = new MockConnector({ token: 'shh' }, { account: 'Z' });
+const mockConnector = new MockConnector();
 
 const store = new Store(initialState).addMiddleware(thunk.withExtraArgument({ mockConnector }));
 

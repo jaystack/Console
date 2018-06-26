@@ -1,5 +1,5 @@
-export const increaseDots = () => state => ({ greeting: state.greeting + '.' });
+export const updateOptions = options => state => ({ ...state, options });
 
-export const fetchDataViaMockConnector = date => state => (dispatch, getState, { mockConnector }) => {
-  mockConnector.fetchDataSince(date);
+export const initMockConnector = (credentials, options) => state => (dispatch, getState, { mockConnector }) => {
+  mockConnector.init(credentials, options);
 };
