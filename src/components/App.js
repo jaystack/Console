@@ -1,13 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getOptions } from '../selectors';
-import { updateOptions } from '../actions';
+import { updateOptions, readConfig } from '../actions';
 
-@connect(state => ({ options: getOptions(state) }), { updateOptions })
+@connect(state => ({ options: getOptions(state) }), { readConfig, updateOptions })
 export default class extends React.PureComponent {
   state = {
     options: JSON.stringify(this.props.options, null, 2)
   };
+
+  async componentDidMount() {
+    await this.props.readConfig();
+  }
 
   handleChange = evt => {
     this.setState({ options: evt.target.value });
