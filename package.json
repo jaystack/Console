@@ -2,7 +2,7 @@
   "name": "console-app",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/main.js",
+  "main": "lib/main/index.js",
   "scripts": {
     "start": "electron .",
     "build": "babel src -d lib",
