@@ -1,0 +1,26 @@
+{
+  "sources": [
+    {
+      "type": "slack",
+      "credentials": {
+        "token": "xoxp-7981251121-379639149716-386403456565-6d9a4a85ed996b96e9d708c3dd0b005b"
+      },
+      "account": {},
+      "channels": [
+        {
+          "name": "console"
+        }
+      ]
+    },
+    {
+      "type": "github",
+      "credentials": {},
+      "account": {},
+      "repos": [
+        {
+          "name": "Console"
+        }
+      ]
+    }
+  ]
+}

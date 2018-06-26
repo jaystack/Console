@@ -2,7 +2,7 @@ import { join } from 'path';
 import { ensureDir, exists, writeFile, readFile } from 'fs-extra';
 const { remote: { app } } = require('electron');
 
-const defaultConfig = {
+export const defaultConfig = {
   sources: [
     {
       type: 'slack',
