@@ -12,6 +12,6 @@ try {
     document.getElementById('app')
   );
 } catch (err) {
-  alert(err.message);
+  //alert(err.message);
   throw err;
 }
