@@ -1,43 +1,25 @@
-<!--<template>-->
-    <!--<select ref="select">-->
-        <!--<option v-for="option in options" :value="option[label]" :key="option[label]"></option>-->
-    <!--</select>-->
-<!--</template>-->
-<!--<script>-->
-<!--import Choices from "choices.js";-->
-<!--// import "choices.js/assets/styles/scss/base.scss";-->
-<!--import "choices.js/assets/styles/scss/choices.scss";-->
-<!--export default {-->
-  <!--data: () => ({-->
-    <!--choices: null-->
-  <!--}),-->
-  <!--props: {-->
-    <!--options: {-->
-      <!--required: true-->
-    <!--},-->
-    <!--label: {-->
-      <!--required: true-->
-    <!--}-->
-  <!--},-->
-  <!--mounted() {-->
-    <!--this.choices = new Choices(this.$refs.select);-->
-  <!--}-->
-<!--};-->
-<!--</script>-->
 <template>
     <div :class="classes">
         <b-dropdown v-model="choice">
-            <button class="button is-primary" slot="trigger">
+            <button :class="mainClasses" slot="trigger">
                 <span>{{ choice ? choice : placeholder }}</span>
                 <b-icon icon="menu-down"></b-icon>
             </button>
-
             <b-dropdown-item
+                v-if="label"
                 v-for="option in options"
                 :key="option[label]"
                 :value="option[label]"
             >
                 {{ option[label] }}
+            </b-dropdown-item>
+            <b-dropdown-item
+                v-if="!label"
+                v-for="option in options"
+                :key="option"
+                :value="option"
+            >
+                {{ option }}
             </b-dropdown-item>
         </b-dropdown>
     </div>
@@ -69,7 +51,7 @@ export default {
       required: true
     },
     label: {
-      required: true
+      required: false,
     },
     placeholder: {
       required: false,
@@ -80,6 +62,9 @@ export default {
     }
   },
   computed: {
+    mainClasses() {
+      return ['button', this.choice ? 'is-primary' : ''];
+    },
     classes() {
       return ["custom-select", this.expanded ? "is-expanded" : ""];
     }
