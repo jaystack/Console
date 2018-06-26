@@ -1,1 +1,1 @@
-export const getOptions = state => state.options;
+export const getConfig = state => state.config;

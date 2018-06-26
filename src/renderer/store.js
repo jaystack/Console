@@ -4,20 +4,7 @@ import * as config from './side-effects/config';
 
 const initialState = {
   greeting: 'Hello World',
-  options: [
-    {
-      type: 'slack',
-      credentials: {},
-      account: {},
-      channels: [{ name: 'console' }]
-    },
-    {
-      type: 'github',
-      credentials: {},
-      account: {},
-      repos: [{ name: 'Console' }]
-    }
-  ]
+  config: null
 };
 
 const mockConnector = new MockConnector();

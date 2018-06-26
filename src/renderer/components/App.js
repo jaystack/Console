@@ -1,32 +1,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOptions } from '../selectors';
-import { updateOptions, readConfig } from '../actions';
+import { getConfig } from '../selectors';
+import { updateConfig, readConfig } from '../actions';
 
-@connect(state => ({ options: getOptions(state) }), { readConfig, updateOptions })
+@connect(state => ({ config: getConfig(state) }), { readConfig, updateConfig })
 export default class extends React.PureComponent {
   state = {
-    options: JSON.stringify(this.props.options, null, 2)
+    config: this.getConfig(this.props)
   };
 
   async componentDidMount() {
     await this.props.readConfig();
   }
 
+  async componentWillReceiveProps(nextProps) {
+    if (nextProps.config !== this.props.config) this.setState({ config: this.getConfig(nextProps) });
+  }
+
+  getConfig(props) {
+    return props.config ? JSON.stringify(props.config, null, 2) : '';
+  }
+
   handleChange = evt => {
-    this.setState({ options: evt.target.value });
+    this.setState({ config: evt.target.value });
   };
 
   handleSave = () => {
-    this.props.updateOptions(JSON.parse(this.state.options));
+    this.props.updateConfig(JSON.parse(this.state.config));
   };
 
   render() {
-    const { options } = this.state;
+    const { config } = this.state;
     return (
       <div>
         <button onClick={this.handleSave}>Save</button>
-        <textarea value={options} onChange={this.handleChange} style={{ width: '100%', height: '300px' }} />
+        <textarea value={config} onChange={this.handleChange} style={{ width: '100%', height: '300px' }} />
       </div>
     );
   }
