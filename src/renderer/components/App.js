@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getConfig } from '../selectors';
-import { updateConfig, readConfig } from '../actions';
+import { updateConfig, init } from '../actions';
 
-@connect(state => ({ config: getConfig(state) }), { readConfig, updateConfig })
+@connect(state => ({ config: getConfig(state) }), { init, updateConfig })
 export default class extends React.PureComponent {
   state = {
     config: this.getConfig(this.props)
   };
 
   async componentDidMount() {
-    await this.props.readConfig();
+    await this.props.init();
   }
 
   async componentWillReceiveProps(nextProps) {

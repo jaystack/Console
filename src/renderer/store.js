@@ -1,15 +1,15 @@
 import Store, { thunk } from 'repatch';
-import MockConnector from './side-effects/MockConnector';
 import * as config from './side-effects/config';
+import connectors from './side-effects/connectors';
+import db from './side-effects/NeDB';
 
 const initialState = {
-  greeting: 'Hello World',
-  config: null
+  config: null,
+  items: [],
+  query: ''
 };
 
-const mockConnector = new MockConnector();
-
-const store = new Store(initialState).addMiddleware(thunk.withExtraArgument({ mockConnector, config }));
+const store = new Store(initialState).addMiddleware(thunk.withExtraArgument({ config, connectors, db }));
 
 window.store = store;
 
