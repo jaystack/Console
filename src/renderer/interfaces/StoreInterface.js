@@ -44,6 +44,6 @@ export default class StoreInterface {
   }
 
   upsert(doc) {
-    return this.promise('update', [{id: doc.id}, doc, {upsert: true}])
+    return this.promise('update', [{id: doc.id}, doc, {upsert: true}], true)
   }
 }
