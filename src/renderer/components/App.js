@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { init } from '../actions';
 import Config from './Config';
 import Search from './Search';
+import Timeline from './Timeline';
 
 @connect(null, { init })
 export default class extends React.PureComponent {
@@ -15,6 +16,7 @@ export default class extends React.PureComponent {
       <div>
         <Search />
         <Config />
+        <Timeline />
       </div>
     );
   }

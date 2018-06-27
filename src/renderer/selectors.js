@@ -6,3 +6,5 @@ export const getConfigOfSource = type => state => {
 };
 
 export const getQuery = state => state.query;
+
+export const getItems = state => state.items;
