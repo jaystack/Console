@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import DbManager from '../NeDB';
 
 export default class BaseConnector {
   async init(options, baseURL) {
@@ -8,7 +7,6 @@ export default class BaseConnector {
       this.axios = Axios.create({ baseURL });
       this.setAuthorisation(options.credentials.token);
     }
-    // do some init method
   }
 
   async fetchDataSince(date) {
@@ -19,13 +17,13 @@ export default class BaseConnector {
     this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
 
-  request(type, url, data = null) {
+  request(method, url, data = null) {
     return new Promise(
-      (resolve, reject) => this.axios.request(
-        type,
+      (resolve, reject) => this.axios.request({
+        method,
         url,
         data
-      )
+      })
       .then(resp => resolve(resp.data))
       .catch(err => reject(err))
     );

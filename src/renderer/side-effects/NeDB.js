@@ -1,4 +1,4 @@
-import NeDB from 'nedb';
+import StoreInterface from '../interfaces/StoreInterface';
 import {join} from "path";
 import { remote } from 'electron';
 import fs from 'fs';
@@ -15,13 +15,26 @@ export default class DbManager {
   static instance;
 
   constructor() {
-    if (this.constructor.instance) return this.constructor.instance;
+    if (this.constructor.instance) this.constructor.getInstance();
     this.dbs = {};
     this.createStores();
     this.constructor.instance = this;
   }
 
   createStores() {
-    this.dbs.slack = { conversations: new NeDB({ filename: dbName('slack.conversations') }) };
+    this.dbs = {
+      slack: {
+        conversations: this.constructor.createDatabase('slack.conversations'),
+      }
+    };
+  }
+
+  static createDatabase(name) {
+    return new StoreInterface({ filename: dbName(name), autoload: true });
+  }
+
+  static getInstance() {
+    return this.instance;
   }
 }
+
