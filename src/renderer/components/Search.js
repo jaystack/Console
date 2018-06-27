@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Input from '@material-ui/core/Input';
 import { getQuery } from '../selectors';
 import { updateQuery } from '../actions';
 
@@ -12,8 +13,8 @@ export default class extends React.PureComponent {
   render() {
     const { query } = this.props;
     return (
-      <div>
-        <input placeholder="query" value={query} onChange={this.handleChange} />
+      <div className="search">
+        <Input placeholder="Search..." inputProps={{ value: query, onChange: this.handleChange }} />
       </div>
     );
   }
