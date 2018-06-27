@@ -25,6 +25,9 @@ export default class DbManager {
     this.dbs = {
       slack: {
         conversations: this.constructor.createDatabase('slack.conversations'),
+      },
+      github: {
+        repos: this.constructor.createDatabase('github.repos'),
       }
     };
   }

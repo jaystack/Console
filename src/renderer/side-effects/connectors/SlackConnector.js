@@ -8,7 +8,7 @@ export default class SlackConnector extends BaseConnector {
     this.request('get', 'conversations.list')
       .then(resp => {
         db.dbs.slack.conversations.insert(resp.channels)
-          .then(resp => console.log(resp))
+          .then(resp => console.log("SLACK CHANNELS", resp))
           .catch(err => console.error(err))
       })
       .catch(err => console.error(err));
