@@ -1,9 +1,9 @@
 import NeDB from 'nedb';
 import {join} from "path";
-import remote from 'electron';
+import { remote } from 'electron';
 import fs from 'fs';
 
-const exists = path => fs.exist(path);
+const exists = path => fs.existsSync(path);
 export const homeDir = join(remote.app.getPath('home'), '.console');
 export const dbName = name => join(homeDir,`db/${name}.db`);
 
