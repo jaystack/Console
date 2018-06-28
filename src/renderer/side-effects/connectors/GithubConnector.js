@@ -7,16 +7,15 @@ const db = new DbManager();
 export default class GithubConnector extends BaseConnector {
   async init(options) {
     await super.init(options, ' https://api.github.com/');
-    this.fetchRepos('jaystack');
+    const repos = await this.fetchRepos('jaystack');
+    return { repos };
   }
 
-  fetchRepos(user) {
-    this.request('get', `users/${user}/repos`)
-      .then((resp) => db.select('github.repos').upsertAll(resp.map(GithubRepoTransformer))
-        .then(() => db.select('github.repos').find()
-          .then((res => console.log('TOTAL GITHUB REPOS', res)))
-          .catch(e => console.error(e)))
-        .catch(err => console.error(err)))
-      .catch(err => console.error(err));
+  async fetchRepos(user) {
+    const resp = await this.request('get', `users/${user}/repos`);
+    await db.select('github.repos').upsertAll(resp.map(GithubRepoTransformer));
+    const res = await db.select('github.repos').find();
+    console.log('TOTAL GITHUB REPOS', res);
+    return res;
   }
 }

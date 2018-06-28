@@ -17,11 +17,14 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 
 export const initConnectors = () => state => async (dispatch, getState, { connectors }) => {
   const config = getState().config;
-  const slackConfig = config.sources.find(subConfig => subConfig.type === 'slack');
-  const githubConfig = config.sources.find(subConfig => subConfig.type === 'github');
-  await connectors.slack.init(slackConfig);
-  await connectors.github.init(githubConfig);
-  // same do on the other connectors
+  const initialData = await Promise.all(
+    Object.keys(connectors).map(async type => {
+      const connector = connectors[type];
+      const connectorConfig = config.sources.find(subConfig => subConfig.type === type);
+      return await connector.init(connectorConfig);
+    })
+  );
+  dispatch(state => ({ ...state, sources: initialData }));
 };
 
 export const ensureData = () => state => async (dispatch, getState, { connectors, db }) => {
