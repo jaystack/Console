@@ -1,6 +1,7 @@
 import { app, Menu, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+
 const isDev = require('electron-is-dev');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -13,8 +14,8 @@ function createWindow() {
     width: 1300,
     height: 850,
     webPreferences: {
-      nodeIntegrationInWorker: true
-    }
+      nodeIntegrationInWorker: true,
+    },
   });
 
   // and load the index.html of the app.
@@ -22,12 +23,12 @@ function createWindow() {
     url.format({
       pathname: path.join(__dirname, '../../index.html'),
       protocol: 'file:',
-      slashes: true
-    })
+      slashes: true,
+    }),
   );
 
   // Open the DevTools.
-  //win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -79,26 +80,26 @@ app.on('ready', () => {
             { role: 'paste' },
             { role: 'pasteandmatchstyle' },
             { role: 'delete' },
-            { role: 'selectall' }
-          ]
+            { role: 'selectall' },
+          ],
         },
         isDev
           ? {
-              label: 'View',
-              submenu: [
-                { role: 'reload' },
-                { role: 'forcereload' },
-                { role: 'toggledevtools' },
-                { type: 'separator' },
-                { role: 'resetzoom' },
-                { role: 'zoomin' },
-                { role: 'zoomout' },
-                { type: 'separator' },
-                { role: 'togglefullscreen' }
-              ]
-            }
-          : {}
-      ])
+            label: 'View',
+            submenu: [
+              { role: 'reload' },
+              { role: 'forcereload' },
+              { role: 'toggledevtools' },
+              { type: 'separator' },
+              { role: 'resetzoom' },
+              { role: 'zoomin' },
+              { role: 'zoomout' },
+              { type: 'separator' },
+              { role: 'togglefullscreen' },
+            ],
+          }
+          : {},
+      ]),
     );
   }
 });
