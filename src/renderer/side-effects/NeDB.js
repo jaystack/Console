@@ -15,7 +15,7 @@ export default class DbManager {
   static instance;
 
   constructor() {
-    if (this.constructor.instance) this.constructor.getInstance();
+    if (this.constructor.instance) return this.constructor.getInstance();
     this.dbs = {};
     this.createStores();
     this.constructor.instance = this;
@@ -34,6 +34,11 @@ export default class DbManager {
 
   static createDatabase(name) {
     return new StoreInterface({ filename: dbName(name), autoload: true });
+  }
+
+  select(name) {
+    const nameParts = name.split('.');
+    return this.dbs[nameParts[0]][nameParts[1]];
   }
 
   static getInstance() {

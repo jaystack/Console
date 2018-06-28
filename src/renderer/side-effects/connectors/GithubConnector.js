@@ -12,8 +12,8 @@ export default class GithubConnector extends BaseConnector {
 
   fetchRepos(user) {
     this.request('get', `users/${user}/repos`)
-      .then((resp) => db.dbs.github.repos.upsertAll(resp.map(GithubRepoTransformer))
-        .then(() => db.dbs.github.repos.find()
+      .then((resp) => db.select('github.repos').upsertAll(resp.map(GithubRepoTransformer))
+        .then(() => db.select('github.repos').find()
           .then((res => console.log('TOTAL GITHUB REPOS', res)))
           .catch(e => console.error(e)))
         .catch(err => console.error(err)))
