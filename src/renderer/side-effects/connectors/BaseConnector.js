@@ -8,6 +8,13 @@ export default class BaseConnector {
     }
   }
 
+  queryString(url, object) {
+    const string = Object.keys(object).map(
+      k => `${encodeURIComponent(k)}=${encodeURIComponent(object[k])}`
+    ).join('&');
+    return `${url}?${string}`;
+  }
+
   async fetchDataSince(date) {
     // do some data fetch
   }

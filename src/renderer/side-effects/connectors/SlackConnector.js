@@ -8,6 +8,8 @@ export default class SlackConnector extends BaseConnector {
   async init(options) {
     await super.init(options, 'http://slack.com/api/');
     const conversations = await this.fetchConversations();
+    const conversation = await this.fetchHistory('C82QNUFPD');
+    console.log(conversation);
     return { conversations };
   }
 
@@ -16,5 +18,16 @@ export default class SlackConnector extends BaseConnector {
     await db.select('slack.conversations').upsertAll(resp.channels.map(SlackConversationTransformer));
     const res = await db.select('slack.conversations').find();
     return res;
+  }
+
+  async fetchHistory(conversationId) {
+    const conversation = await this.request('get', this.queryString(
+      'conversations.history', {
+        channel: conversationId,
+        inclusive: true
+      })
+    );
+
+    return  conversation.messages.filter(el => el.type === "message");
   }
 }
