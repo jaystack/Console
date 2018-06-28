@@ -1,6 +1,9 @@
 import BaseConnector from './BaseConnector';
 import DbManager from '../NeDB';
-import { SlackConversationTransformer } from '../../transformers/SlackTransformers';
+import {
+  SlackConversationTransformer,
+  SlackMessageTransformer
+} from '../../transformers/SlackTransformers';
 
 const db = new DbManager();
 
@@ -15,7 +18,8 @@ export default class SlackConnector extends BaseConnector {
 
   async fetchConversations() {
     const resp = await this.request('get', 'conversations.list');
-    await db.select('slack.conversations').upsertAll(resp.channels.map(SlackConversationTransformer));
+    await db.select('slack.conversations')
+      .upsertAll(resp.channels.map(SlackConversationTransformer));
     const res = await db.select('slack.conversations').find();
     return res;
   }
@@ -27,7 +31,12 @@ export default class SlackConnector extends BaseConnector {
         inclusive: true
       })
     );
-
-    return  conversation.messages.filter(el => el.type === "message");
+    await db.select('slack.messages').upsertAll(
+      conversation.messages.map(
+        el => Object.assign( SlackMessageTransformer(el), { channel_id: conversationId })
+      )
+    );
+    const res = await db.select('slack.messages').find();
+    return res;
   }
 }

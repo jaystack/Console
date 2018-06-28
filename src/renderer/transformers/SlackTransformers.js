@@ -13,3 +13,12 @@ export const SlackConversationTransformer = conv => ({
   type: conversationType(conv),
   creator_id: conv.creator,
 });
+
+
+export const SlackMessageTransformer = message => ({
+  id: `${message.user}.${message.ts}`,
+  created: new Date(message.ts * 1000).toUTCString(),
+  content: message.text,
+  user: message.user,
+  reactions: JSON.stringify(message.reactions)
+});
