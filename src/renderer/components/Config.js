@@ -9,8 +9,8 @@ export default class extends React.PureComponent {
     config: this.getConfig(this.props)
   };
 
-  async componentWillReceiveProps(nextProps) {
-    if (nextProps.config !== this.props.config) this.setState({ config: this.getConfig(nextProps) });
+  async componentDidUpdate(prevProps) {
+    if (prevProps.config !== this.props.config) this.setState({ config: this.getConfig(this.props) });
   }
 
   getConfig(props) {
