@@ -1,14 +1,14 @@
-import StoreInterface from '../interfaces/StoreInterface';
-import {join} from "path";
+import { join } from 'path';
 import { remote } from 'electron';
 import fs from 'fs';
+import StoreInterface from '../interfaces/StoreInterface';
 
 const exists = path => fs.existsSync(path);
 export const homeDir = join(remote.app.getPath('home'), '.console');
-export const dbName = name => join(homeDir,`db/${name}.db`);
+export const dbName = name => join(homeDir, `db/${name}.db`);
 
-if (!exists(join(homeDir,'db'))) {
-  fs.mkdirSync(join(homeDir,'db'))
+if (!exists(join(homeDir, 'db'))) {
+  fs.mkdirSync(join(homeDir, 'db'));
 }
 
 export default class DbManager {
@@ -28,7 +28,7 @@ export default class DbManager {
       },
       github: {
         repos: this.constructor.createDatabase('github.repos'),
-      }
+      },
     };
   }
 
@@ -40,4 +40,3 @@ export default class DbManager {
     return this.instance;
   }
 }
-

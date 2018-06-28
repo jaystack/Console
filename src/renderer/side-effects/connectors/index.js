@@ -3,5 +3,5 @@ import GithubConnector from './GithubConnector';
 
 export default {
   slack: new SlackConnector(),
-  github: new GithubConnector()
+  github: new GithubConnector(),
 };

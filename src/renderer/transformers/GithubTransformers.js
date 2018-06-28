@@ -3,7 +3,7 @@ export const GithubRepoTransformer = repo => ({
   name: repo.full_name,
   description: repo.description,
   url: repo.url,
-  openIssues: repo.open_issues_count
+  openIssues: repo.open_issues_count,
 });
 
 export const GithubUserTransformer = user => ({

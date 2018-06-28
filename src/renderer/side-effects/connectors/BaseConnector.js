@@ -14,7 +14,7 @@ export default class BaseConnector {
   }
 
   setAuthorisation(token) {
-    this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 
   request(method, url, data = null) {
@@ -22,10 +22,10 @@ export default class BaseConnector {
       (resolve, reject) => this.axios.request({
         method,
         url,
-        data
+        data,
       })
-      .then(resp => resolve(resp.data))
-      .catch(err => reject(err))
+        .then(resp => resolve(resp.data))
+        .catch(err => reject(err)),
     );
   }
 }

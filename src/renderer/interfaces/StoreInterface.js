@@ -11,12 +11,12 @@ export default class StoreInterface {
 
     return new Promise(
       (resolve, reject) => {
-        that.store[dbFunc](...options,(err, res) => {
+        that.store[dbFunc](...options, (err, res) => {
           if (err) reject(err);
           resolve(res);
         });
-      }
-    )
+      },
+    );
   }
 
   insert(doc) {
@@ -35,15 +35,21 @@ export default class StoreInterface {
     return this.promise('count', query);
   }
 
-  update(query,doc,params = {}) {
-    return this.promise('update', [query,doc,params], true)
+  update(query, doc, params = {}) {
+    return this.promise('update', [query, doc, params], true);
   }
 
-  destroy(query,params = {}) {
-    return this.promise('remove', [query,params], true)
+  destroy(query, params = {}) {
+    return this.promise('remove', [query, params], true);
   }
 
   upsert(doc) {
-    return this.promise('update', [{id: doc.id}, doc, {upsert: true}], true)
+    return this.promise('update', [{ id: doc.id }, doc, { upsert: true }], true);
+  }
+
+  upsertAll(docs) {
+    const promises = [];
+    docs.forEach(doc => promises.push(this.upsert(doc)));
+    return Promise.all(promises);
   }
 }

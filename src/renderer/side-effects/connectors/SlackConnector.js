@@ -1,15 +1,20 @@
-import BaseConnector from './BaseConnector'
-import DbManager from "../NeDB";
+import BaseConnector from './BaseConnector';
+import DbManager from '../NeDB';
+import { SlackConversationTransformer } from '../../transformers/SlackTransformers';
+
 const db = new DbManager();
 
 export default class SlackConnector extends BaseConnector {
   async init(options) {
     await super.init(options, 'http://slack.com/api/');
     this.request('get', 'conversations.list')
-      .then(resp => {
-        db.dbs.slack.conversations.insert(resp.channels)
-          .then(resp => console.log("SLACK CHANNELS", resp))
-          .catch(err => console.error(err))
+      .then((resp) => {
+        db.dbs.slack.conversations.upsertAll(resp.channels.map(SlackConversationTransformer))
+          .then(() => console.log('LOADED SLACK CHANNELS'))
+          .catch(err => console.error(err));
+        db.dbs.slack.conversations.find()
+          .then(res => console.log('SLACK CHANNELS TOTAL', res))
+          .catch(err => console.error(err));
       })
       .catch(err => console.error(err));
   }
