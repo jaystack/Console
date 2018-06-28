@@ -18,10 +18,8 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 
 export const initConnectors = () => state => async (dispatch, getState, { connectors }) => {
   const { sources } = getState().config;
-  sources.forEach(async (source, i) => {
-    const connector = await connectors.of(i).init(source);
-    dispatch(state => ({ ...state, sources: [...state.sources, connector] }));
-  })
+  const sourceData = await Promise.all(sources.map(async (sourceConfig, i) => connectors.of(i).init(sourceConfig)));
+  dispatch(state => ({ ...state, sources: sourceData }));
 };
 
 export const ensureData = () => state => async (dispatch, getState, { connectors, db }) => {

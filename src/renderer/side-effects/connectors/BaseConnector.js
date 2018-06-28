@@ -1,10 +1,21 @@
 import Axios from 'axios';
+import { throttleAdapterEnhancer } from 'axios-extensions';
 
 export default class BaseConnector {
-  async init(options, baseURL) {
+  async init(options, baseURL, throttle) {
     this.options = options;
     if (baseURL) {
-      this.axios = Axios.create({ baseURL, headers: { Authorization: `Bearer ${options.credentials.token}` } });
+      const adapter = throttle
+        ? throttleAdapterEnhancer(Axios.defaults.adapter, {
+          threshold: 1000
+        })
+        : Axios.defaults.adapter;
+
+      this.axios = Axios.create({
+        baseURL,
+        headers: { Authorization: `Bearer ${options.credentials.token}` },
+        adapter
+      });
     }
   }
 

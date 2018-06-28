@@ -19,6 +19,13 @@ export default class StoreInterface {
     );
   }
 
+  cursor(dbFunc, params, paramsIsArray = false) {
+    const that = this;
+    const options = paramsIsArray ? params : [params];
+
+    return that.store[dbFunc](...options);
+  }
+
   insert(doc) {
     return this.promise('insert', doc);
   }
@@ -51,5 +58,14 @@ export default class StoreInterface {
     const promises = [];
     docs.forEach(doc => promises.push(this.upsert(doc)));
     return Promise.all(promises);
+  }
+
+  lastRecord(query) {
+    return new Promise(
+      (resolve, reject) => this.cursor('findOne',query).sort({created: -1}).exec((err, doc) => {
+        if (err) reject(err);
+        resolve(doc);
+      })
+    );
   }
 }
