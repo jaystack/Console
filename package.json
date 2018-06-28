@@ -69,6 +69,12 @@
     "extends": "react-app",
     "globals": {
       "window": true
-    }
+    },
+    "rules": {	
+      "arrow-parens": "off",	
+      "no-console": "off",	
+      "linebreak-style": "off"	
+    },	
+    "parser": "babel-eslint"
   }
 }
