@@ -1,40 +1,77 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getConfig } from '../selectors';
-import { updateConfig, init } from '../actions';
+import { init } from '../actions';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVert from '@material-ui/icons/MoreVert';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Config from './Config';
+import Search from './Search';
+import Timeline from './Timeline';
 
-@connect(state => ({ config: getConfig(state) }), { init, updateConfig })
+@connect(null, { init })
 export default class extends React.PureComponent {
   state = {
-    config: this.getConfig(this.props)
+    anchorEl: null
+  };
+
+  handleMenu = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
   };
 
   async componentDidMount() {
     await this.props.init();
   }
 
-  async componentWillReceiveProps(nextProps) {
-    if (nextProps.config !== this.props.config) this.setState({ config: this.getConfig(nextProps) });
-  }
-
-  getConfig(props) {
-    return props.config ? JSON.stringify(props.config, null, 2) : '';
-  }
-
-  handleChange = evt => {
-    this.setState({ config: evt.target.value });
-  };
-
-  handleSave = () => {
-    this.props.updateConfig(JSON.parse(this.state.config));
-  };
-
   render() {
-    const { config } = this.state;
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
+
     return (
       <div>
-        <button onClick={this.handleSave}>Save</button>
-        <textarea value={config} onChange={this.handleChange} style={{ width: '100%', height: '300px' }} />
+        <AppBar position="static" color="default">
+          <Toolbar>
+            <Typography variant="title" color="inherit">
+              Console_
+            </Typography>
+            <Search />
+            <div>
+              <IconButton
+                aria-owns={open ? 'menu-appbar' : null}
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit"
+              >
+                <MoreVert />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                open={open}
+                onClose={this.handleClose}
+              >
+                <MenuItem onClick={this.handleClose}>Settings</MenuItem>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <Config />
+        <Timeline />
       </div>
     );
   }

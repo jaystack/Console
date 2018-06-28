@@ -33,3 +33,5 @@ export const search = () => state => async (dispatch, getState, { db }) => {
   const items = []; // search by the query and collect the results into the items array
   dispatch(state => ({ ...state, items }));
 };
+
+export const updateQuery = query => state => ({ ...state, query });

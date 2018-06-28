@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.search {
+  width: 100%;
+  margin: 0px 20px;
+}
+
+.search .MuiInput-root-62.MuiInput-underline-66 {
+  width: 100%;
+}
