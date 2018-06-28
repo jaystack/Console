@@ -7,18 +7,15 @@ const db = new DbManager();
 export default class SlackConnector extends BaseConnector {
   async init(options) {
     await super.init(options, 'http://slack.com/api/');
-    this.fetchConversations();
+    const conversations = this.fetchConversations();
+    return { conversations };
   }
 
-  fetchConversations() {
-    this.request('get', 'conversations.list')
-      .then((resp) => {
-        db.select('slack.conversations').upsertAll(resp.channels.map(SlackConversationTransformer))
-          .then(() => db.select('slack.conversations').find()
-            .then(res => console.log('SLACK CHANNELS TOTAL', res))
-            .catch(err => console.error(err)))
-          .catch(err => console.error(err));
-      })
-      .catch(err => console.error(err));
+  async fetchConversations() {
+    const resp = await this.request('get', 'conversations.list');
+    await db.select('slack.conversations').upsertAll(resp.channels.map(SlackConversationTransformer));
+    const res = await db.select('slack.conversations').find();
+    console.log('SLACK CHANNELS TOTAL', res);
+    return res;
   }
 }
