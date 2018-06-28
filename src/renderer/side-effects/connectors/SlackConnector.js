@@ -11,17 +11,22 @@ export default class SlackConnector extends BaseConnector {
   async init(options) {
     await super.init(options, 'http://slack.com/api/');
     const conversations = await this.fetchConversations();
-    const conversation = await this.fetchHistory('C82QNUFPD');
-    console.log(conversation);
-    return { conversations };
+    const messages = await this.fetchMessages(conversations.map(el => el.id));
+    return { conversations, messages };
   }
 
   async fetchConversations() {
     const resp = await this.request('get', 'conversations.list');
-    await db.select('slack.conversations')
-      .upsertAll(resp.channels.map(SlackConversationTransformer));
+    const formatted = resp.channels.map(SlackConversationTransformer);
+    await db.select('slack.conversations').upsertAll(formatted);
     const res = await db.select('slack.conversations').find();
     return res;
+  }
+
+  async fetchMessages(ids) {
+    let messages = [];
+    ids.forEach(id => messages.push(this.fetchHistory(id))); // Grab the messages
+    return Promise.all(messages);
   }
 
   async fetchHistory(conversationId) {
