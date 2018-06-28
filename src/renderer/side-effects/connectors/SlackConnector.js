@@ -39,4 +39,11 @@ export default class SlackConnector extends BaseConnector {
     const res = await db.select('slack.messages').find();
     return res;
   }
+
+  async fetchDataSince(date) {
+    const res = await db.select('slack.messages').find({
+      created: { $gt: date}
+    });
+    return res.sort((a,b) => a.created > b.created);
+  }
 }
