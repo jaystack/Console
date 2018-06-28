@@ -1,18 +1,18 @@
 import Store, { thunk } from 'repatch';
 import * as config from './side-effects/config';
-import connectors from './side-effects/connectors';
+import ConnectorManager from './side-effects/connectors/ConnectorManager';
 import NeDB from './side-effects/NeDB';
 
 const initialState = {
   config: null,
-  sources: {},
+  sources: [],
   items: [],
-  query: '',
+  query: ''
 };
 
 const db = new NeDB();
-const store = new Store(initialState)
-  .addMiddleware(thunk.withExtraArgument({ config, connectors, db }));
+const connectors = new ConnectorManager();
+const store = new Store(initialState).addMiddleware(thunk.withExtraArgument({ config, connectors, db }));
 
 window.store = store;
 

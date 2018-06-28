@@ -6,9 +6,10 @@ export const init = () => state => async (dispatch, getState, { connectors }) =>
   // after the init search we have a non-empty items array in the store and we can now render it
 };
 
-export const readConfig = () => state => async (dispatch, getState, { config }) => {
+export const readConfig = () => state => async (dispatch, getState, { config, connectors }) => {
   const conf = await config.readConfig();
   dispatch(state => ({ ...state, config: conf }));
+  connectors.createBySources(conf.sources);
 };
 
 export const updateConfig = nextConfig => state => async (dispatch, getState, { config }) => {
@@ -16,15 +17,9 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 };
 
 export const initConnectors = () => state => async (dispatch, getState, { connectors }) => {
-  const config = getState().config;
-  await Promise.all(
-    Object.keys(connectors).map(async type => {
-      const connector = connectors[type];
-      const connectorConfig = config.sources.find(subConfig => subConfig.type === type);
-      const initData = await connector.init(connectorConfig);
-      dispatch(state => ({ ...state, sources: { ...state.connectorData, [type]: initData } }));
-    })
-  );
+  const { sources } = getState().config;
+  const sourceData = await Promise.all(sources.map(async (sourceConfig, i) => connectors.of(i).init(sourceConfig)));
+  dispatch(state => ({ ...state, sources: sourceData }));
 };
 
 export const ensureData = () => state => async (dispatch, getState, { connectors, db }) => {
