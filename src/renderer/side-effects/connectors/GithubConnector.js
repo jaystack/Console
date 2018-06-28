@@ -15,7 +15,6 @@ export default class GithubConnector extends BaseConnector {
     const resp = await this.request('get', `users/${user}/repos`);
     await db.select('github.repos').upsertAll(resp.map(GithubRepoTransformer));
     const res = await db.select('github.repos').find();
-    console.log('TOTAL GITHUB REPOS', res);
     return res;
   }
 }

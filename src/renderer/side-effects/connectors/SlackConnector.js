@@ -7,7 +7,7 @@ const db = new DbManager();
 export default class SlackConnector extends BaseConnector {
   async init(options) {
     await super.init(options, 'http://slack.com/api/');
-    const conversations = this.fetchConversations();
+    const conversations = await this.fetchConversations();
     return { conversations };
   }
 

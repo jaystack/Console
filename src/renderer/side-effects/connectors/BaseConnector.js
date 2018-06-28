@@ -18,14 +18,15 @@ export default class BaseConnector {
   }
 
   request(method, url, data = null) {
-    return new Promise(
-      (resolve, reject) => this.axios.request({
-        method,
-        url,
-        data,
-      })
+    return new Promise((resolve, reject) =>
+      this.axios
+        .request({
+          method,
+          url,
+          data
+        })
         .then(resp => resolve(resp.data))
-        .catch(err => reject(err)),
+        .catch(err => reject(err))
     );
   }
 }
