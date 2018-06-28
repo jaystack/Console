@@ -17,14 +17,14 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 
 export const initConnectors = () => state => async (dispatch, getState, { connectors }) => {
   const config = getState().config;
-  const initialData = await Promise.all(
+  await Promise.all(
     Object.keys(connectors).map(async type => {
       const connector = connectors[type];
       const connectorConfig = config.sources.find(subConfig => subConfig.type === type);
-      return await connector.init(connectorConfig);
+      const initData = await connector.init(connectorConfig);
+      dispatch(state => ({ ...state, sources: { ...state.connectorData, [type]: initData } }));
     })
   );
-  dispatch(state => ({ ...state, sources: initialData }));
 };
 
 export const ensureData = () => state => async (dispatch, getState, { connectors, db }) => {
