@@ -49,6 +49,26 @@ export default class SlackConnector extends BaseConnector {
     return res;
   }
 
+  async refreshHistory(conversationId) {
+    const now = new Date();
+    const conversation = await this.request('get', this.queryString(
+      'conversations.history', {
+        channel: conversationId,
+        from: new Date(now.getTime() - (24*60*60*1000) * 31).getTime(),
+        to: now.getTime(),
+        inclusive: true,
+        limit: 1000,
+      })
+    );
+    await db.select('slack.messages').upsertAll(
+      conversation.messages.map(
+        el => Object.assign( SlackMessageTransformer(el), { channel_id: conversationId })
+      )
+    );
+    const res = await db.select('slack.messages').find();
+    return res;
+  }
+
   async fetchDataSince(date) {
     const res = await db.select('slack.messages').find({
       created: { $gt: date}
