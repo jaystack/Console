@@ -22,13 +22,14 @@ export default class DbManager {
   }
 
   createStores() {
+    const { createDatabase } = this.constructor;
     this.dbs = {
       slack: {
-        conversations: this.constructor.createDatabase('slack.conversations'),
-        messages: this.constructor.createDatabase('slack.messages'),
+        conversations: createDatabase('slack.conversations'),
+        messages: createDatabase('slack.messages'),
       },
       github: {
-        repos: this.constructor.createDatabase('github.repos'),
+        repos: createDatabase('github.repos'),
       },
     };
   }

@@ -30,10 +30,14 @@ export default class SlackConnector extends BaseConnector {
   }
 
   async fetchHistory(conversationId) {
+    const now = new Date();
     const conversation = await this.request('get', this.queryString(
       'conversations.history', {
         channel: conversationId,
-        inclusive: true
+        from: new Date(now.getTime() - (24*60*60*1000) * 31).getTime(),
+        to: now.getTime(),
+        inclusive: true,
+        limit: 1000,
       })
     );
     await db.select('slack.messages').upsertAll(
