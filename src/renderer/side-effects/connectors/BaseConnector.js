@@ -1,5 +1,4 @@
 import Axios from 'axios';
-import { throttleAdapterEnhancer, cacheAdapterEnhancer } from 'axios-extensions';
 
 export default class BaseConnector {
   async init(options, baseURL) {
@@ -8,9 +7,6 @@ export default class BaseConnector {
       this.axios = Axios.create({
         baseURL,
         headers: { Authorization: `Bearer ${options.credentials.token}` },
-        adapter: throttleAdapterEnhancer(cacheAdapterEnhancer(Axios.defaults.adapter), {
-          threshold: 1000
-        })
       });
     }
   }
