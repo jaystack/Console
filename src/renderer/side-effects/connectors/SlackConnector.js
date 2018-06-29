@@ -1,6 +1,5 @@
 import BaseConnector from './BaseConnector';
 import PromiseThrottle from 'promise-throttle';
-import Spex from 'spex';
 import DbManager from '../NeDB';
 import {
   SlackConversationTransformer,
@@ -8,7 +7,6 @@ import {
 } from '../../transformers/SlackTransformers';
 
 const db = new DbManager();
-const spex = Spex(Promise);
 const queues = {
   tierOne: new PromiseThrottle({ requestsPerSecond: 1 / 60, promiseImplementation: Promise}),
   tierTwo: new PromiseThrottle({ requestsPerSecond: 20 / 60, promiseImplementation: Promise}),
