@@ -30,11 +30,11 @@ export default class extends React.PureComponent {
 
   handleSave = () => {
     this.props.updateConfig(JSON.parse(this.state.config));
-    this.props.toggleConfig();
+    this.props.toggleConfig(false);
   };
 
   handleClose = () => {
-    this.props.toggleConfig();
+    this.props.toggleConfig(false);
   };
 
   render() {
