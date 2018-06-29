@@ -33,12 +33,11 @@ export default class SlackConnector extends BaseConnector {
   }
 
   async fetchMessages(ids) {
-    let messages = [];
-    ids.forEach(id => messages.push(
+    return Promise.all(ids.map(id =>
       queues.tierThree.add(
         this.fetchHistory.bind(this,id)
-      ))); // Grab the messages
-    return Promise.all(messages);
+      ))
+    );
   }
 
   async fetchHistory(conversationId) {
