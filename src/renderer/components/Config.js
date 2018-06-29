@@ -30,27 +30,17 @@ export default class extends React.PureComponent {
 
   handleSave = () => {
     this.props.updateConfig(JSON.parse(this.state.config));
-    this.props.toggleConfig(false);
+    this.props.toggleConfig();
   };
 
   handleClose = () => {
-    this.props.toggleConfig(false);
+    this.props.toggleConfig();
   };
 
   render() {
     const { open } = this.props;
     const { config } = this.state;
     return (
-<<<<<<< HEAD
-      <div>
-        <textarea
-          value={config}
-          onChange={this.handleChange}
-          style={{ width: '100%', height: '300px', boxSizing: 'border-box' }}
-        />
-        <button onClick={this.handleSave}>Save</button>
-      </div>
-=======
       <Dialog fullScreen open={open} onClose={this.handleClose}>
         <div className="settings">
           <AppBar style={{ position: 'relative', flex: '0 0 auto' }}>
@@ -71,7 +61,6 @@ export default class extends React.PureComponent {
           </main>
         </div>
       </Dialog>
->>>>>>> 42689461631a4454a26425fe53413e47fcdf4065
     );
   }
 }
