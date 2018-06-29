@@ -83,7 +83,6 @@ export default class SlackConnector extends BaseConnector {
       'conversations.history', {
         channel: conversationId,
         oldest: lastRecord.created,
-        inclusive: false,
         limit: 1000,
       })
     );
