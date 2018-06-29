@@ -1,5 +1,5 @@
 import BaseConnector from './BaseConnector';
-import Axios from 'axios';
+import PromiseThrottle from 'promise-throttle';
 import DbManager from '../NeDB';
 import {
   SlackConversationTransformer,
@@ -7,6 +7,12 @@ import {
 } from '../../transformers/SlackTransformers';
 
 const db = new DbManager();
+const queues = {
+  tierOne: new PromiseThrottle({ requestsPerSecond: 1 / 60, promiseImplementation: Promise}),
+  tierTwo: new PromiseThrottle({ requestsPerSecond: 20 / 60, promiseImplementation: Promise}),
+  tierThree: new PromiseThrottle({ requestsPerSecond: 50 / 60, promiseImplementation: Promise}),
+  tierFour: new PromiseThrottle({ requestsPerSecond: 100 / 60, promiseImplementation: Promise}),
+};
 
 export default class SlackConnector extends BaseConnector {
   async init(options) {
@@ -28,7 +34,10 @@ export default class SlackConnector extends BaseConnector {
 
   async fetchMessages(ids) {
     let messages = [];
-    ids.forEach(id => messages.push(this.fetchHistory(id))); // Grab the messages
+    ids.forEach(id => messages.push(
+      queues.tierThree.add(
+        this.fetchHistory.bind(this,id)
+      ))); // Grab the messages
     return Promise.all(messages);
   }
 
@@ -46,11 +55,7 @@ export default class SlackConnector extends BaseConnector {
           limit: 1000,
         })
       );
-      await db.select('slack.messages').insert(
-        conversation.messages.map(
-          el => Object.assign(SlackMessageTransformer(el), {channel_id: conversationId})
-        )
-      );
+      await this.insertMessage(conversation.messages, conversationId, SlackMessageTransformer);
     }
     const res = await db.select('slack.messages').find();
     return res;
@@ -65,7 +70,6 @@ export default class SlackConnector extends BaseConnector {
         limit: 1000,
       })
     );
-    if (conversation.messages.length) conversation.messages.map(SlackMessageTransformer)
     await this.insertMessage(conversation.messages, conversationId, SlackMessageTransformer);
   }
 
