@@ -9,7 +9,7 @@ export default class extends React.PureComponent {
     return (
       <Card className="item">
         <CardContent>
-          <Typography color="textSecondary">{item.channel_id}</Typography>
+          <Typography color="textSecondary">{item.channelName ? '#' + item.channelName : item.channel_id}</Typography>
           <Typography variant="headline" component="h2">
             {item.user}
           </Typography>

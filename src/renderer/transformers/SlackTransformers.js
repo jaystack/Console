@@ -11,9 +11,8 @@ export const SlackConversationTransformer = conv => ({
   name: conv.name,
   created: conv.created,
   type: conversationType(conv),
-  creator_id: conv.creator,
+  creator_id: conv.creator
 });
-
 
 export const SlackMessageTransformer = message => ({
   id: `${message.user}.${message.ts}`,
@@ -22,3 +21,14 @@ export const SlackMessageTransformer = message => ({
   user: message.user,
   reactions: JSON.stringify(message.reactions)
 });
+
+export const ChannelNameResolver = conversations => message => ({
+  ...message,
+  channelName: resolveChannelName(conversations, message.channel_id)
+});
+
+const resolveChannelName = (conversations, id) => {
+  if (!id) return '';
+  const conversation = conversations.find(conv => conv.id === id);
+  return conversation ? conversation.name || '' : '';
+};
