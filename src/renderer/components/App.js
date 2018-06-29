@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { init } from '../actions';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -11,8 +10,11 @@ import Menu from '@material-ui/core/Menu';
 import Config from './Config';
 import Search from './Search';
 import Timeline from './Timeline';
+import Spinner from './Spinner';
+import { getIsFetching } from '../selectors';
+import { init } from '../actions';
 
-@connect(null, { init })
+@connect(state => ({ ...state, isFetching: getIsFetching(state) }), { init })
 export default class extends React.PureComponent {
   state = {
     anchorEl: null
@@ -31,11 +33,12 @@ export default class extends React.PureComponent {
   }
 
   render() {
+    const { isFetching } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     return (
-      <div>
+      <div className="app">
         <AppBar position="static" color="default">
           <Toolbar>
             <Typography variant="title" color="inherit">
@@ -70,8 +73,11 @@ export default class extends React.PureComponent {
             </div>
           </Toolbar>
         </AppBar>
-        <Config />
-        <Timeline />
+        <main>
+          {isFetching && <Spinner />}
+          {!isFetching && <Config />}
+          {!isFetching && <Timeline />}
+        </main>
       </div>
     );
   }

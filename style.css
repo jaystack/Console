@@ -11,3 +11,27 @@ body {
 .search .MuiInput-root-62.MuiInput-underline-66 {
   width: 100%;
 }
+
+.app {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.app > main {
+  flex: 1 1 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.spinner {
+  flex: 1 1 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
