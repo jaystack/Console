@@ -19,7 +19,9 @@ export default class SlackConnector extends BaseConnector {
     console.log(options)
     await super.init(options, 'http://slack.com/api/', true);
     const conversations = await this.fetchConversations();
-    const messages = options.channels.length ? await this.fetchMessages(options.channels) : [];
+    const messages = Array.isArray(options.channels) && options.channels.length
+      ? await this.fetchMessages(options.channels)
+      : [];
     return { conversations, messages };
   }
 
