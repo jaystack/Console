@@ -7,6 +7,6 @@ import Item from './Item';
 export default class extends React.PureComponent {
   render() {
     const { items } = this.props;
-    return <div>{items.map(item => <Item />)}</div>;
+    return <div className="timeline">{items.map(item => <Item item={item} />)}</div>;
   }
 }
