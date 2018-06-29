@@ -1,9 +1,15 @@
 import { getConfig, getQuery } from './selectors';
 
+export const toggleFetching = isFetching => state => ({ ...state, isFetching });
+
+export const toggleConfig = isConfigOpen => state => ({ ...state, isConfigOpen });
+
 export const init = () => state => async (dispatch, getState, { connectors }) => {
+  dispatch(toggleFetching(true));
   await dispatch(readConfig());
   await dispatch(initSources());
   await dispatch(search());
+  dispatch(toggleFetching(false));
 };
 
 export const readConfig = () => state => async (dispatch, getState, { config, connectors }) => {
@@ -23,7 +29,9 @@ export const initSources = () => state => async (dispatch, getState, { connector
 
 export const search = () => state => async (dispatch, getState, { db }) => {
   const query = getQuery(getState());
-  const items = []; // search by the query and collect the results into the items array
+  const slackMessages = await db.select('slack.messages').find(!query ? {} : {});
+  console.log(slackMessages);
+  const items = [ ...slackMessages ];
   dispatch(state => ({ ...state, items }));
 };
 

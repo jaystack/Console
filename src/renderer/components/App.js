@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { init } from '../actions';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -11,31 +10,36 @@ import Menu from '@material-ui/core/Menu';
 import Config from './Config';
 import Search from './Search';
 import Timeline from './Timeline';
+import Spinner from './Spinner';
+import { getIsFetching } from '../selectors';
+import { init, toggleConfig } from '../actions';
 
-@connect(null, { init })
+@connect(state => ({ ...state, isFetching: getIsFetching(state) }), { init, toggleConfig })
 export default class extends React.PureComponent {
   state = {
     anchorEl: null
-  };
-
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
   };
 
   async componentDidMount() {
     await this.props.init();
   }
 
+  toggleMenu = on => event => {
+    this.setState({ anchorEl: on ? event.currentTarget : null });
+  };
+
+  handleMenuItem = () => {
+    this.props.toggleConfig(true);
+    this.toggleMenu(false)();
+  };
+
   render() {
+    const { isFetching } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     return (
-      <div>
+      <div className="app">
         <AppBar position="static" color="default">
           <Toolbar>
             <Typography variant="title" color="inherit">
@@ -46,7 +50,7 @@ export default class extends React.PureComponent {
               <IconButton
                 aria-owns={open ? 'menu-appbar' : null}
                 aria-haspopup="true"
-                onClick={this.handleMenu}
+                onClick={this.toggleMenu(true)}
                 color="inherit"
               >
                 <MoreVert />
@@ -63,15 +67,18 @@ export default class extends React.PureComponent {
                   horizontal: 'right'
                 }}
                 open={open}
-                onClose={this.handleClose}
+                onClose={this.toggleMenu(false)}
               >
-                <MenuItem onClick={this.handleClose}>Settings</MenuItem>
+                <MenuItem onClick={this.handleMenuItem}>Settings</MenuItem>
               </Menu>
             </div>
           </Toolbar>
         </AppBar>
-        <Config />
-        <Timeline />
+        <main>
+          {isFetching && <Spinner />}
+          <Config />
+          {!isFetching && <Timeline />}
+        </main>
       </div>
     );
   }
