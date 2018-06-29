@@ -27,6 +27,7 @@ body {
   overflow: auto;
   display: flex;
   flex-direction: column;
+  background-color: #efefef;
 }
 
 .spinner {
@@ -52,4 +53,13 @@ body {
   padding: 10px;
   border: 0;
   outline: 0;
+}
+
+.timeline {
+  overflow: auto;
+  padding: 20px 20%;
+}
+
+.timeline .item {
+  margin-bottom: 20px;
 }
