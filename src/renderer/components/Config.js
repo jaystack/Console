@@ -29,7 +29,11 @@ export default class extends React.PureComponent {
     const { config } = this.state;
     return (
       <div>
-        <textarea value={config} onChange={this.handleChange} style={{ width: '100%', height: '300px' }} />
+        <textarea
+          value={config}
+          onChange={this.handleChange}
+          style={{ width: '100%', height: '300px', boxSizing: 'border-box' }}
+        />
         <button onClick={this.handleSave}>Save</button>
       </div>
     );
