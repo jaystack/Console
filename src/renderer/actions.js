@@ -1,9 +1,9 @@
+import { getConfig, getQuery } from './selectors';
+
 export const init = () => state => async (dispatch, getState, { connectors }) => {
-  await dispatch(readConfig()); // first reading the config
-  await dispatch(initConnectors()); // connector initialisation
-  await dispatch(ensureData()); // ensuring the data
-  await dispatch(search()); // init search without query (empty string), which ensures the timeline data
-  // after the init search we have a non-empty items array in the store and we can now render it
+  await dispatch(readConfig());
+  await dispatch(initSources());
+  await dispatch(search());
 };
 
 export const readConfig = () => state => async (dispatch, getState, { config, connectors }) => {
@@ -16,18 +16,13 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
   await config.writeConfig(nextConfig);
 };
 
-export const initConnectors = () => state => async (dispatch, getState, { connectors }) => {
-  const { sources } = getState().config;
-  const sourceData = await Promise.all(sources.map(async (sourceConfig, i) => connectors.of(i).init(sourceConfig)));
-  dispatch(state => ({ ...state, sources: sourceData }));
-};
-
-export const ensureData = () => state => async (dispatch, getState, { connectors, db }) => {
-  // check the db for existing data or fetch if necessary and put it into the db
+export const initSources = () => state => async (dispatch, getState, { connectors }) => {
+  const { sources } = getConfig(getState());
+  await Promise.all(sources.map((sourceConfig, i) => connectors.of(i).init(sourceConfig)));
 };
 
 export const search = () => state => async (dispatch, getState, { db }) => {
-  const query = getState().query;
+  const query = getQuery(getState());
   const items = []; // search by the query and collect the results into the items array
   dispatch(state => ({ ...state, items }));
 };

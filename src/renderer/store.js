@@ -5,7 +5,6 @@ import NeDB from './side-effects/NeDB';
 
 const initialState = {
   config: null,
-  sources: [],
   items: [],
   query: ''
 };
