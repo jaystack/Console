@@ -35,12 +35,11 @@ export default class SlackConnector extends BaseConnector {
     return res;
   }
 
-  async fetchMessages(ids) {
-    return Promise.all(ids.map(id =>
-      queues.tierThree.add(
-        this.fetchHistory.bind(this,id)
-      ))
-    );
+  async fetchDataSince(date) {
+    const res = await db.select('slack.messages').find({
+      created: { $gt: date}
+    });
+    return res.sort((a,b) => a.created > b.created);
   }
 
   async fetchHistory(conversationId) {
@@ -63,16 +62,12 @@ export default class SlackConnector extends BaseConnector {
     return res;
   }
 
-  async refreshHistory(conversationId, lastRecord) {
-    const conversation = await this.request('get', this.queryString(
-      'conversations.history', {
-        channel: conversationId,
-        oldest: lastRecord.created,
-        inclusive: false,
-        limit: 1000,
-      })
+  async fetchMessages(ids) {
+    return Promise.all(ids.map(id =>
+      queues.tierThree.add(
+        this.fetchHistory.bind(this,id)
+      ))
     );
-    await this.insertMessage(conversation.messages, conversationId, SlackMessageTransformer);
   }
 
   async insertMessage(docs, conversationId, transformer) {
@@ -83,10 +78,21 @@ export default class SlackConnector extends BaseConnector {
     );
   }
 
-  async fetchDataSince(date) {
-    const res = await db.select('slack.messages').find({
-      created: { $gt: date}
-    });
-    return res.sort((a,b) => a.created > b.created);
+  async refreshHistory(conversationId, lastRecord) {
+    const conversation = await this.request('get', this.queryString(
+      'conversations.history', {
+        channel: conversationId,
+        oldest: lastRecord.created,
+        inclusive: false,
+        limit: 1000,
+      })
+    );
+    await this.insertMessage(
+      conversation.messages.filter(el => el.id !== lastRecord.id),
+      conversationId,
+      SlackMessageTransformer
+    );
   }
+
+
 }
