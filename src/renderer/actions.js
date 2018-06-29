@@ -2,6 +2,8 @@ import { getConfig, getQuery } from './selectors';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
 
+export const toggleConfig = isConfigOpen => state => ({ ...state, isConfigOpen });
+
 export const init = () => state => async (dispatch, getState, { connectors }) => {
   dispatch(toggleFetching(true));
   await dispatch(readConfig());

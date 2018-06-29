@@ -12,25 +12,26 @@ import Search from './Search';
 import Timeline from './Timeline';
 import Spinner from './Spinner';
 import { getIsFetching } from '../selectors';
-import { init } from '../actions';
+import { init, toggleConfig } from '../actions';
 
-@connect(state => ({ ...state, isFetching: getIsFetching(state) }), { init })
+@connect(state => ({ ...state, isFetching: getIsFetching(state) }), { init, toggleConfig })
 export default class extends React.PureComponent {
   state = {
     anchorEl: null
   };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
   async componentDidMount() {
     await this.props.init();
   }
+
+  toggleMenu = on => event => {
+    this.setState({ anchorEl: on ? event.currentTarget : null });
+  };
+
+  handleMenuItem = () => {
+    this.props.toggleConfig(true);
+    this.toggleMenu(false)();
+  };
 
   render() {
     const { isFetching } = this.props;
@@ -49,7 +50,7 @@ export default class extends React.PureComponent {
               <IconButton
                 aria-owns={open ? 'menu-appbar' : null}
                 aria-haspopup="true"
-                onClick={this.handleMenu}
+                onClick={this.toggleMenu(true)}
                 color="inherit"
               >
                 <MoreVert />
@@ -66,16 +67,16 @@ export default class extends React.PureComponent {
                   horizontal: 'right'
                 }}
                 open={open}
-                onClose={this.handleClose}
+                onClose={this.toggleMenu(false)}
               >
-                <MenuItem onClick={this.handleClose}>Settings</MenuItem>
+                <MenuItem onClick={this.handleMenuItem}>Settings</MenuItem>
               </Menu>
             </div>
           </Toolbar>
         </AppBar>
         <main>
           {isFetching && <Spinner />}
-          {!isFetching && <Config />}
+          <Config />
           {!isFetching && <Timeline />}
         </main>
       </div>
