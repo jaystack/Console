@@ -27,6 +27,7 @@ export default class DbManager {
       slack: {
         conversations: createDatabase('slack.conversations'),
         messages: createDatabase('slack.messages'),
+        users: createDatabase('slack.users'),
       },
       github: {
         repos: createDatabase('github.repos'),

@@ -1,5 +1,5 @@
 import { getConfig, getQuery } from './selectors';
-import { ChannelNameResolver } from './transformers/SlackTransformers';
+import { MessageResolver } from './transformers/SlackTransformers';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
 
@@ -32,7 +32,8 @@ export const search = () => state => async (dispatch, getState, { db }) => {
   const query = getQuery(getState());
   const slackMessages = await db.select('slack.messages').find(!query ? {} : {});
   const slackConversations = await db.select('slack.conversations').find();
-  const items = [ ...slackMessages.map(ChannelNameResolver(slackConversations)) ];
+  const slackUsers = await db.select('slack.users').find();
+  const items = [ ...slackMessages.map(MessageResolver(slackConversations, slackUsers)) ];
   dispatch(state => ({ ...state, items }));
 };
 

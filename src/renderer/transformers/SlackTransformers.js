@@ -22,8 +22,17 @@ export const SlackMessageTransformer = message => ({
   reactions: JSON.stringify(message.reactions)
 });
 
-export const ChannelNameResolver = conversations => message => ({
+export const SlackUserTransformer = user => ({
+  id: user.id,
+  name: user.profile.real_name,
+  username: user.name,
+  team_id: user.team_id,
+  email: user.profile.email
+});
+
+export const MessageResolver = (conversations, users) => message => ({
   ...message,
+  userName: resolveUserName(users, message.user),
   channelName: resolveChannelName(conversations, message.channel_id)
 });
 
@@ -31,4 +40,10 @@ const resolveChannelName = (conversations, id) => {
   if (!id) return '';
   const conversation = conversations.find(conv => conv.id === id);
   return conversation ? conversation.name || '' : '';
+};
+
+const resolveUserName = (users, id) => {
+  if (!id) return '';
+  const user = users.find(user => user.id === id);
+  return user ? `@${user.username}` || '' : '';
 };

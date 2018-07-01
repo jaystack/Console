@@ -3,7 +3,8 @@ import PromiseThrottle from 'promise-throttle';
 import DbManager from '../NeDB';
 import {
   SlackConversationTransformer,
-  SlackMessageTransformer
+  SlackMessageTransformer,
+  SlackUserTransformer,
 } from '../../transformers/SlackTransformers';
 
 const db = new DbManager();
@@ -16,13 +17,14 @@ const queues = {
 
 export default class SlackConnector extends BaseConnector {
   async init(options) {
-    console.log(options)
+
     await super.init(options, 'http://slack.com/api/', true);
     const conversations = await this.fetchConversations();
+    const users = await this.fetchUsers();
     const messages = Array.isArray(options.channels) && options.channels.length
       ? await this.fetchMessages(options.channels)
       : [];
-    return { conversations, messages };
+    return { conversations, messages, users };
   }
 
   async fetchConversations() {
@@ -70,6 +72,15 @@ export default class SlackConnector extends BaseConnector {
     );
   }
 
+  async fetchUsers() {
+    const resp = await this.request('get', 'users.list');
+    console.log(resp);
+    const formatted = resp.members.map(SlackUserTransformer);
+    await db.select('slack.users').upsertAll(formatted);
+    const res = await db.select('slack.users').find();
+    return res;
+  }
+
   async insertMessage(docs, conversationId, transformer) {
     await db.select('slack.messages').insert(
       docs.map(
@@ -85,6 +96,7 @@ export default class SlackConnector extends BaseConnector {
         oldest: lastRecord.created,
         limit: 1000,
       })
+
     );
     await this.insertMessage(
       conversation.messages.filter(el => el.id !== lastRecord.id),

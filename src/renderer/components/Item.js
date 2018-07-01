@@ -13,7 +13,7 @@ export default class extends React.PureComponent {
         <CardContent>
           <Typography color="textSecondary">{item.channelName ? '#' + item.channelName : item.channel_id}</Typography>
           <Typography variant="headline" component="h2">
-            {item.user}
+            {item.userName}
           </Typography>
           <Typography color="textSecondary">
             <b>{moment(date).fromNow()}</b> - {date.toLocaleString()}
