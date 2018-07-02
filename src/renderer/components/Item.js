@@ -7,7 +7,7 @@ import moment from 'moment';
 export default class extends React.PureComponent {
   render() {
     const { item } = this.props;
-    const date = new Date(item.created * 1000);
+    const date = new Date(item.created);
     return (
       <Card className="item">
         <CardContent>

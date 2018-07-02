@@ -16,7 +16,7 @@ export const SlackConversationTransformer = conv => ({
 
 export const SlackMessageTransformer = message => ({
   id: `${message.user}.${message.ts}`,
-  created: message.ts,
+  created: parseFloat(message.ts) * 1000,
   content: message.text,
   user: message.user,
   reactions: JSON.stringify(message.reactions)

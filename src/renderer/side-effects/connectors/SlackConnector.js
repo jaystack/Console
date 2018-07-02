@@ -55,7 +55,7 @@ export default class SlackConnector extends BaseConnector {
         'get',
         this.queryString('conversations.history', {
           channel: conversationId,
-          oldest: now.getTime() / 1000 - 24 * 60 * 60 * 1000 * 31,
+          oldest: now.getTime() / 1000 - 24 * 60 * 60 * 31,
           inclusive: true,
           limit: 1000
         })
