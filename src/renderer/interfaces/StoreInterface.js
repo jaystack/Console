@@ -5,7 +5,7 @@ export default class StoreInterface {
     this.store = new NeDB(options);
   }
 
-  promise(dbFunc, params, paramsIsArray = false, { sort, limit, skip} = {}) {
+  promise(dbFunc, params, paramsIsArray = false, { sort, limit, skip } = {}) {
     const that = this;
     const options = paramsIsArray ? params : [params];
 
@@ -29,7 +29,7 @@ export default class StoreInterface {
               if (err) reject(err);
               resolve(res);
             });
-            
+
           }
       });
   }
