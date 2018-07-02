@@ -15,8 +15,8 @@ export default class StoreInterface {
             const cursor = that.store[dbFunc](...options);
 
             if (sort) cursor.sort(sort);
-            if (limit) cursor.sort(limit);
-            if (skip) cursor.sort(skip);
+            if (limit) cursor.limit(limit);
+            if (skip) cursor.skip(skip);
 
             cursor.exec((err, res) => {
               if (err) reject(err);
