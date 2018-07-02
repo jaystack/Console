@@ -5,18 +5,27 @@ export default class StoreInterface {
     this.store = new NeDB(options);
   }
 
-  promise(dbFunc, params, paramsIsArray = false) {
+  promise(dbFunc, params, paramsIsArray = false, sort) {
     const that = this;
     const options = paramsIsArray ? params : [params];
 
-    return new Promise(
+    return ["find","findOne","count"].includes(dbFunc)
+      ? new Promise(
+        (resolve, reject) => {
+          const cursor = that.store[dbFunc](...options);
+          if (sort) cursor.sort(sort);
+          cursor.exec((err, res) => {
+            if (err) reject(err);
+            resolve(res);
+          });
+        })
+      : new Promise(
       (resolve, reject) => {
         that.store[dbFunc](...options, (err, res) => {
           if (err) reject(err);
           resolve(res);
         });
-      },
-    );
+      });
   }
 
   cursor(dbFunc, params, paramsIsArray = false) {
@@ -30,16 +39,16 @@ export default class StoreInterface {
     return this.promise('insert', doc);
   }
 
-  find(query = {}) {
-    return this.promise('find', query);
+  find(query = {}, sort = false) {
+    return this.promise('find', query, false, sort);
   }
 
-  findOne(query = {}) {
-    return this.promise('findOne', query);
+  findOne(query = {}, sort = false) {
+    return this.promise('findOne', query, false, sort);
   }
 
-  count(query = {}) {
-    return this.promise('count', query);
+  count(query = {}, sort = false) {
+    return this.promise('count', query, false, sort);
   }
 
   update(query, doc, params = {}) {
@@ -59,11 +68,6 @@ export default class StoreInterface {
   }
 
   lastRecord(query) {
-    return new Promise(
-      (resolve, reject) => this.cursor('findOne',query).sort({created: -1}).exec((err, doc) => {
-        if (err) reject(err);
-        resolve(doc);
-      })
-    );
+    return this.findOne(query, {created: -1});
   }
 }
