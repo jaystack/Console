@@ -1,5 +1,5 @@
 import { getConfig, getQuery } from './selectors';
-import { MessageResolver } from './utils/SlackResolvers';
+import searchByQuery from './utils/search';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
 
@@ -30,15 +30,7 @@ export const initSources = () => state => async (dispatch, getState, { connector
 
 export const search = () => state => async (dispatch, getState, { db }) => {
   const query = getQuery(getState());
-  const queryPatterns = query.split(/\s+/g).map(word => new RegExp(word, 'ig'));
-  const slackMessages = await db
-    .select('slack.messages')
-    .find(!query ? {} : { $and: queryPatterns.map(pattern => ({ content: { $regex: pattern } })) }, {
-      sort: { created: -1 }
-    });
-  const slackConversations = await db.select('slack.conversations').find();
-  const slackUsers = await db.select('slack.users').find();
-  const items = [ ...slackMessages.map(MessageResolver(slackConversations, slackUsers)) ];
+  const items = await searchByQuery(query, db);
   dispatch(state => ({ ...state, items }));
 };
 
