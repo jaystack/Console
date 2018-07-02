@@ -55,9 +55,7 @@ export default class StoreInterface {
   }
 
   upsertAll(docs) {
-    const promises = [];
-    docs.forEach(doc => promises.push(this.upsert(doc)));
-    return Promise.all(promises);
+    return Promise.all(docs.map(doc => this.upsert(doc)));
   }
 
   lastRecord(query) {
