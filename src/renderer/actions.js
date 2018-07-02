@@ -1,5 +1,5 @@
 import { getConfig, getQuery } from './selectors';
-import { MessageResolver } from './transformers/SlackTransformers';
+import { MessageResolver } from './utils/SlackResolvers';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
 

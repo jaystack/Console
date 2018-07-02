@@ -5,7 +5,7 @@ import {
   SlackConversationTransformer,
   SlackMessageTransformer,
   SlackUserTransformer
-} from '../../transformers/SlackTransformers';
+} from '../../utils/SlackTransformers';
 
 const db = new DbManager();
 const queues = {
