@@ -26,14 +26,14 @@ export const SlackUserTransformer = user => ({
   id: user.id,
   name: user.profile.real_name,
   username: user.name,
-  team_id: user.team_id,
+  teamId: user.team_id,
   email: user.profile.email
 });
 
 export const MessageResolver = (conversations, users) => message => ({
   ...message,
   userName: resolveUserName(users, message.user),
-  channelName: resolveChannelName(conversations, message.channel_id)
+  channelName: resolveChannelName(conversations, message.channelId)
 });
 
 const resolveChannelName = (conversations, id) => {

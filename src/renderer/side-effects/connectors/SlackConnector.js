@@ -79,9 +79,7 @@ export default class SlackConnector extends BaseConnector {
   }
 
   async insertMessage(docs, conversationId, transformer) {
-    await db
-      .select('slack.messages')
-      .insert(docs.map(el => Object.assign(transformer(el), { channel_id: conversationId })));
+    await db.select('slack.messages').insert(docs.map(el => ({ ...transformer(el), channelId: conversationId })));
   }
 
   async refreshHistory(conversationId, lastRecord) {
