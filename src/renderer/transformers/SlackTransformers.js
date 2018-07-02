@@ -30,11 +30,15 @@ export const SlackUserTransformer = user => ({
   email: user.profile.email
 });
 
-export const MessageResolver = (conversations, users) => message => ({
-  ...message,
-  userName: resolveUserName(users, message.user),
-  channelName: resolveChannelName(conversations, message.channelId)
-});
+export const MessageResolver = (conversations, users) => message => {
+  const content = message.content.replace(/<@([UW].{8})>/g, (_, userId) => resolveUserName(users, userId));
+  return {
+    ...message,
+    content,
+    userName: resolveUserName(users, message.user),
+    channelName: resolveChannelName(conversations, message.channelId)
+  };
+};
 
 const resolveChannelName = (conversations, id) => {
   if (!id) return '';
