@@ -1,5 +1,7 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
+import Avatar from '@material-ui/core/Avatar';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
@@ -14,14 +16,21 @@ export default class extends React.PureComponent {
     const date = new Date(item.created);
     return (
       <Card className="item">
+        <CardHeader
+          avatar={<Avatar src="static/slack-logo.png" />}
+          title={item.userName}
+          classes={{ subheader: 'subheader', root: 'header-root' }}
+          subheader={
+            <div>
+              <span title={date.toLocaleString()}>
+                <b>{moment(date).fromNow()}</b>
+              </span>
+              <br />
+              <span>{item.channelName ? '#' + item.channelName : item.channelId}</span>
+            </div>
+          }
+        />
         <CardContent>
-          <Typography color="textSecondary">{item.channelName ? '#' + item.channelName : item.channelId}</Typography>
-          <Typography variant="headline" component="h2">
-            {item.userName}
-          </Typography>
-          <Typography color="textSecondary">
-            <b>{moment(date).fromNow()}</b> - {date.toLocaleString()}
-          </Typography>
           <Typography component="p" dangerouslySetInnerHTML={{ __html: prepareContent(item.content) }} />
         </CardContent>
       </Card>

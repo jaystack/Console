@@ -63,3 +63,11 @@ body {
 .timeline .item {
   margin-bottom: 20px;
 }
+
+.timeline .item .header-root {
+  padding-bottom: 0;
+}
+
+.timeline .item .subheader {
+  line-height: 17px;
+}
