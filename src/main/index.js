@@ -1,4 +1,4 @@
-import { app, Menu, BrowserWindow } from 'electron';
+import { app, Menu, BrowserWindow, shell } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -14,8 +14,8 @@ function createWindow() {
     width: 1300,
     height: 850,
     webPreferences: {
-      nodeIntegrationInWorker: true,
-    },
+      nodeIntegrationInWorker: true
+    }
   });
 
   // and load the index.html of the app.
@@ -23,8 +23,8 @@ function createWindow() {
     url.format({
       pathname: path.join(__dirname, '../../index.html'),
       protocol: 'file:',
-      slashes: true,
-    }),
+      slashes: true
+    })
   );
 
   // Open the DevTools.
@@ -37,6 +37,11 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
     app.quit();
+  });
+
+  win.webContents.on('new-window', function(event, url) {
+    event.preventDefault();
+    shell.openExternal(url);
   });
 }
 
@@ -80,26 +85,26 @@ app.on('ready', () => {
             { role: 'paste' },
             { role: 'pasteandmatchstyle' },
             { role: 'delete' },
-            { role: 'selectall' },
-          ],
+            { role: 'selectall' }
+          ]
         },
         isDev
           ? {
-            label: 'View',
-            submenu: [
-              { role: 'reload' },
-              { role: 'forcereload' },
-              { role: 'toggledevtools' },
-              { type: 'separator' },
-              { role: 'resetzoom' },
-              { role: 'zoomin' },
-              { role: 'zoomout' },
-              { type: 'separator' },
-              { role: 'togglefullscreen' },
-            ],
-          }
-          : {},
-      ]),
+              label: 'View',
+              submenu: [
+                { role: 'reload' },
+                { role: 'forcereload' },
+                { role: 'toggledevtools' },
+                { type: 'separator' },
+                { role: 'resetzoom' },
+                { role: 'zoomin' },
+                { role: 'zoomout' },
+                { type: 'separator' },
+                { role: 'togglefullscreen' }
+              ]
+            }
+          : {}
+      ])
     );
   }
 });

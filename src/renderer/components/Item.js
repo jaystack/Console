@@ -4,6 +4,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 
+const URL_PATTERN = /(<((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?>)/g;
+
 export default class extends React.PureComponent {
   render() {
     const { item } = this.props;
@@ -18,9 +20,16 @@ export default class extends React.PureComponent {
           <Typography color="textSecondary">
             <b>{moment(date).fromNow()}</b> - {date.toLocaleString()}
           </Typography>
-          <Typography component="p">{item.content}</Typography>
+          <Typography component="p" dangerouslySetInnerHTML={{ __html: prepareContent(item.content) }} />
         </CardContent>
       </Card>
     );
   }
 }
+
+const prepareContent = content => {
+  return content.replace(URL_PATTERN, (_, match) => {
+    const url = match.replace(/^</, '').replace(/>$/, '');
+    return `<a target="_blank" href="${url}">${url}</a>`;
+  });
+};
