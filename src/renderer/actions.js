@@ -30,7 +30,8 @@ export const initSources = () => state => async (dispatch, getState, { connector
 
 export const search = () => state => async (dispatch, getState, { db }) => {
   const query = getQuery(getState());
-  const slackMessages = await db.select('slack.messages').find(!query ? {} : {});
+  const queryPattern = new RegExp(query, 'ig');
+  const slackMessages = await db.select('slack.messages').find(!query ? {} : { content: { $regex: queryPattern } });
   const slackConversations = await db.select('slack.conversations').find();
   const slackUsers = await db.select('slack.users').find();
   const items = [ ...slackMessages.map(MessageResolver(slackConversations, slackUsers)) ];

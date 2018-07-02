@@ -4,33 +4,34 @@ import DbManager from '../NeDB';
 import {
   SlackConversationTransformer,
   SlackMessageTransformer,
-  SlackUserTransformer,
+  SlackUserTransformer
 } from '../../transformers/SlackTransformers';
 
 const db = new DbManager();
 const queues = {
-  tierOne: new PromiseThrottle({ requestsPerSecond: 1 / 60, promiseImplementation: Promise}),
-  tierTwo: new PromiseThrottle({ requestsPerSecond: 20 / 60, promiseImplementation: Promise}),
-  tierThree: new PromiseThrottle({ requestsPerSecond: 50 / 60, promiseImplementation: Promise}),
-  tierFour: new PromiseThrottle({ requestsPerSecond: 100 / 60, promiseImplementation: Promise}),
+  tierOne: new PromiseThrottle({ requestsPerSecond: 1 / 60, promiseImplementation: Promise }),
+  tierTwo: new PromiseThrottle({ requestsPerSecond: 20 / 60, promiseImplementation: Promise }),
+  tierThree: new PromiseThrottle({ requestsPerSecond: 50 / 60, promiseImplementation: Promise }),
+  tierFour: new PromiseThrottle({ requestsPerSecond: 100 / 60, promiseImplementation: Promise })
 };
 
 export default class SlackConnector extends BaseConnector {
   async init(options) {
-
     await super.init(options, 'http://slack.com/api/', true);
     const conversations = await this.fetchConversations();
     const users = await this.fetchUsers();
-    const messages = Array.isArray(options.channels) && options.channels.length
-      ? await this.fetchMessages(options.channels)
-      : [];
+    const messages =
+      Array.isArray(options.channels) && options.channels.length ? await this.fetchMessages(options.channels) : [];
     return { conversations, messages, users };
   }
 
   async fetchConversations() {
-    const resp = await this.request('get', this.queryString('conversations.list',{
-      types: 'public_channel,private_channel,mpim,im',
-    }));
+    const resp = await this.request(
+      'get',
+      this.queryString('conversations.list', {
+        types: 'public_channel,private_channel,mpim,im'
+      })
+    );
     const formatted = resp.channels.map(SlackConversationTransformer);
     await db.select('slack.conversations').upsertAll(formatted);
     const res = await db.select('slack.conversations').find();
@@ -39,9 +40,9 @@ export default class SlackConnector extends BaseConnector {
 
   async fetchDataSince(date) {
     const res = await db.select('slack.messages').find({
-      created: { $gt: date}
+      created: { $gt: date }
     });
-    return res.sort((a,b) => a.created > b.created);
+    return res.sort((a, b) => a.created > b.created);
   }
 
   async fetchHistory(conversationId) {
@@ -50,12 +51,13 @@ export default class SlackConnector extends BaseConnector {
       await this.refreshHistory(conversationId, lastRecord);
     } else {
       const now = new Date();
-      const conversation = await this.request('get', this.queryString(
-        'conversations.history', {
+      const conversation = await this.request(
+        'get',
+        this.queryString('conversations.history', {
           channel: conversationId,
-          oldest: (now.getTime() / 1000) - (24 * 60 * 60 * 1000 * 31),
+          oldest: now.getTime() / 1000 - 24 * 60 * 60 * 1000 * 31,
           inclusive: true,
-          limit: 1000,
+          limit: 1000
         })
       );
       await this.insertMessage(conversation.messages, conversationId, SlackMessageTransformer);
@@ -65,16 +67,11 @@ export default class SlackConnector extends BaseConnector {
   }
 
   async fetchMessages(ids) {
-    return Promise.all(ids.map(id =>
-      queues.tierThree.add(
-        this.fetchHistory.bind(this,id)
-      ))
-    );
+    return Promise.all(ids.map(id => queues.tierThree.add(this.fetchHistory.bind(this, id))));
   }
 
   async fetchUsers() {
     const resp = await this.request('get', 'users.list');
-    console.log(resp);
     const formatted = resp.members.map(SlackUserTransformer);
     await db.select('slack.users').upsertAll(formatted);
     const res = await db.select('slack.users').find();
@@ -82,21 +79,19 @@ export default class SlackConnector extends BaseConnector {
   }
 
   async insertMessage(docs, conversationId, transformer) {
-    await db.select('slack.messages').insert(
-      docs.map(
-        el => Object.assign(transformer(el), {channel_id: conversationId})
-      )
-    );
+    await db
+      .select('slack.messages')
+      .insert(docs.map(el => Object.assign(transformer(el), { channel_id: conversationId })));
   }
 
   async refreshHistory(conversationId, lastRecord) {
-    const conversation = await this.request('get', this.queryString(
-      'conversations.history', {
+    const conversation = await this.request(
+      'get',
+      this.queryString('conversations.history', {
         channel: conversationId,
         oldest: lastRecord.created,
-        limit: 1000,
+        limit: 1000
       })
-
     );
     await this.insertMessage(
       conversation.messages.filter(el => el.id !== lastRecord.id),
@@ -104,6 +99,4 @@ export default class SlackConnector extends BaseConnector {
       SlackMessageTransformer
     );
   }
-
-
 }
