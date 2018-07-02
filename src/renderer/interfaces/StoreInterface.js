@@ -5,26 +5,32 @@ export default class StoreInterface {
     this.store = new NeDB(options);
   }
 
-  promise(dbFunc, params, paramsIsArray = false, sort) {
+  promise(dbFunc, params, paramsIsArray = false, { sort, limit, skip} = {}) {
     const that = this;
     const options = paramsIsArray ? params : [params];
 
-    return ["find","findOne","count"].includes(dbFunc)
-      ? new Promise(
+    return new Promise(
         (resolve, reject) => {
-          const cursor = that.store[dbFunc](...options);
-          if (sort) cursor.sort(sort);
-          cursor.exec((err, res) => {
-            if (err) reject(err);
-            resolve(res);
-          });
-        })
-      : new Promise(
-      (resolve, reject) => {
-        that.store[dbFunc](...options, (err, res) => {
-          if (err) reject(err);
-          resolve(res);
-        });
+          if (["find","findOne","count"].includes(dbFunc)) {
+            const cursor = that.store[dbFunc](...options);
+
+            if (sort) cursor.sort(sort);
+            if (limit) cursor.sort(limit);
+            if (skip) cursor.sort(skip);
+
+            cursor.exec((err, res) => {
+              if (err) reject(err);
+              resolve(res);
+            });
+
+          } else {
+
+            that.store[dbFunc](...options, (err, res) => {
+              if (err) reject(err);
+              resolve(res);
+            });
+            
+          }
       });
   }
 
@@ -39,16 +45,16 @@ export default class StoreInterface {
     return this.promise('insert', doc);
   }
 
-  find(query = {}, sort = false) {
-    return this.promise('find', query, false, sort);
+  find(query = {}, config = {}) {
+    return this.promise('find', query, false, config);
   }
 
-  findOne(query = {}, sort = false) {
-    return this.promise('findOne', query, false, sort);
+  findOne(query = {}, config = {}) {
+    return this.promise('findOne', query, false, config);
   }
 
-  count(query = {}, sort = false) {
-    return this.promise('count', query, false, sort);
+  count(query = {}, config = {}) {
+    return this.promise('count', query, false, config);
   }
 
   update(query, doc, params = {}) {
@@ -68,6 +74,6 @@ export default class StoreInterface {
   }
 
   lastRecord(query) {
-    return this.findOne(query, {created: -1});
+    return this.findOne(query, { sort: { created: -1 } });
   }
 }
