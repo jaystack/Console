@@ -11,7 +11,7 @@ export default async (query, db) => {
 export const searchInSlack = async (query, db) => {
   const keywords = query.split(WHITESPACES);
   const regularKeywords = keywords.filter(keyword => !MENTION.test(keyword));
-  //const mentionKeywords = keywords.filter(keyword => MENTION.test(keyword));
+  //const mentionKeywords = keywords.filter(keyword => MENTION.test(keyword)).map(keyword => keyword.replace(/@/g, ''));
   const conversations = await db.select('slack.conversations').find();
   const users = await db.select('slack.users').find();
   const queryPatterns = regularKeywords.map(word => new RegExp(word, 'ig'));
