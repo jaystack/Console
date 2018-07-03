@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import ProjectList from './ProjectList';
 import RapidProjectCreator from './RapidProjectCreator';
+import ProjectEditor from './ProjectEditor';
 import { getProjects, getIsSettingsOpen } from '../selectors';
 import { toggleSettings } from '../actions';
 
@@ -29,7 +30,7 @@ export default class extends React.PureComponent {
     return (
       <main>
         <ProjectList />
-        <div className="project-editor-container">...</div>
+        <ProjectEditor />
       </main>
     );
   }

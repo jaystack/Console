@@ -34,6 +34,8 @@ export const createProject = name => state => async (dispatch, getState, { db })
   await dispatch(readProjects());
 };
 
+export const selectProject = selectedProjectId => state => ({ ...state, selectedProjectId });
+
 export const initSources = () => state => async (dispatch, getState, { connectors }) => {
   const { sources } = getConfig(getState());
   await Promise.all(sources.map((sourceConfig, i) => connectors.of(i).init(sourceConfig)));

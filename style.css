@@ -60,11 +60,6 @@ body {
   flex: 0 0 auto;
 }
 
-.settings .project-editor-container {
-  flex: 1 1 0;
-  padding: 10px;
-}
-
 .settings .empty-content {
   flex: 1 1 0;
   display: flex;
@@ -95,4 +90,10 @@ body {
   padding: 0px 14px;
   display: flex;
   align-items: center;
+}
+
+.project-editor {
+  flex: 1 1 0;
+  padding: 10px;
+  background-color: #efefef;
 }

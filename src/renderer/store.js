@@ -8,6 +8,7 @@ const initialState = {
   isFetching: true,
   isSettingsOpen: false,
   projects: [],
+  selectedProjectId: null,
   items: [],
   query: ''
 };
