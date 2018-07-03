@@ -51,7 +51,7 @@ export default class extends React.PureComponent {
   render() {
     const { open, projects } = this.props;
     return (
-      <Dialog fullScreen open={open} onClose={this.handleClose}>
+      <Dialog fullScreen open={open}>
         <div className="settings">
           <AppBar style={{ position: 'relative', flex: '0 0 auto' }}>
             <Toolbar>

@@ -23,10 +23,11 @@ export default class extends React.PureComponent {
 
   handleKeyPress = evt => {
     if (evt.key === 'Enter') this.submit();
+    if (evt.key === 'Escape' && this.props.cancellable) this.cancel();
   };
 
   handleCancel = () => {
-    this.setState({ name: null });
+    this.cancel();
   };
 
   handleSubmit = () => {
@@ -36,6 +37,10 @@ export default class extends React.PureComponent {
   submit() {
     if (!this.state.name) return;
     this.props.createProject(this.state.name);
+    this.setState({ name: null });
+  }
+
+  cancel() {
     this.setState({ name: null });
   }
 
