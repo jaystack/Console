@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -21,10 +20,6 @@ export default class extends React.PureComponent {
   async componentDidUpdate(prevProps) {
     if (prevProps.projects !== this.props.projects) this.setState({ projects: this.props.projects });
   }
-
-  handleSave = () => {
-    this.props.toggleSettings(false);
-  };
 
   handleClose = () => {
     this.props.toggleSettings(false);
@@ -59,15 +54,12 @@ export default class extends React.PureComponent {
         <div className="settings">
           <AppBar style={{ position: 'relative', flex: '0 0 auto' }}>
             <Toolbar>
-              <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
               <Typography variant="title" color="inherit" style={{ flex: 1, marginLeft: '20px' }}>
                 Settings
               </Typography>
-              <Button color="inherit" onClick={this.handleSave}>
-                save
-              </Button>
+              <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
+                <CloseIcon />
+              </IconButton>
             </Toolbar>
           </AppBar>
           {projects.length > 0 ? this.renderContent() : this.renderEmptyContent()}
