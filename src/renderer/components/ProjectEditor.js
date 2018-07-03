@@ -15,8 +15,7 @@ export default class extends React.PureComponent {
   };
 
   async componentDidUpdate(prevProps) {
-    if (prevProps.project && this.props.project && prevProps.project.name !== this.props.project.name)
-      this.setState({ newName: null });
+    if (prevProps.project !== this.props.project) this.setState({ newName: null });
   }
 
   handleRemoveProject = () => {
