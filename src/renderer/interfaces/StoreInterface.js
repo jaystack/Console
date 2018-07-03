@@ -61,7 +61,7 @@ export default class StoreInterface {
     return this.promise('update', [query, doc, params], true);
   }
 
-  destroy(query, params = {}) {
+  remove(query, params = {}) {
     return this.promise('remove', [query, params], true);
   }
 

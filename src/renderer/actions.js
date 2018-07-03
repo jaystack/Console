@@ -34,6 +34,11 @@ export const createProject = name => state => async (dispatch, getState, { db })
   await dispatch(readProjects());
 };
 
+export const removeProject = _id => state => async (dispatch, getState, { db }) => {
+  await db.select('projects').remove({ _id });
+  await dispatch(readProjects());
+};
+
 export const selectProject = selectedProjectId => state => ({ ...state, selectedProjectId });
 
 export const initSources = () => state => async (dispatch, getState, { connectors }) => {

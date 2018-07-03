@@ -3,6 +3,10 @@ body {
   padding: 0;
 }
 
+.MuiToolbar-root-36.MuiToolbar-gutters-37 {
+  padding: 0 10px !important;
+}
+
 .search {
   width: 100%;
   margin: 0px 20px;
@@ -94,6 +98,19 @@ body {
 
 .project-editor {
   flex: 1 1 0;
-  padding: 10px;
   background-color: #efefef;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-editor > header {
+  padding: 24px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.project-editor > header > h1 {
+  margin-bottom: 0;
 }
