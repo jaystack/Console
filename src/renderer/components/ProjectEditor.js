@@ -15,7 +15,7 @@ export default class extends React.PureComponent {
   };
 
   async componentDidUpdate(prevProps) {
-    if (prevProps.project !== this.props.project) this.setState({ newName: null });
+    if (prevProps.project !== this.props.project) this.cancelRename();
   }
 
   handleRemoveProject = () => {
@@ -39,17 +39,22 @@ export default class extends React.PureComponent {
     this.setState({ newName: evt.target.value });
   };
 
-  handleRenameInputBlur = evt => {
-    this.confirmTitleRename(evt);
+  handleRenameInputBlur = () => {
+    this.confirmRename();
   };
 
   handleRenameInputKeyPress = evt => {
-    if (evt.key === 'Enter') this.confirmTitleRename(evt);
+    if (evt.key === 'Enter') this.confirmRename();
+    if (evt.key === 'Escape') this.cancelRename();
   };
 
-  confirmTitleRename(evt) {
-    if (!evt.target.value) return;
-    this.props.renameProject(this.props.project._id, evt.target.value);
+  confirmRename() {
+    if (!this.state.newName) return;
+    this.props.renameProject(this.props.project._id, this.state.newName);
+  }
+
+  cancelRename() {
+    this.setState({ newName: null });
   }
 
   renderTitle() {
