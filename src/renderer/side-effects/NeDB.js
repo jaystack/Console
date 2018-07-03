@@ -30,7 +30,9 @@ export default class DbManager {
         users: createDatabase('slack.users'),
       },
       github: {
+        commits: createDatabase('github.commits'),
         repos: createDatabase('github.repos'),
+        users: createDatabase('github.users'),
       },
     };
   }

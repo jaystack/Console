@@ -73,6 +73,14 @@ export default class StoreInterface {
     return Promise.all(docs.map(doc => this.upsert(doc)));
   }
 
+  insertManyIfNone(docs) {
+    return Promise.all(docs.map(doc => this.insertIfNone(doc)))
+  }
+
+  async insertIfNone(doc) {
+    return await this.count(doc) ? false : this.promise('insert', doc)
+  }
+
   lastRecord(query) {
     return this.findOne(query, { sort: { created: -1 } });
   }
