@@ -20,10 +20,6 @@ export default class BaseConnector {
     return `${url}?${string}`;
   }
 
-  async fetchDataSince(date) {
-    // do some data fetch
-  }
-
   request(method, url, data = null) {
     return new Promise((resolve, reject) =>
       this.axios
