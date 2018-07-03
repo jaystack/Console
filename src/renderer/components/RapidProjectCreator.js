@@ -21,14 +21,23 @@ export default class extends React.PureComponent {
     this.setState({ name: '' });
   };
 
+  handleKeyPress = evt => {
+    if (evt.key === 'Enter') this.submit();
+  };
+
   handleCancel = () => {
     this.setState({ name: null });
   };
 
   handleSubmit = () => {
+    this.submit();
+  };
+
+  submit() {
+    if (!this.state.name) return;
     this.props.createProject(this.state.name);
     this.setState({ name: null });
-  };
+  }
 
   render() {
     const { buttonLabel, buttonSize, cancellable } = this.props;
@@ -41,7 +50,13 @@ export default class extends React.PureComponent {
           </Button>
         ) : (
           <div className="input-container">
-            <TextField placeholder="Project name" value={name} onChange={this.handleNameChange} autoFocus />
+            <TextField
+              placeholder="Project name"
+              value={name}
+              onChange={this.handleNameChange}
+              onKeyUp={this.handleKeyPress}
+              autoFocus
+            />
             <IconButton aria-label="Go" disabled={!name} onClick={this.handleSubmit}>
               <DoneIcon />
             </IconButton>
