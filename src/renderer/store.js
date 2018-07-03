@@ -7,6 +7,7 @@ const initialState = {
   config: null,
   isFetching: true,
   isConfigOpen: false,
+  projects: [],
   items: [],
   query: ''
 };

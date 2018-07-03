@@ -24,16 +24,17 @@ export default class DbManager {
   createStores() {
     const { createDatabase } = this.constructor;
     this.dbs = {
+      projects: createDatabase('projects'),
       slack: {
         conversations: createDatabase('slack.conversations'),
         messages: createDatabase('slack.messages'),
-        users: createDatabase('slack.users'),
+        users: createDatabase('slack.users')
       },
       github: {
         commits: createDatabase('github.commits'),
         repos: createDatabase('github.repos'),
-        users: createDatabase('github.users'),
-      },
+        users: createDatabase('github.users')
+      }
     };
   }
 
@@ -43,7 +44,7 @@ export default class DbManager {
 
   select(name) {
     const nameParts = name.split('.');
-    return this.dbs[nameParts[0]][nameParts[1]];
+    return nameParts.reduce((node, name) => node[name], this.dbs);
   }
 
   static getInstance() {
