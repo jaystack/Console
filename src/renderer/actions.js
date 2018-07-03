@@ -30,8 +30,9 @@ export const readProjects = () => state => async (dispatch, getState, { db }) =>
 };
 
 export const createProject = name => state => async (dispatch, getState, { db }) => {
-  await db.select('projects').insert({ name, sources: [] });
+  const { _id } = await db.select('projects').insert({ name, sources: [] });
   await dispatch(readProjects());
+  dispatch(selectProject(_id));
 };
 
 export const removeProject = _id => state => async (dispatch, getState, { db }) => {
