@@ -3,6 +3,7 @@ const USERIDS = /<@([UW].{8})>/g;
 export const MessageResolver = (conversations, users) => message => {
   const content = message.content.replace(USERIDS, (_, userId) => resolveUserName(users, userId));
   return {
+    type: 'slack',
     ...message,
     content,
     userName: resolveUserName(users, message.user),

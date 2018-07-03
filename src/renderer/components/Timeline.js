@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getItems } from '../selectors';
-import Item from './Item';
+import SlackMessage from './SlackMessage';
 
 @connect(state => ({ items: getItems(state) }))
 export default class extends React.PureComponent {
@@ -20,8 +20,17 @@ export default class extends React.PureComponent {
     const { max } = this.state;
     return (
       <div className="timeline" onScroll={this.handleScroll}>
-        {items.slice(0, max).map(item => <Item key={item.id} item={item} />)}
+        {items.slice(0, max).map(renderItem)}
       </div>
     );
   }
 }
+
+const renderItem = item => {
+  switch (item.type) {
+    case 'slack':
+      return <SlackMessage key={item.id} item={item} />;
+    default:
+      return null;
+  }
+};
