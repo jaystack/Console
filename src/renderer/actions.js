@@ -3,7 +3,7 @@ import searchByQuery from './utils/search';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
 
-export const toggleConfig = isConfigOpen => state => ({ ...state, isConfigOpen });
+export const toggleSettings = isSettingsOpen => state => ({ ...state, isSettingsOpen });
 
 export const init = () => state => async (dispatch, getState, { connectors }) => {
   dispatch(toggleFetching(true));
@@ -27,6 +27,11 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 export const readProjects = () => state => async (dispatch, getState, { db }) => {
   const projects = await db.select('projects').find();
   dispatch(state => ({ ...state, projects }));
+};
+
+export const createProject = name => state => async (dispatch, getState, { db }) => {
+  await db.select('projects').insert({ name, sources: [] });
+  await dispatch(readProjects());
 };
 
 export const initSources = () => state => async (dispatch, getState, { connectors }) => {

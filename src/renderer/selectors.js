@@ -1,6 +1,8 @@
 export const getIsFetching = state => state.isFetching;
 
-export const getIsConfigOpen = state => state.isConfigOpen;
+export const getIsSettingsOpen = state => state.isSettingsOpen;
+
+export const getProjects = state => state.projects;
 
 export const getConfig = state => state.config;
 

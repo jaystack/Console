@@ -48,11 +48,29 @@ body {
   display: flex;
 }
 
-.settings textarea {
+.settings .project-list {
+  flex: 0 0 auto;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ddd;
+}
+
+.settings .project-list > header {
+  flex: 0 0 auto;
+}
+
+.settings .project-editor-container {
   flex: 1 1 0;
   padding: 10px;
-  border: 0;
-  outline: 0;
+}
+
+.settings .empty-content {
+  flex: 1 1 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .timeline {
@@ -70,4 +88,11 @@ body {
 
 .timeline .item .subheader {
   line-height: 17px;
+}
+
+.rapid-project-creator {
+  height: 68px;
+  padding: 0px 14px;
+  display: flex;
+  align-items: center;
 }

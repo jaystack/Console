@@ -7,14 +7,14 @@ import IconButton from '@material-ui/core/IconButton';
 import MoreVert from '@material-ui/icons/MoreVert';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Config from './Config';
+import Settings from './Settings';
 import Search from './Search';
 import Timeline from './Timeline';
 import Spinner from './Spinner';
 import { getIsFetching } from '../selectors';
-import { init, toggleConfig } from '../actions';
+import { init, toggleSettings } from '../actions';
 
-@connect(state => ({ ...state, isFetching: getIsFetching(state) }), { init, toggleConfig })
+@connect(state => ({ ...state, isFetching: getIsFetching(state) }), { init, toggleSettings })
 export default class extends React.PureComponent {
   state = {
     anchorEl: null
@@ -29,7 +29,7 @@ export default class extends React.PureComponent {
   };
 
   handleMenuItem = () => {
-    this.props.toggleConfig(true);
+    this.props.toggleSettings(true);
     this.toggleMenu(false)();
   };
 
@@ -76,7 +76,7 @@ export default class extends React.PureComponent {
         </AppBar>
         <main>
           {isFetching && <Spinner />}
-          <Config />
+          <Settings />
           {!isFetching && <Timeline />}
         </main>
       </div>
