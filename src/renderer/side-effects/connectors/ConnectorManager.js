@@ -21,10 +21,10 @@ export default class ConnectorManager {
     this.constructor.instance = this;
   }
 
-  createBySources(sources) {
+  createBySources(sources, db) {
     this.connectors = sources.map(({ type }) => {
       const Connector = getConnector(type);
-      return new Connector();
+      return new Connector(db);
     });
   }
 

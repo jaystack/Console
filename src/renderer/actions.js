@@ -13,10 +13,10 @@ export const init = () => state => async (dispatch, getState, { connectors }) =>
   dispatch(toggleFetching(false));
 };
 
-export const readConfig = () => state => async (dispatch, getState, { config, connectors }) => {
+export const readConfig = () => state => async (dispatch, getState, { config, connectors, db }) => {
   const conf = await config.readConfig();
   dispatch(state => ({ ...state, config: conf }));
-  connectors.createBySources(conf.sources);
+  connectors.createBySources(conf.sources, db);
 };
 
 export const updateConfig = nextConfig => state => async (dispatch, getState, { config }) => {

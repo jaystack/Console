@@ -1,13 +1,11 @@
 import BaseConnector from './BaseConnector';
 import PromiseThrottle from 'promise-throttle';
-import DbManager from '../NeDB';
 import {
   SlackConversationTransformer,
   SlackMessageTransformer,
   SlackUserTransformer
 } from '../../utils/SlackTransformers';
 
-const db = new DbManager();
 const queues = {
   tierOne: new PromiseThrottle({ requestsPerSecond: 1 / 60, promiseImplementation: Promise }),
   tierTwo: new PromiseThrottle({ requestsPerSecond: 20 / 60, promiseImplementation: Promise }),
@@ -33,20 +31,20 @@ export default class SlackConnector extends BaseConnector {
       })
     );
     const formatted = resp.channels.map(SlackConversationTransformer);
-    await db.select('slack.conversations').upsertAll(formatted);
-    const res = await db.select('slack.conversations').find();
+    await this.db.select('slack.conversations').upsertAll(formatted);
+    const res = await this.db.select('slack.conversations').find();
     return res;
   }
 
   async fetchDataSince(date) {
-    const res = await db.select('slack.messages').find({
+    const res = await this.db.select('slack.messages').find({
       created: { $gt: date }
     });
     return res.sort((a, b) => a.created > b.created);
   }
 
   async fetchHistory(conversationId) {
-    const lastRecord = await db.select('slack.messages').lastRecord();
+    const lastRecord = await this.db.select('slack.messages').lastRecord();
     if (lastRecord) {
       await this.refreshHistory(conversationId, lastRecord);
     } else {
@@ -62,7 +60,7 @@ export default class SlackConnector extends BaseConnector {
       );
       await this.insertMessage(conversation.messages, conversationId, SlackMessageTransformer);
     }
-    const res = await db.select('slack.messages').find();
+    const res = await this.db.select('slack.messages').find();
     return res;
   }
 
@@ -73,13 +71,13 @@ export default class SlackConnector extends BaseConnector {
   async fetchUsers() {
     const resp = await this.request('get', 'users.list');
     const formatted = resp.members.map(SlackUserTransformer);
-    await db.select('slack.users').upsertAll(formatted);
-    const res = await db.select('slack.users').find();
+    await this.db.select('slack.users').upsertAll(formatted);
+    const res = await this.db.select('slack.users').find();
     return res;
   }
 
   async insertMessage(docs, conversationId, transformer) {
-    await db.select('slack.messages').insert(docs.map(el => ({ ...transformer(el), channelId: conversationId })));
+    await this.db.select('slack.messages').insert(docs.map(el => ({ ...transformer(el), channelId: conversationId })));
   }
 
   async refreshHistory(conversationId, lastRecord) {
