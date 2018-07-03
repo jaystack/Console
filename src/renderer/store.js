@@ -6,7 +6,7 @@ import NeDB from './side-effects/NeDB';
 const initialState = {
   config: null,
   isFetching: true,
-  isSettingsOpen: false,
+  isSettingsOpen: true,
   projects: [],
   selectedProjectId: null,
   items: [],

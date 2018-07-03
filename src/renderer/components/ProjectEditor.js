@@ -2,15 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
 import ConfirmDialog from './ConfirmDialog';
 import { getSelectedProject } from '../selectors';
-import { removeProject } from '../actions';
+import { removeProject, renameProject } from '../actions';
 
-@connect(state => ({ project: getSelectedProject(state) }), { removeProject })
+@connect(state => ({ project: getSelectedProject(state) }), { removeProject, renameProject })
 export default class extends React.PureComponent {
   state = {
-    isRemoveRequest: false
+    isRemoveRequest: false,
+    newName: null
   };
+
+  async componentDidUpdate(prevProps) {
+    if (prevProps.project && this.props.project && prevProps.project.name !== this.props.project.name)
+      this.setState({ newName: null });
+  }
 
   handleRemoveProject = () => {
     this.setState({ isRemoveRequest: true });
@@ -24,6 +31,49 @@ export default class extends React.PureComponent {
     this.props.removeProject(this.props.project._id);
     this.setState({ isRemoveRequest: false });
   };
+
+  handleTitleClick = () => {
+    this.setState({ newName: this.props.project.name });
+  };
+
+  handleRenameInputChange = evt => {
+    this.setState({ newName: evt.target.value });
+  };
+
+  handleRenameInputBlur = evt => {
+    this.confirmTitleRename(evt);
+  };
+
+  handleRenameInputKeyPress = evt => {
+    if (evt.key === 'Enter') this.confirmTitleRename(evt);
+  };
+
+  confirmTitleRename(evt) {
+    if (!evt.target.value) return;
+    this.props.renameProject(this.props.project._id, evt.target.value);
+  }
+
+  renderTitle() {
+    const { project: { name } } = this.props;
+    const { newName } = this.state;
+    return newName === null ? (
+      <Typography variant="display2" gutterBottom onClick={this.handleTitleClick}>
+        {name}
+      </Typography>
+    ) : (
+      <Input
+        placeholder="Project name"
+        className="rename-input"
+        autoFocus
+        inputProps={{
+          onBlur: this.handleRenameInputBlur,
+          value: newName,
+          onChange: this.handleRenameInputChange,
+          onKeyUp: this.handleRenameInputKeyPress
+        }}
+      />
+    );
+  }
 
   render() {
     const { project } = this.props;
@@ -39,9 +89,7 @@ export default class extends React.PureComponent {
           confirmButtonLabel="Delete"
         />
         <header>
-          <Typography variant="display2" gutterBottom>
-            {project.name}
-          </Typography>
+          {this.renderTitle()}
           <Button variant="contained" color="secondary" onClick={this.handleRemoveProject}>
             Delete
           </Button>

@@ -39,6 +39,11 @@ export const removeProject = _id => state => async (dispatch, getState, { db }) 
   await dispatch(readProjects());
 };
 
+export const renameProject = (_id, name) => state => async (dispatch, getState, { db }) => {
+  await db.select('projects').update({ _id }, { name });
+  await dispatch(readProjects());
+};
+
 export const selectProject = selectedProjectId => state => ({ ...state, selectedProjectId });
 
 export const initSources = () => state => async (dispatch, getState, { connectors }) => {

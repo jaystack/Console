@@ -41,7 +41,7 @@ export default class extends React.PureComponent {
           </Button>
         ) : (
           <div className="input-container">
-            <TextField placeholder="Project name" value={name} onChange={this.handleNameChange} />
+            <TextField placeholder="Project name" value={name} onChange={this.handleNameChange} autoFocus />
             <IconButton aria-label="Go" disabled={!name} onClick={this.handleSubmit}>
               <DoneIcon />
             </IconButton>

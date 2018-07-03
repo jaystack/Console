@@ -108,9 +108,23 @@ body {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .project-editor > header > h1 {
   margin-bottom: 0;
+  flex: 1 1 0;
+}
+
+.project-editor > header > h1:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.project-editor > header > .rename-input {
+  height: 48px;
+  font-size: 45px !important;
+  flex: 1 1 0;
+}
+
+.project-editor > header > button {
+  margin-left: 20px;
 }
