@@ -6,29 +6,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import ListIcon from '@material-ui/icons/List';
-import PeopleIcon from '@material-ui/icons/People';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/core/styles';
+import Menu from './Menu';
 import ProjectSettings from './ProjectSettings';
 import { getIsSettingsOpen } from '../selectors';
 import { toggleSettings } from '../actions';
 
-@withStyles(theme => ({
-  menuItem: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& $primary, & $icon': {
-        color: theme.palette.common.white
-      }
-    }
-  },
-  primary: {},
-  icon: {}
-}))
 @connect(state => ({ open: getIsSettingsOpen(state) }), { toggleSettings })
 export default class extends React.PureComponent {
   handleClose = () => {
@@ -36,7 +18,7 @@ export default class extends React.PureComponent {
   };
 
   render() {
-    const { open, classes } = this.props;
+    const { open } = this.props;
     return (
       <Dialog fullScreen open={open}>
         <div className="settings">
@@ -52,20 +34,13 @@ export default class extends React.PureComponent {
           </AppBar>
           <div className="content">
             <nav>
-              <MenuList>
-                <MenuItem className={classes.menuItem}>
-                  <ListItemIcon className={classes.icon}>
-                    <PeopleIcon />
-                  </ListItemIcon>
-                  <ListItemText classes={{ primary: classes.primary }} inset primary="Accounts" />
-                </MenuItem>
-                <MenuItem className={classes.menuItem}>
-                  <ListItemIcon className={classes.icon}>
-                    <ListIcon />
-                  </ListItemIcon>
-                  <ListItemText classes={{ primary: classes.primary }} inset primary="Projects" />
-                </MenuItem>
-              </MenuList>
+              <Menu
+                selected="projects"
+                items={[
+                  { id: 'accounts', icon: 'people', label: 'Accounts' },
+                  { id: 'projects', icon: 'list', label: 'Projects' }
+                ]}
+              />
             </nav>
             <main>
               <ProjectSettings />

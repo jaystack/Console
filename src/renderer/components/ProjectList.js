@@ -1,35 +1,34 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import Menu from './Menu';
 import RapidProjectCreator from './RapidProjectCreator';
-import { getProjects, getIsSettingsOpen } from '../selectors';
+import { getProjects, getIsSettingsOpen, getSelectedProjectId } from '../selectors';
 import { selectProject } from '../actions';
-import { Divider } from '@material-ui/core';
 
-@connect(state => ({ projects: getProjects(state), open: getIsSettingsOpen(state) }), { selectProject })
+@connect(
+  state => ({
+    projects: getProjects(state),
+    open: getIsSettingsOpen(state),
+    selectProjectId: getSelectedProjectId(state)
+  }),
+  { selectProject }
+)
 export default class extends React.PureComponent {
-  handleItemClick = id => () => this.props.selectProject(id);
+  handleItemClick = id => this.props.selectProject(id);
 
   render() {
-    const { projects } = this.props;
+    const { projects, selectProjectId } = this.props;
     return (
       <div className="project-list">
         <header>
           <RapidProjectCreator cancellable />
         </header>
-        <List component="nav" subheader={<ListSubheader component="div">Projects</ListSubheader>}>
-          {projects.map((project, i) => (
-            <Fragment key={project._id}>
-              <ListItem button onClick={this.handleItemClick(project._id)}>
-                <ListItemText primary={project.name} />
-              </ListItem>
-              {i < projects.length - 1 ? <Divider /> : null}
-            </Fragment>
-          ))}
-        </List>
+        <Menu
+          subheader="Projects"
+          items={projects.map(({ _id, name }) => ({ id: _id, label: name }))}
+          selected={selectProjectId}
+          onItemClick={this.handleItemClick}
+        />
       </div>
     );
   }
