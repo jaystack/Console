@@ -52,7 +52,12 @@ body {
   display: flex;
 }
 
-.settings .project-list {
+.project-settings {
+  flex: 1 1 0;
+  display: flex;
+}
+
+.project-settings .project-list {
   flex: 0 0 auto;
   width: 300px;
   display: flex;
@@ -60,11 +65,11 @@ body {
   border-right: 1px solid #ddd;
 }
 
-.settings .project-list > header {
+.project-settings .project-list > header {
   flex: 0 0 auto;
 }
 
-.settings .empty-content {
+.project-settings .empty-content {
   flex: 1 1 0;
   display: flex;
   justify-content: center;

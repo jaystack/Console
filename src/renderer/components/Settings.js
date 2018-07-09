@@ -6,50 +6,18 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
-import ProjectList from './ProjectList';
-import RapidProjectCreator from './RapidProjectCreator';
-import ProjectEditor from './ProjectEditor';
-import { getProjects, getIsSettingsOpen } from '../selectors';
+import ProjectSettings from './ProjectSettings';
+import { getIsSettingsOpen } from '../selectors';
 import { toggleSettings } from '../actions';
 
-@connect(state => ({ projects: getProjects(state), open: getIsSettingsOpen(state) }), { toggleSettings })
+@connect(state => ({ open: getIsSettingsOpen(state) }), { toggleSettings })
 export default class extends React.PureComponent {
-  state = {
-    projects: this.props.projects
-  };
-
-  async componentDidUpdate(prevProps) {
-    if (prevProps.projects !== this.props.projects) this.setState({ projects: this.props.projects });
-  }
-
   handleClose = () => {
     this.props.toggleSettings(false);
   };
 
-  renderContent() {
-    return (
-      <main>
-        <ProjectList />
-        <ProjectEditor />
-      </main>
-    );
-  }
-
-  renderEmptyContent() {
-    return (
-      <main>
-        <div className="empty-content">
-          <Typography variant="subheading" gutterBottom align="center">
-            You have no projects.
-          </Typography>
-          <RapidProjectCreator buttonLabel="Create your first project" buttonSize="large" />
-        </div>
-      </main>
-    );
-  }
-
   render() {
-    const { open, projects } = this.props;
+    const { open } = this.props;
     return (
       <Dialog fullScreen open={open}>
         <div className="settings">
@@ -63,7 +31,9 @@ export default class extends React.PureComponent {
               </IconButton>
             </Toolbar>
           </AppBar>
-          {projects.length > 0 ? this.renderContent() : this.renderEmptyContent()}
+          <main>
+            <ProjectSettings />
+          </main>
         </div>
       </Dialog>
     );
