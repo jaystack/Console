@@ -26,7 +26,7 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 
 export const readProjects = () => state => async (dispatch, getState, { db }) => {
   const projects = await db.select('projects').find();
-  dispatch(state => ({ ...state, projects }));
+  dispatch(state => ({ ...state, projects, selectedProjectId: projects.length > 0 ? projects[0]._id : null }));
 };
 
 export const createProject = name => state => async (dispatch, getState, { db }) => {
