@@ -47,7 +47,20 @@ body {
   flex-direction: column;
 }
 
-.settings > main {
+.settings > .content {
+  display: flex;
+  flex: 1 1 0;
+}
+
+.settings > .content > nav {
+  flex: 0 0 auto;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ddd;
+}
+
+.settings > .content > main {
   flex: 1 1 0;
   display: flex;
 }
