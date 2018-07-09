@@ -8,17 +8,21 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Menu from './Menu';
 import ProjectSettings from './ProjectSettings';
-import { getIsSettingsOpen } from '../selectors';
+import { getIsSettingsOpen, getActiveSettingsMenuItem } from '../selectors';
 import { toggleSettings } from '../actions';
 
-@connect(state => ({ open: getIsSettingsOpen(state) }), { toggleSettings })
+@connect(state => ({ open: getIsSettingsOpen(state), activeSettingsMenuItem: getActiveSettingsMenuItem(state) }), {
+  toggleSettings
+})
 export default class extends React.PureComponent {
   handleClose = () => {
     this.props.toggleSettings(false);
   };
 
+  handleMenuClick = id => this.props.toggleSettings(id);
+
   render() {
-    const { open } = this.props;
+    const { open, activeSettingsMenuItem } = this.props;
     return (
       <Dialog fullScreen open={open}>
         <div className="settings">
@@ -35,16 +39,15 @@ export default class extends React.PureComponent {
           <div className="content">
             <nav>
               <Menu
-                selected="projects"
+                selected={activeSettingsMenuItem}
+                onItemClick={this.handleMenuClick}
                 items={[
                   { id: 'accounts', icon: 'people', label: 'Accounts' },
                   { id: 'projects', icon: 'list', label: 'Projects' }
                 ]}
               />
             </nav>
-            <main>
-              <ProjectSettings />
-            </main>
+            <main>{activeSettingsMenuItem === 'projects' && <ProjectSettings />}</main>
           </div>
         </div>
       </Dialog>

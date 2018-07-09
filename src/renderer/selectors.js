@@ -2,7 +2,9 @@ import { createSelector } from 'reselect';
 
 export const getIsFetching = state => state.isFetching;
 
-export const getIsSettingsOpen = state => state.isSettingsOpen;
+export const getIsSettingsOpen = state => state.activeSettingsMenuItem !== null;
+
+export const getActiveSettingsMenuItem = state => state.activeSettingsMenuItem;
 
 export const getProjects = state => state.projects;
 

@@ -3,7 +3,10 @@ import searchByQuery from './utils/search';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
 
-export const toggleSettings = isSettingsOpen => state => ({ ...state, isSettingsOpen });
+export const toggleSettings = selection => state => ({
+  ...state,
+  activeSettingsMenuItem: selection === true ? 'accounts' : selection ? selection : null
+});
 
 export const init = () => state => async (dispatch, getState, { connectors }) => {
   dispatch(toggleFetching(true));
