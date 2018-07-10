@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Menu from './Menu';
 import ProjectSettings from './ProjectSettings';
+import AccountSettings from './AccountSettings';
 import { getIsSettingsOpen, getActiveSettingsMenuItem } from '../selectors';
 import { toggleSettings } from '../actions';
 
@@ -47,7 +48,10 @@ export default class extends React.PureComponent {
                 ]}
               />
             </nav>
-            <main>{activeSettingsMenuItem === 'projects' && <ProjectSettings />}</main>
+            <main>
+            {activeSettingsMenuItem === 'projects' && <ProjectSettings />}
+            {activeSettingsMenuItem === 'accounts' && <AccountSettings />}
+            </main>
           </div>
         </div>
       </Dialog>

@@ -41,6 +41,23 @@ body {
   align-items: center;
 }
 
+.timeline {
+  overflow: auto;
+  padding: 20px 20%;
+}
+
+.timeline .item {
+  margin-bottom: 20px;
+}
+
+.timeline .item .header-root {
+  padding-bottom: 0;
+}
+
+.timeline .item .subheader {
+  line-height: 17px;
+}
+
 .settings {
   display: flex;
   flex: 1 1 0;
@@ -63,6 +80,18 @@ body {
 .settings > .content > main {
   flex: 1 1 0;
   display: flex;
+}
+
+.account-settings {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #efefef;
+}
+
+.account-settings > header {
+  flex: 0 0 auto;
+  padding: 15px;
 }
 
 .project-settings {
@@ -88,23 +117,6 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-.timeline {
-  overflow: auto;
-  padding: 20px 20%;
-}
-
-.timeline .item {
-  margin-bottom: 20px;
-}
-
-.timeline .item .header-root {
-  padding-bottom: 0;
-}
-
-.timeline .item .subheader {
-  line-height: 17px;
 }
 
 .rapid-project-creator {
