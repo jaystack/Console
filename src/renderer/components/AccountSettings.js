@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -39,25 +39,28 @@ export default class extends React.PureComponent {
     return `Delete ${account.name} ${account.type} account`;
   }
 
-  render() {
-    const { accounts } = this.props;
-    const { isOpenAddAccountDialog, removableAccountId } = this.state;
+  renderEmptyContent() {
     return (
-      <div className="account-settings">
+      <div className="empty-content">
+        <Typography variant="subheading" gutterBottom align="center">
+          You have no accounts.
+        </Typography>
+        <Button variant="contained" color="primary" size="medium" onClick={this.handleAddButtonClick}>
+          Add your first account
+        </Button>
+      </div>
+    );
+  }
+
+  renderContent() {
+    const { accounts } = this.props;
+    return (
+      <Fragment>
         <header>
           <Button variant="contained" color="primary" size="medium" onClick={this.handleAddButtonClick}>
             Add account
           </Button>
         </header>
-        <AddAccountDialog open={isOpenAddAccountDialog} onClose={this.handleAddAccountDialogClose} />
-        <ConfirmDialog
-          open={!!removableAccountId}
-          title={this.getRemovableAccountTitle()}
-          text="Are you sure you want to delete this account?"
-          onClose={this.handleRemoveDialogCancel}
-          onSubmit={this.handleRemoveDialogSubmit}
-          confirmButtonLabel="Delete"
-        />
         <main>
           <div className="grid-container">
             <div className="account-grid">
@@ -74,6 +77,25 @@ export default class extends React.PureComponent {
             </div>
           </div>
         </main>
+      </Fragment>
+    );
+  }
+
+  render() {
+    const { accounts } = this.props;
+    const { isOpenAddAccountDialog, removableAccountId } = this.state;
+    return (
+      <div className="account-settings">
+        <AddAccountDialog open={isOpenAddAccountDialog} onClose={this.handleAddAccountDialogClose} />
+        <ConfirmDialog
+          open={!!removableAccountId}
+          title={this.getRemovableAccountTitle()}
+          text="Are you sure you want to delete this account?"
+          onClose={this.handleRemoveDialogCancel}
+          onSubmit={this.handleRemoveDialogSubmit}
+          confirmButtonLabel="Delete"
+        />
+        {accounts.length > 0 ? this.renderContent() : this.renderEmptyContent()}
       </div>
     );
   }
