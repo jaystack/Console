@@ -1,6 +1,5 @@
 import { getConfig, getQuery } from './selectors';
 import searchByQuery from './utils/search';
-import { AsyncResource } from 'async_hooks';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
 
@@ -49,6 +48,11 @@ export const readAccounts = () => state => async (dispatch, getState, { db }) =>
 
 export const createAccount = account => state => async (dispatch, getState, { db }) => {
   await db.select('accounts').insert(account);
+  await dispatch(readAccounts());
+};
+
+export const removeAccount = _id => state => async (dispatch, getState, { db }) => {
+  await db.select('accounts').remove({ _id });
   await dispatch(readAccounts());
 };
 

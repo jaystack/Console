@@ -6,21 +6,42 @@ import Typography from '@material-ui/core/Typography';
 import AddAccountDialog from './AddAccountDialog';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ConfirmDialog from './ConfirmDialog';
 import { getAccounts } from '../selectors';
+import { removeAccount } from '../actions';
 
-@connect(state => ({ accounts: getAccounts(state) }))
+@connect(state => ({ accounts: getAccounts(state) }), { removeAccount })
 export default class extends React.PureComponent {
   state = {
-    isOpenAddAccountDialog: false
+    isOpenAddAccountDialog: false,
+    removableAccountId: null
   };
 
   handleAddButtonClick = () => this.setState({ isOpenAddAccountDialog: true });
 
   handleAddAccountDialogClose = () => this.setState({ isOpenAddAccountDialog: false });
 
+  handleRemoveAccount = _id => this.setState({ removableAccountId: _id });
+
+  handleRemoveDialogCancel = () => {
+    this.setState({ removableAccountId: null });
+  };
+
+  handleRemoveDialogSubmit = () => {
+    this.props.removeAccount(this.state.removableAccountId);
+    this.setState({ removableAccountId: null });
+  };
+
+  getRemovableAccountTitle() {
+    const { removableAccountId } = this.state;
+    if (!removableAccountId) return '';
+    const account = this.props.accounts.find(account => account._id === removableAccountId);
+    return `Delete ${account.name} ${account.type} account`;
+  }
+
   render() {
     const { accounts } = this.props;
-    const { isOpenAddAccountDialog } = this.state;
+    const { isOpenAddAccountDialog, removableAccountId } = this.state;
     return (
       <div className="account-settings">
         <header>
@@ -29,7 +50,17 @@ export default class extends React.PureComponent {
           </Button>
         </header>
         <AddAccountDialog open={isOpenAddAccountDialog} onClose={this.handleAddAccountDialogClose} />
-        <main>{accounts.map(account => <Account key={account._id} {...account} />)}</main>
+        <ConfirmDialog
+          open={!!removableAccountId}
+          title={this.getRemovableAccountTitle()}
+          text="Are you sure you want to delete this account?"
+          onClose={this.handleRemoveDialogCancel}
+          onSubmit={this.handleRemoveDialogSubmit}
+          confirmButtonLabel="Delete"
+        />
+        <main>
+          {accounts.map(account => <Account key={account._id} onRemove={this.handleRemoveAccount} {...account} />)}
+        </main>
       </div>
     );
   }
@@ -49,6 +80,10 @@ class Account extends React.PureComponent {
     }
   }
 
+  handleRemoveClick = () => {
+    this.props.onRemove(this.props._id);
+  };
+
   render() {
     const { name } = this.props;
     return (
@@ -60,7 +95,7 @@ class Account extends React.PureComponent {
           <Typography variant="display1">{name}</Typography>
         </div>
         <div className="button-container">
-          <IconButton>
+          <IconButton onClick={this.handleRemoveClick}>
             <DeleteIcon />
           </IconButton>
         </div>
