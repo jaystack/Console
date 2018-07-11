@@ -1,20 +1,20 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import TypeSelectorDialog from './TypeSelectorDialog';
+import AccountSelectorDialog from './AccountSelectorDialog';
 import SlackConfigurator from './SlackSourceConfiguratorDialog';
 import { addSource } from '../actions';
 
 @connect(null, { addSource })
 export default class extends React.PureComponent {
   state = {
-    type: null
+    account: null
   };
 
   componentDidUpdate(prevProps) {
     if (prevProps.open !== this.props.open) this.setState({ type: null });
   }
 
-  handleSelectType = type => this.setState({ type });
+  handleSelectType = account => this.setState({ account });
 
   handleSubmit = async source => {
     //await this.props.addSource({ type: this.state.type, ...source });
@@ -23,11 +23,16 @@ export default class extends React.PureComponent {
 
   render() {
     const { open, onClose } = this.props;
-    const { type } = this.state;
+    const { account } = this.state;
     return (
       <Fragment>
-        <TypeSelectorDialog open={open && type === null} onSelect={this.handleSelectType} onClose={onClose} />
-        <SlackConfigurator open={open && type === 'slack'} onClose={onClose} onSubmit={this.handleSubmit} />
+        <AccountSelectorDialog open={open && account === null} onSelect={this.handleSelectType} onClose={onClose} />
+        <SlackConfigurator
+          open={open && !!account && account.type === 'slack'}
+          onClose={onClose}
+          onSubmit={this.handleSubmit}
+          account={account}
+        />
       </Fragment>
     );
   }

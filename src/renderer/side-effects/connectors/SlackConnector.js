@@ -19,7 +19,17 @@ export default class SlackConnector extends BaseConnector {
   static async resolveAccountByToken(token) {
     const { team: { id, name: teamName } } = await this.request(token, 'get', 'team.info');
     const { profile: { real_name: username } } = await this.request(token, 'get', 'users.profile.get');
-    return { id, username, teamName };
+    const { ims } = await this.request(token, 'get', 'im.list');
+    const { groups } = await this.request(token, 'get', 'groups.list');
+    const { channels } = await this.request(token, 'get', 'channels.list');
+    const { members } = await this.request(token, 'get', 'users.list');
+    const conversations = [
+      ...ims.map(({ id, user: userId }) => ({ type: 'im', id, userId })),
+      ...groups.map(({ id, members: userIds }) => ({ type: 'group', id, userIds })),
+      ...channels.map(({ id, name }) => ({ type: 'channel', id, name }))
+    ];
+    const users = members.map(({ id, name }) => ({ id, name }));
+    return { id, username, teamName, conversations, users };
   }
 
   async init(options) {

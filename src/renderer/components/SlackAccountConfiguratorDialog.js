@@ -13,29 +13,39 @@ import Button from '@material-ui/core/Button';
 export default class extends React.PureComponent {
   timer = null;
 
-  state = {
-    id: null,
-    username: null,
-    teamName: null,
-    token: ''
-  };
+  state = this.getInitialState();
+
+  getInitialState(includeToken = true) {
+    return {
+      id: null,
+      username: null,
+      teamName: null,
+      conversations: [],
+      users: [],
+      ...(includeToken ? { token: '' } : {})
+    };
+  }
+
+  resetAccountDetails() {
+    this.setState(this.getInitialState(false));
+  }
 
   handleChange = evt => {
     this.setState({ token: evt.target.value });
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
-        if (!this.state.token) return this.setState({ id: null, username: null, teamName: null });
-        const { id, username, teamName } = await this.props.resolveSlackAccount(this.state.token);
-        this.setState({ id, username, teamName });
+        if (!this.state.token) return this.resetAccountDetails();
+        const account = await this.props.resolveSlackAccount(this.state.token);
+        this.setState(account);
       } catch (error) {
-        this.setState({ id: null, username: null, teamName: null });
+        this.resetAccountDetails();
       }
     }, 300);
   };
 
   handleExit = () => {
-    this.setState({ id: null, username: null, teamName: null, token: '' });
+    this.setState(this.getInitialState());
   };
 
   handleSubmit = () => {

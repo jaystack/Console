@@ -14,16 +14,17 @@ export default class BaseConnector {
     return `${url}?${string}`;
   }
 
-  static async request(token, method, url, data = null) {
+  static async request(token, method, url, { query = {}, data = null } = {}) {
     return await Axios({
       headers: { Authorization: `Bearer ${token}` },
       method,
       url: `${this.baseUrl}/${url}`,
-      data
+      data,
+      params: query
     }).then(resp => resp.data);
   }
 
-  request(method, url, data = null) {
-    return this.constructor.request(this.options.credentials.token, method, url, data);
+  request(...args) {
+    return this.constructor.request(this.options.credentials.token, ...args);
   }
 }
