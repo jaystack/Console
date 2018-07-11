@@ -9,7 +9,9 @@ import Button from '@material-ui/core/Button';
 import { getResolvedConversations } from '../selectors';
 import { resolveSlackAccount } from '../actions';
 
-@connect(null, { resolveSlackAccount })
+@connect((state, { accountId }) => ({ conversations: getResolvedConversations(accountId)(state) }), {
+  resolveSlackAccount
+})
 export default class extends React.PureComponent {
   handleSubmit = () => {
     this.props.onSubmit(this.state);
@@ -17,7 +19,8 @@ export default class extends React.PureComponent {
   };
 
   render() {
-    const { open, onClose } = this.props;
+    const { open, onClose, conversations } = this.props;
+    console.log(conversations);
     return (
       <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle id="form-dialog-title">Add Slack Conversation</DialogTitle>

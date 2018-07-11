@@ -31,7 +31,7 @@ export default class extends React.PureComponent {
           open={open && !!account && account.type === 'slack'}
           onClose={onClose}
           onSubmit={this.handleSubmit}
-          account={account}
+          accountId={account ? account._id : null}
         />
       </Fragment>
     );
