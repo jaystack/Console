@@ -94,6 +94,45 @@ body {
   padding: 15px;
 }
 
+.account-settings > main {
+  padding: 15px;
+  overflow-y: auto;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: auto auto auto;
+}
+
+.account-settings > main .account-tile {
+  padding: 15px;
+  display: flex;
+}
+
+.account-settings > main .account-tile .img-container {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.account-settings > main .account-tile .img-container > img {
+  width: 40px;
+  height: 40px;
+}
+
+.account-settings > main .account-tile .name-container {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+}
+
+.account-settings > main .account-tile .button-container {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .select-account-type-container {
   display: flex;
   width: 340px;
