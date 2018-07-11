@@ -11,7 +11,7 @@ export default class extends React.PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.open !== this.props.open) this.setState({ type: null });
+    if (prevProps.open !== this.props.open) this.setState({ account: null });
   }
 
   handleSelectType = account => this.setState({ account });
