@@ -59,7 +59,20 @@ export default class extends React.PureComponent {
           confirmButtonLabel="Delete"
         />
         <main>
-          {accounts.map(account => <Account key={account._id} onRemove={this.handleRemoveAccount} {...account} />)}
+          <div className="grid-container">
+            <div className="account-grid">
+              {accounts.map(account => (
+                <Account
+                  key={account._id}
+                  onRemove={this.handleRemoveAccount}
+                  _id={account._id}
+                  type={account.type}
+                  title={account.username}
+                  subtitle={account.type === 'slack' ? account.teamName : ''}
+                />
+              ))}
+            </div>
+          </div>
         </main>
       </div>
     );
@@ -85,14 +98,19 @@ class Account extends React.PureComponent {
   };
 
   render() {
-    const { name } = this.props;
+    const { title, subtitle } = this.props;
     return (
       <Paper classes={{ root: 'account-tile' }}>
         <div className="img-container">
           <img alt="account-type" src={this.getImg()} />
         </div>
         <div className="name-container">
-          <Typography variant="display1">{name}</Typography>
+          <Typography variant="title" color="textSecondary">
+            {title}
+          </Typography>
+          <Typography variant="subheading" color="textSecondary">
+            {subtitle}
+          </Typography>
         </div>
         <div className="button-container">
           <IconButton onClick={this.handleRemoveClick}>

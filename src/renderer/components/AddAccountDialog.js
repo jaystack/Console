@@ -87,7 +87,8 @@ class SlackConfigurator extends React.PureComponent {
 
   state = {
     id: null,
-    name: null,
+    username: null,
+    teamName: null,
     token: ''
   };
 
@@ -96,17 +97,17 @@ class SlackConfigurator extends React.PureComponent {
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
-        if (!this.state.token) return this.setState({ id: null, name: null });
-        const { id, name } = await this.props.resolveSlackAccount(this.state.token);
-        this.setState({ id, name });
+        if (!this.state.token) return this.setState({ id: null, username: null, teamName: null });
+        const { id, username, teamName } = await this.props.resolveSlackAccount(this.state.token);
+        this.setState({ id, username, teamName });
       } catch (error) {
-        this.setState({ id: null, name: null });
+        this.setState({ id: null, username: null, teamName: null });
       }
     }, 300);
   };
 
   handleExit = () => {
-    this.setState({ id: null, name: null, token: '' });
+    this.setState({ id: null, username: null, teamName: null, token: '' });
   };
 
   handleSubmit = () => {
@@ -116,7 +117,7 @@ class SlackConfigurator extends React.PureComponent {
 
   render() {
     const { open, onClose } = this.props;
-    const { token, id, name } = this.state;
+    const { token, id, username, teamName } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle id="form-dialog-title">Configure Slack Account</DialogTitle>
@@ -134,7 +135,12 @@ class SlackConfigurator extends React.PureComponent {
             value={token}
             onChange={this.handleChange}
           />
-          {name && <DialogContentText>{name}</DialogContentText>}
+          {username &&
+          teamName && (
+            <DialogContentText>
+              {username} in {teamName}
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">
@@ -155,7 +161,7 @@ class GithubConfigurator extends React.PureComponent {
 
   state = {
     id: null,
-    name: null,
+    username: null,
     token: ''
   };
 
@@ -164,17 +170,17 @@ class GithubConfigurator extends React.PureComponent {
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
-        if (!this.state.token) return this.setState({ id: null, name: null });
-        const { id, name } = await this.props.resolveGithubAccount(this.state.token);
-        this.setState({ id, name });
+        if (!this.state.token) return this.setState({ id: null, username: null });
+        const { id, username } = await this.props.resolveGithubAccount(this.state.token);
+        this.setState({ id, username });
       } catch (error) {
-        this.setState({ id: null, name: null });
+        this.setState({ id: null, username: null });
       }
     }, 300);
   };
 
   handleExit = () => {
-    this.setState({ id: null, name: null, token: '' });
+    this.setState({ id: null, username: null, token: '' });
   };
 
   handleSubmit = () => {
@@ -184,7 +190,7 @@ class GithubConfigurator extends React.PureComponent {
 
   render() {
     const { open, onClose } = this.props;
-    const { token, id, name } = this.state;
+    const { token, id, username } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle id="form-dialog-title">Configure Github Account</DialogTitle>
@@ -206,7 +212,7 @@ class GithubConfigurator extends React.PureComponent {
             value={token}
             onChange={this.handleChange}
           />
-          {name && <DialogContentText>{name}</DialogContentText>}
+          {username && <DialogContentText>{username}</DialogContentText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">

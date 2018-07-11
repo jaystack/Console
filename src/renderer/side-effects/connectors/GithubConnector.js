@@ -5,8 +5,8 @@ export default class GithubConnector extends BaseConnector {
   static baseUrl = 'https://api.github.com';
 
   static async resolveAccountByToken(token) {
-    const { id, login: name } = await this.request(token, 'get', 'user');
-    return { id, name };
+    const { id, login: username } = await this.request(token, 'get', 'user');
+    return { id, username };
   }
 
   async init(options) {

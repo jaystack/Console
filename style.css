@@ -95,19 +95,33 @@ body {
 }
 
 .account-settings > main {
+  flex: 1 1 0;
+  position: relative;
+  display: block;
+}
+
+.account-settings .grid-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
   padding: 15px;
-  overflow-y: auto;
+  overflow: auto;
+}
+
+.account-settings .account-grid {
   display: grid;
   grid-gap: 15px;
   grid-template-columns: auto auto auto;
 }
 
-.account-settings > main .account-tile {
+.account-settings .account-grid .account-tile {
   padding: 15px;
   display: flex;
 }
 
-.account-settings > main .account-tile .img-container {
+.account-settings .account-grid .account-tile .img-container {
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
@@ -115,22 +129,24 @@ body {
   margin-right: 15px;
 }
 
-.account-settings > main .account-tile .img-container > img {
+.account-settings .account-grid .account-tile .img-container > img {
   width: 40px;
   height: 40px;
 }
 
-.account-settings > main .account-tile .name-container {
+.account-settings .account-grid .account-tile .name-container {
   flex: 1 1 0;
   display: flex;
-  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
-.account-settings > main .account-tile .button-container {
+.account-settings .account-grid .account-tile .button-container {
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 15px;
 }
 
 .select-account-type-container {
