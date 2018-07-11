@@ -73,19 +73,33 @@ class Tile extends React.PureComponent {
 }
 
 class SlackConfigurator extends React.PureComponent {
+  state = {
+    token: ''
+  };
+
+  handleChange = evt => this.setState({ token: evt.target.value });
+
   render() {
     const { open, onClose } = this.props;
+    const { token } = this.state;
     return (
       <Dialog open={open}>
         <DialogTitle id="form-dialog-title">Configure Slack Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Provide your legacy token. You can find it{' '}
+            Provide your legacy token. You can create one{' '}
             <a rel="noopener noreferrer" target="_blank" href="https://api.slack.com/custom-integrations/legacy-tokens">
               here
             </a>.
           </DialogContentText>
-          <TextField autoFocus margin="dense" label="Legacy token" classes={{ marginDense: 'legacy-token-input' }} />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Legacy token"
+            classes={{ marginDense: 'legacy-token-input' }}
+            value={token}
+            onChange={this.handleChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">
