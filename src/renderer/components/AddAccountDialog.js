@@ -186,7 +186,7 @@ class GithubConfigurator extends React.PureComponent {
     const { token, id, name } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
-        <DialogTitle id="form-dialog-title">Configure Slack Account</DialogTitle>
+        <DialogTitle id="form-dialog-title">Configure Github Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Provide your personal token. Read more{' '}
