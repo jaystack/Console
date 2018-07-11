@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import ConfirmDialog from './ConfirmDialog';
+import AddSourceDialog from './AddSourceDialog';
 import { getSelectedProject } from '../selectors';
 import { removeProject, renameProject } from '../actions';
 
@@ -11,7 +12,8 @@ import { removeProject, renameProject } from '../actions';
 export default class extends React.PureComponent {
   state = {
     isRemoveRequest: false,
-    newName: null
+    newName: null,
+    isOpenAddSourceDialog: false
   };
 
   async componentDidUpdate(prevProps) {
@@ -57,6 +59,14 @@ export default class extends React.PureComponent {
     this.setState({ newName: null });
   }
 
+  handleAddSource = () => {
+    this.setState({ isOpenAddSourceDialog: true });
+  };
+
+  handleAddSourceDialogClose = () => {
+    this.setState({ isOpenAddSourceDialog: false });
+  };
+
   renderTitle() {
     const { project: { name } } = this.props;
     const { newName } = this.state;
@@ -81,10 +91,11 @@ export default class extends React.PureComponent {
 
   render() {
     const { project } = this.props;
-    const { isRemoveRequest } = this.state;
+    const { isRemoveRequest, isOpenAddSourceDialog } = this.state;
     if (!project) return null;
     return (
       <div className="project-editor">
+        <AddSourceDialog open={isOpenAddSourceDialog} onClose={this.handleAddSourceDialogClose} />
         <ConfirmDialog
           open={isRemoveRequest}
           text="Are you sure you want to delete this project?"
