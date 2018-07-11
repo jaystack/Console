@@ -121,7 +121,7 @@ body {
 .account-settings .account-grid {
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .account-settings .account-grid .account-tile {
@@ -204,6 +204,7 @@ body {
 .project-settings {
   flex: 1 1 0;
   display: flex;
+  background-color: #efefef;
 }
 
 .project-settings .project-list {
@@ -211,6 +212,7 @@ body {
   width: 300px;
   display: flex;
   flex-direction: column;
+  background-color: white;
   border-right: 1px solid #ddd;
 }
 
