@@ -11,7 +11,7 @@ export default class extends React.PureComponent {
 
   handleAddButtonClick = () => this.setState({ isOpenAddAccountDialog: true });
 
-  handleAddAccountDialogClose = () => this.setState({ isOpenAddAccountDialog: false }, () => console.log(this.state.isOpenAddAccountDialog));
+  handleAddAccountDialogClose = () => this.setState({ isOpenAddAccountDialog: false });
 
   render() {
     const { isOpenAddAccountDialog } = this.state;

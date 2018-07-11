@@ -2,8 +2,10 @@ import BaseConnector from './BaseConnector';
 import { GithubCommitTransformer, GithubRepoTransformer, GithubUserTransformer } from '../../utils/GithubTransformers';
 
 export default class GithubConnector extends BaseConnector {
+  static baseUrl = 'https://api.github.com';
+
   async init(options) {
-    await super.init(options, ' https://api.github.com/');
+    await super.init(options);
     const repos = await this.fetchRepos('jaystack');
     const commits = await Promise.all(repos.map(repo => this.fetchCommits(repo)));
     // const users = await this.fetchUsers(commits);
@@ -32,7 +34,7 @@ export default class GithubConnector extends BaseConnector {
       const now = new Date();
       const resp = await this.request(
         'get',
-        this.queryString(`repos/${repo.name}/commits`, {
+        this.constructor.queryString(`repos/${repo.name}/commits`, {
           since: now.toISOString()
         })
       );
@@ -58,7 +60,7 @@ export default class GithubConnector extends BaseConnector {
   async refreshCommits(repo, lastRecord) {
     const commits = await this.request(
       'get',
-      this.queryString(`repos/${repo.name}/commits`, {
+      this.constructor.queryString(`repos/${repo.name}/commits`, {
         since: lastRecord.created
       })
     );

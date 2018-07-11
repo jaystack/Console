@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { resolveSlackAccount } from '../actions';
 
 export default class extends React.PureComponent {
   state = {
@@ -72,18 +74,38 @@ class Tile extends React.PureComponent {
   }
 }
 
+@connect(null, { resolveSlackAccount })
 class SlackConfigurator extends React.PureComponent {
+  timer = null;
+
   state = {
+    id: null,
+    name: null,
     token: ''
   };
 
-  handleChange = evt => this.setState({ token: evt.target.value });
+  handleChange = evt => {
+    this.setState({ token: evt.target.value });
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(async () => {
+      try {
+        const { team: { id, name } } = await this.props.resolveSlackAccount(this.state.token);
+        this.setState({ id, name });
+      } catch (error) {
+        this.setState({ id: null, name: null });
+      }
+    }, 300);
+  };
+
+  handleExit = () => {
+    this.setState({ id: null, name: null, token: '' });
+  };
 
   render() {
     const { open, onClose } = this.props;
-    const { token } = this.state;
+    const { token, name } = this.state;
     return (
-      <Dialog open={open}>
+      <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle id="form-dialog-title">Configure Slack Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -100,6 +122,7 @@ class SlackConfigurator extends React.PureComponent {
             value={token}
             onChange={this.handleChange}
           />
+          {name && <DialogContentText>{name}</DialogContentText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">

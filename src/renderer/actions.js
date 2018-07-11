@@ -18,6 +18,19 @@ export const init = () => state => async (dispatch, getState, { connectors }) =>
   dispatch(toggleFetching(false));
 };
 
+export const initSources = () => state => async (dispatch, getState, { connectors }) => {
+  const { sources } = getConfig(getState());
+  await Promise.all(sources.map((sourceConfig, i) => connectors.of(i).init(sourceConfig)));
+};
+
+export const search = () => state => async (dispatch, getState, { db }) => {
+  const query = getQuery(getState());
+  const items = await searchByQuery(query, db);
+  dispatch(state => ({ ...state, items }));
+};
+
+export const updateQuery = query => state => ({ ...state, query });
+
 export const readConfig = () => state => async (dispatch, getState, { config, connectors, db }) => {
   const conf = await config.readConfig();
   dispatch(state => ({ ...state, config: conf }));
@@ -31,6 +44,11 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 export const readAccounts = () => state => async (dispatch, getState, { db }) => {
   const accounts = await db.select('accounts').find();
   dispatch(state => ({ ...state, accounts }));
+};
+
+export const resolveSlackAccount = token => state => async (dispatch, getState, { connectors }) => {
+  const slack = connectors.getConstructor('slack');
+  return await slack.resolveAccountByToken(token);
 };
 
 export const readProjects = () => state => async (dispatch, getState, { db }) => {
@@ -55,16 +73,3 @@ export const renameProject = (_id, name) => state => async (dispatch, getState, 
 };
 
 export const selectProject = selectedProjectId => state => ({ ...state, selectedProjectId });
-
-export const initSources = () => state => async (dispatch, getState, { connectors }) => {
-  const { sources } = getConfig(getState());
-  await Promise.all(sources.map((sourceConfig, i) => connectors.of(i).init(sourceConfig)));
-};
-
-export const search = () => state => async (dispatch, getState, { db }) => {
-  const query = getQuery(getState());
-  const items = await searchByQuery(query, db);
-  dispatch(state => ({ ...state, items }));
-};
-
-export const updateQuery = query => state => ({ ...state, query });

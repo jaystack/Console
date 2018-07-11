@@ -14,8 +14,14 @@ const queues = {
 };
 
 export default class SlackConnector extends BaseConnector {
+  static baseUrl = 'http://slack.com/api';
+
+  static async resolveAccountByToken(token) {
+    return await this.request(token, 'get', 'team.info');
+  }
+
   async init(options) {
-    await super.init(options, 'http://slack.com/api/', true);
+    await super.init(options);
     const conversations = await this.fetchConversations();
     const users = await this.fetchUsers();
     const messages =
@@ -26,7 +32,7 @@ export default class SlackConnector extends BaseConnector {
   async fetchConversations() {
     const resp = await this.request(
       'get',
-      this.queryString('conversations.list', {
+      this.constructor.queryString('conversations.list', {
         types: 'public_channel,private_channel,mpim,im'
       })
     );
@@ -51,7 +57,7 @@ export default class SlackConnector extends BaseConnector {
       const now = new Date();
       const conversation = await this.request(
         'get',
-        this.queryString('conversations.history', {
+        this.constructor.queryString('conversations.history', {
           channel: conversationId,
           oldest: now.getTime() / 1000 - 24 * 60 * 60 * 31,
           inclusive: true,
@@ -83,7 +89,7 @@ export default class SlackConnector extends BaseConnector {
   async refreshHistory(conversationId, lastRecord) {
     const conversation = await this.request(
       'get',
-      this.queryString('conversations.history', {
+      this.constructor.queryString('conversations.history', {
         channel: conversationId,
         oldest: lastRecord.created,
         limit: 1000

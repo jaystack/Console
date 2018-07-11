@@ -1,17 +1,6 @@
 import SlackConnector from './SlackConnector';
 import GithubConnector from './GithubConnector';
 
-const getConnector = type => {
-  switch (type) {
-    case 'slack':
-      return SlackConnector;
-    case 'github':
-      return GithubConnector;
-    default:
-      throw new Error('Unknown source type');
-  }
-};
-
 export default class ConnectorManager {
   static instance;
 
@@ -19,16 +8,24 @@ export default class ConnectorManager {
     if (this.constructor.instance) return this.constructor.getInstance();
     this.connectors = [];
     this.constructor.instance = this;
+    this.constructors = {
+      slack: SlackConnector,
+      github: GithubConnector
+    };
   }
 
   createBySources(sources, db) {
     this.connectors = sources.map(({ type }) => {
-      const Connector = getConnector(type);
+      const Connector = this.getConstructor(type);
       return new Connector(db);
     });
   }
 
   of(index) {
     return this.connectors[index];
+  }
+
+  getConstructor(type) {
+    return this.constructors[type];
   }
 }
