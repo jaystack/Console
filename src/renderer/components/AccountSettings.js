@@ -62,19 +62,17 @@ export default class extends React.PureComponent {
           </Button>
         </header>
         <main>
-          <div className="grid-container">
-            <div className="account-grid">
-              {accounts.map(account => (
-                <Account
-                  key={account._id}
-                  onRemove={this.handleRemoveAccount}
-                  _id={account._id}
-                  type={account.type}
-                  title={account.username}
-                  subtitle={account.type === 'slack' ? account.teamName : ''}
-                />
-              ))}
-            </div>
+          <div className="account-grid">
+            {accounts.map(account => (
+              <Account
+                key={account._id}
+                onRemove={this.handleRemoveAccount}
+                _id={account._id}
+                type={account.type}
+                title={account.username}
+                subtitle={account.type === 'slack' ? account.teamName : ''}
+              />
+            ))}
           </div>
         </main>
       </Fragment>

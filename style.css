@@ -106,22 +106,14 @@ body {
   flex: 1 1 0;
   position: relative;
   display: block;
-}
-
-.account-settings .grid-container {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
   padding: 15px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .account-settings .account-grid {
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .account-settings .account-grid .account-tile {
