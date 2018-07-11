@@ -9,8 +9,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { resolveSlackAccount } from '../actions';
+import { resolveSlackAccount, createAccount } from '../actions';
 
+@connect(null, { createAccount })
 export default class extends React.PureComponent {
   state = {
     type: null
@@ -22,13 +23,18 @@ export default class extends React.PureComponent {
 
   handleSelectType = type => this.setState({ type });
 
+  handleSubmit = async account => {
+    await this.props.createAccount({ type: this.state.type, ...account });
+    this.props.onClose();
+  };
+
   render() {
     const { open, onClose } = this.props;
     const { type } = this.state;
     return (
       <Fragment>
         <TypeSelectorDialog open={open && type === null} onSelect={this.handleSelectType} onClose={onClose} />
-        <SlackConfigurator open={open && type === 'slack'} onClose={onClose} />
+        <SlackConfigurator open={open && type === 'slack'} onClose={onClose} onSubmit={this.handleSubmit} />
       </Fragment>
     );
   }
@@ -101,9 +107,14 @@ class SlackConfigurator extends React.PureComponent {
     this.setState({ id: null, name: null, token: '' });
   };
 
+  handleSubmit = () => {
+    this.props.onSubmit(this.state);
+    this.props.onClose();
+  };
+
   render() {
     const { open, onClose } = this.props;
-    const { token, name } = this.state;
+    const { token, id, name } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle id="form-dialog-title">Configure Slack Account</DialogTitle>
@@ -128,7 +139,7 @@ class SlackConfigurator extends React.PureComponent {
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={onClose} color="primary">
+          <Button onClick={this.handleSubmit} color="primary" disabled={!id}>
             Add
           </Button>
         </DialogActions>
