@@ -94,6 +94,9 @@ export default class extends React.PureComponent {
         />
         <header>
           {this.renderTitle()}
+          <Button variant="contained" color="primary" onClick={this.handleAddSource}>
+            Add source
+          </Button>
           <Button variant="contained" color="secondary" onClick={this.handleRemoveProject}>
             Delete
           </Button>
