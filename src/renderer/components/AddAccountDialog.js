@@ -127,7 +127,6 @@ class SlackConfigurator extends React.PureComponent {
             </a>.
           </DialogContentText>
           <TextField
-            autoFocus
             margin="dense"
             label="Legacy token"
             classes={{ marginDense: 'legacy-token-input' }}
@@ -199,7 +198,6 @@ class GithubConfigurator extends React.PureComponent {
             </a>.
           </DialogContentText>
           <TextField
-            autoFocus
             margin="dense"
             label="Personal token"
             classes={{ marginDense: 'legacy-token-input' }}
