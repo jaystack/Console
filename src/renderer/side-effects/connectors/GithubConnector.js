@@ -4,6 +4,10 @@ import { GithubCommitTransformer, GithubRepoTransformer, GithubUserTransformer }
 export default class GithubConnector extends BaseConnector {
   static baseUrl = 'https://api.github.com';
 
+  static async resolveAccountByToken(token) {
+    return await this.request(token, 'get', 'user');
+  }
+
   async init(options) {
     await super.init(options);
     const repos = await this.fetchRepos('jaystack');

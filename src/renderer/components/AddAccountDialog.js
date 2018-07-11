@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { resolveSlackAccount, createAccount } from '../actions';
+import { resolveSlackAccount, resolveGithubAccount, createAccount } from '../actions';
 
 @connect(null, { createAccount })
 export default class extends React.PureComponent {
@@ -35,6 +35,7 @@ export default class extends React.PureComponent {
       <Fragment>
         <TypeSelectorDialog open={open && type === null} onSelect={this.handleSelectType} onClose={onClose} />
         <SlackConfigurator open={open && type === 'slack'} onClose={onClose} onSubmit={this.handleSubmit} />
+        <GithubConfigurator open={open && type === 'github'} onClose={onClose} onSubmit={this.handleSubmit} />
       </Fragment>
     );
   }
@@ -49,7 +50,7 @@ class TypeSelectorDialog extends React.PureComponent {
         <DialogContent>
           <div className="select-account-type-container">
             <Tile type="slack" imgSrc="static/slack-logo.png" label="Slack" onClick={onSelect} />
-            <Tile type="github" imgSrc="static/github-logo.png" label="Github" />
+            <Tile type="github" imgSrc="static/github-logo.png" label="Github" onClick={onSelect} />
             <Tile type="email" imgSrc="static/email-logo.png" label="Email" />
           </div>
         </DialogContent>
@@ -95,7 +96,7 @@ class SlackConfigurator extends React.PureComponent {
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
-        const { team: { id, name } } = await this.props.resolveSlackAccount(this.state.token);
+        const { id, name } = await this.props.resolveSlackAccount(this.state.token);
         this.setState({ id, name });
       } catch (error) {
         this.setState({ id: null, name: null });
@@ -129,6 +130,78 @@ class SlackConfigurator extends React.PureComponent {
             autoFocus
             margin="dense"
             label="Legacy token"
+            classes={{ marginDense: 'legacy-token-input' }}
+            value={token}
+            onChange={this.handleChange}
+          />
+          {name && <DialogContentText>{name}</DialogContentText>}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleSubmit} color="primary" disabled={!id}>
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
+}
+
+@connect(null, { resolveGithubAccount })
+class GithubConfigurator extends React.PureComponent {
+  timer = null;
+
+  state = {
+    id: null,
+    name: null,
+    token: ''
+  };
+
+  handleChange = evt => {
+    this.setState({ token: evt.target.value });
+    if (this.timer) clearTimeout(this.timer);
+    this.timer = setTimeout(async () => {
+      try {
+        const { id, name } = await this.props.resolveGithubAccount(this.state.token);
+        this.setState({ id, name });
+      } catch (error) {
+        this.setState({ id: null, name: null });
+      }
+    }, 300);
+  };
+
+  handleExit = () => {
+    this.setState({ id: null, name: null, token: '' });
+  };
+
+  handleSubmit = () => {
+    this.props.onSubmit(this.state);
+    this.props.onClose();
+  };
+
+  render() {
+    const { open, onClose } = this.props;
+    const { token, id, name } = this.state;
+    return (
+      <Dialog open={open} onExited={this.handleExit}>
+        <DialogTitle id="form-dialog-title">Configure Slack Account</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Provide your personal token. Read more{' '}
+            <a
+              rel="noopener noreferrer"
+              target="_blank"
+              href="https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/"
+            >
+              here
+            </a>.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Personal token"
             classes={{ marginDense: 'legacy-token-input' }}
             value={token}
             onChange={this.handleChange}
