@@ -25,6 +25,7 @@ export default class DbManager {
     const { createDatabase } = this.constructor;
     this.dbs = {
       projects: createDatabase('projects'),
+      accounts: createDatabase('accounts'),
       slack: {
         conversations: createDatabase('slack.conversations'),
         messages: createDatabase('slack.messages'),

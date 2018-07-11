@@ -11,6 +11,7 @@ export const toggleSettings = selection => state => ({
 export const init = () => state => async (dispatch, getState, { connectors }) => {
   dispatch(toggleFetching(true));
   await dispatch(readProjects());
+  await dispatch(readAccounts());
   await dispatch(readConfig());
   await dispatch(initSources());
   await dispatch(search());
@@ -25,6 +26,11 @@ export const readConfig = () => state => async (dispatch, getState, { config, co
 
 export const updateConfig = nextConfig => state => async (dispatch, getState, { config }) => {
   await config.writeConfig(nextConfig);
+};
+
+export const readAccounts = () => state => async (dispatch, getState, { db }) => {
+  const accounts = await db.select('accounts').find();
+  dispatch(state => ({ ...state, accounts }));
 };
 
 export const readProjects = () => state => async (dispatch, getState, { db }) => {

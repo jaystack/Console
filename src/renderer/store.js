@@ -7,6 +7,7 @@ const initialState = {
   config: null,
   isFetching: true,
   activeSettingsMenuItem: 'accounts',
+  accounts: [],
   projects: [],
   selectedProjectId: null,
   items: [],

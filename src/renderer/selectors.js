@@ -6,6 +6,8 @@ export const getIsSettingsOpen = state => state.activeSettingsMenuItem !== null;
 
 export const getActiveSettingsMenuItem = state => state.activeSettingsMenuItem;
 
+export const getAccounts = state => state.accounts;
+
 export const getProjects = state => state.projects;
 
 export const getSelectedProjectId = state => state.selectedProjectId;
