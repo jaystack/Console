@@ -134,6 +134,10 @@ body {
   flex: 0 0 auto;
 }
 
+.legacy-token-input {
+  width: 400px;
+}
+
 .project-settings {
   flex: 1 1 0;
   display: flex;
