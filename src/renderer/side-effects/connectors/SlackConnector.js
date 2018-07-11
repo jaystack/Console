@@ -17,7 +17,8 @@ export default class SlackConnector extends BaseConnector {
   static baseUrl = 'http://slack.com/api';
 
   static async resolveAccountByToken(token) {
-    return await this.request(token, 'get', 'team.info');
+    const { team: { id, name } } = await this.request(token, 'get', 'team.info');
+    return { id, name };
   }
 
   async init(options) {

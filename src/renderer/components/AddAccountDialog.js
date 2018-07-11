@@ -96,6 +96,7 @@ class SlackConfigurator extends React.PureComponent {
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
+        if (!this.state.token) return this.setState({ id: null, name: null });
         const { id, name } = await this.props.resolveSlackAccount(this.state.token);
         this.setState({ id, name });
       } catch (error) {
@@ -163,6 +164,7 @@ class GithubConfigurator extends React.PureComponent {
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
+        if (!this.state.token) return this.setState({ id: null, name: null });
         const { id, name } = await this.props.resolveGithubAccount(this.state.token);
         this.setState({ id, name });
       } catch (error) {

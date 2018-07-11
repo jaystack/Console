@@ -58,14 +58,12 @@ export const removeAccount = _id => state => async (dispatch, getState, { db }) 
 
 export const resolveSlackAccount = token => state => async (dispatch, getState, { connectors }) => {
   const slack = connectors.getConstructor('slack');
-  const { team: { id, name } } = await slack.resolveAccountByToken(token);
-  return { id, name };
+  return await slack.resolveAccountByToken(token);
 };
 
 export const resolveGithubAccount = token => state => async (dispatch, getState, { connectors }) => {
   const github = connectors.getConstructor('github');
-  const { id, login: name } = await github.resolveAccountByToken(token);
-  return { id, name };
+  return await github.resolveAccountByToken(token);
 };
 
 export const readProjects = () => state => async (dispatch, getState, { db }) => {
