@@ -37,11 +37,11 @@ export const getResolvedConversations = createSelector([ getConversations, getUs
   conversations.map(conversation => {
     switch (conversation.type) {
       case 'im':
-        return { ...conversation, user: users.find(user => user.id === conversation.userId) };
+        return { ...conversation, user: (users.find(user => user.id === conversation.userId) || {}).name };
       case 'group':
         return {
           ...conversation,
-          users: conversation.userIds.map(userId => users.find(user => user.id === userId))
+          users: conversation.userIds.map(userId => (users.find(user => user.id === userId) || {}).name)
         };
       default:
         return conversation;

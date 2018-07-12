@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import SearchableList from './SearchableList';
 import { getResolvedConversations } from '../selectors';
 import { resolveSlackAccount } from '../actions';
 
@@ -14,25 +15,37 @@ import { resolveSlackAccount } from '../actions';
 })
 export default class extends React.PureComponent {
   handleSubmit = () => {
-    this.props.onSubmit(this.state);
     this.props.onClose();
   };
 
+  getListItems() {
+    const { conversations } = this.props;
+    //console.log(conversations);
+    return conversations.map(conversation => {
+      switch (conversation.type) {
+        case 'im':
+          return { id: conversation.id, label: conversation.user, icon: 'person' };
+        case 'group':
+          return { id: conversation.id, label: conversation.users.join(', '), icon: 'people' };
+        case 'channel':
+          return { id: conversation.id, label: conversation.name, icon: 'mdi mdi-pound' };
+        default:
+          return null;
+      }
+    });
+  }
+
   render() {
-    const { open, onClose, conversations } = this.props;
-    console.log(conversations);
+    const { open, onClose } = this.props;
     return (
       <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle id="form-dialog-title">Add Slack Conversation</DialogTitle>
-        <DialogContent>
-          <DialogContentText>...</DialogContentText>
+        <DialogContent classes={{ root: 'slack-source-configuration-dialog-content' }}>
+          <SearchableList items={this.getListItems()} />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose} color="primary">
             Cancel
-          </Button>
-          <Button onClick={this.handleSubmit} color="primary">
-            Add
           </Button>
         </DialogActions>
       </Dialog>

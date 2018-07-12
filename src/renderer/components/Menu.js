@@ -21,8 +21,14 @@ export default class extends React.PureComponent {
     subheader: PropTypes.string
   };
 
+  static defaultProps = {
+    items: [],
+    selected: [],
+    onItemClick: id => {}
+  };
+
   handleItemClick = id => () => {
-    if (this.props.onItemClick) this.props.onItemClick(id);
+    this.props.onItemClick(id);
   };
 
   render() {
@@ -34,10 +40,12 @@ export default class extends React.PureComponent {
             <MenuItem key={id} onClick={this.handleItemClick(id)} selected={selected.includes(id)}>
               {icon && (
                 <ListItemIcon>
-                  <Icon color="primary">{icon}</Icon>
+                  <Icon className={getIconAsClass(icon)} color="primary">
+                    {getIconAsChild(icon)}
+                  </Icon>
                 </ListItemIcon>
               )}
-              {icon ? <ListItemText inset primary={label} /> : label}
+              {icon ? <ListItemText classes={{ primary: 'menu-item-text' }} inset primary={label} /> : label}
             </MenuItem>
           ))}
         </MenuList>
@@ -45,3 +53,8 @@ export default class extends React.PureComponent {
     );
   }
 }
+
+const mdiPattern = /^mdi /;
+
+const getIconAsClass = icon => (mdiPattern.test(icon) ? icon : '');
+const getIconAsChild = icon => (mdiPattern.test(icon) ? '' : icon);
