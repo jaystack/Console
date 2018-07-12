@@ -24,28 +24,27 @@ export const getQuery = state => state.query;
 
 export const getItems = state => state.items;
 
-export const getAccount = _id =>
-  createSelector([ getAccounts ], accounts => accounts.find(account => account._id === _id)) || null;
+export const getAccount =
+  createSelector([ getAccounts, (_, accountId) => accountId ], (accounts, accountId) =>
+    accounts.find(account => account._id === accountId)
+  ) || null;
 
-export const getConversations = accountId =>
-  createSelector([ getAccount(accountId) ], account => (account ? account.conversations : []));
+export const getConversations = createSelector(getAccount, account => (account ? account.conversations : []));
 
-export const getUsers = accountId =>
-  createSelector([ getAccount(accountId) ], account => (account ? account.users : []));
+export const getUsers = createSelector(getAccount, account => (account ? account.users : []));
 
-export const getResolvedConversations = accountId =>
-  createSelector([ getConversations(accountId), getUsers(accountId) ], (conversations, users) =>
-    conversations.map(conversation => {
-      switch (conversation.type) {
-        case 'im':
-          return { ...conversation, user: users.find(user => user.id === conversation.userId) };
-        case 'group':
-          return {
-            ...conversation,
-            users: conversation.userIds.map(userId => users.find(user => user.id === userId))
-          };
-        default:
-          return conversation;
-      }
-    })
-  );
+export const getResolvedConversations = createSelector([ getConversations, getUsers ], (conversations, users) =>
+  conversations.map(conversation => {
+    switch (conversation.type) {
+      case 'im':
+        return { ...conversation, user: users.find(user => user.id === conversation.userId) };
+      case 'group':
+        return {
+          ...conversation,
+          users: conversation.userIds.map(userId => users.find(user => user.id === userId))
+        };
+      default:
+        return conversation;
+    }
+  })
+);

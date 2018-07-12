@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { getResolvedConversations } from '../selectors';
 import { resolveSlackAccount } from '../actions';
 
-@connect((state, { accountId }) => ({ conversations: getResolvedConversations(accountId)(state) }), {
+@connect((state, { accountId }) => ({ conversations: getResolvedConversations(state, accountId) }), {
   resolveSlackAccount
 })
 export default class extends React.PureComponent {
