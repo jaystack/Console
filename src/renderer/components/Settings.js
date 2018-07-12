@@ -40,7 +40,7 @@ export default class extends React.PureComponent {
           <div className="content">
             <nav>
               <Menu
-                selected={activeSettingsMenuItem}
+                selected={[ activeSettingsMenuItem ]}
                 onItemClick={this.handleMenuClick}
                 items={[
                   { id: 'accounts', icon: 'people', label: 'Accounts' },
@@ -49,8 +49,8 @@ export default class extends React.PureComponent {
               />
             </nav>
             <main>
-            {activeSettingsMenuItem === 'projects' && <ProjectSettings />}
-            {activeSettingsMenuItem === 'accounts' && <AccountSettings />}
+              {activeSettingsMenuItem === 'projects' && <ProjectSettings />}
+              {activeSettingsMenuItem === 'accounts' && <AccountSettings />}
             </main>
           </div>
         </div>

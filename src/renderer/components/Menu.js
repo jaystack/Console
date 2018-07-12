@@ -16,7 +16,7 @@ export default class extends React.PureComponent {
         label: PropTypes.string.isRequired
       })
     ).isRequired,
-    selected: PropTypes.string,
+    selected: PropTypes.arrayOf(PropTypes.string),
     onItemClick: PropTypes.func,
     subheader: PropTypes.string
   };
@@ -31,7 +31,7 @@ export default class extends React.PureComponent {
       <div>
         <MenuList subheader={subheader && <ListSubheader component="div">{subheader}</ListSubheader>}>
           {items.map(({ id, icon, label }) => (
-            <MenuItem key={id} onClick={this.handleItemClick(id)} selected={selected === id}>
+            <MenuItem key={id} onClick={this.handleItemClick(id)} selected={selected.includes(id)}>
               {icon && (
                 <ListItemIcon>
                   <Icon color="primary">{icon}</Icon>

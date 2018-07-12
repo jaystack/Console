@@ -26,7 +26,7 @@ export default class extends React.PureComponent {
         <Menu
           subheader="Projects"
           items={projects.map(({ _id, name }) => ({ id: _id, label: name }))}
-          selected={selectProjectId}
+          selected={[ selectProjectId ]}
           onItemClick={this.handleItemClick}
         />
       </div>
