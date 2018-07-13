@@ -14,10 +14,16 @@ export default class extends React.PureComponent {
     if (prevProps.open !== this.props.open) this.setState({ account: null });
   }
 
-  handleSelectType = account => this.setState({ account });
+  handleSelectAccount = account => this.setState({ account });
 
-  handleSubmit = async source => {
-    //await this.props.addSource({ type: this.state.type, ...source });
+  handleSelect = async selection => {
+    const { account: { type, _id } } = this.state;
+    const source = {
+      type,
+      accountId: _id,
+      [type === 'slack' ? 'conversationId' : type === 'github' ? 'repositoryId' : 'email']: selection
+    };
+    await this.props.addSource(source);
     this.props.onClose();
   };
 
@@ -26,11 +32,11 @@ export default class extends React.PureComponent {
     const { account } = this.state;
     return (
       <Fragment>
-        <AccountSelectorDialog open={open && account === null} onSelect={this.handleSelectType} onClose={onClose} />
+        <AccountSelectorDialog open={open && account === null} onSelect={this.handleSelectAccount} onClose={onClose} />
         <SlackConfigurator
           open={open && !!account && account.type === 'slack'}
           onClose={onClose}
-          onSubmit={this.handleSubmit}
+          onSelect={this.handleSelect}
           accountId={account ? account._id : null}
         />
       </Fragment>

@@ -267,6 +267,7 @@ body {
 .slack-source-configuration-dialog-content {
   display: flex;
   height: 300px;
+  width: 500px;
   padding-bottom: 0 !important;
 }
 

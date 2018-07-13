@@ -1,4 +1,4 @@
-import { getConfig, getQuery } from './selectors';
+import { getConfig, getQuery, getSelectedProjectId } from './selectors';
 import searchByQuery from './utils/search';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
@@ -88,3 +88,8 @@ export const renameProject = (_id, name) => state => async (dispatch, getState, 
 };
 
 export const selectProject = selectedProjectId => state => ({ ...state, selectedProjectId });
+
+export const addSource = source => state => async (dispatch, getState, {}) => {
+  const projectId = getSelectedProjectId(getState());
+  console.log(projectId, source);
+};

@@ -14,20 +14,38 @@ export default class extends React.PureComponent {
     ).isRequired
   };
 
-  render() {
+  timer = null;
+
+  state = {
+    search: ''
+  };
+
+  handleChange = evt => {
+    this.setState({ search: evt.target.value });
+  };
+
+  getFilteredItems() {
     const { items } = this.props;
+    const { search } = this.state;
+    return search ? items.filter(item => new RegExp(search, 'ig').test(item.label)) : items;
+  }
+
+  render() {
+    const { onSelect } = this.props;
+    const { search } = this.state;
     return (
       <div className="searchable-list">
         <header>
           <TextField
             InputLabelProps={{ shrink: true }}
+            InputProps={{ value: search, onChange: this.handleChange }}
             placeholder="Search"
             fullWidth
             margin="none"
           />
         </header>
         <main>
-          <Menu items={items} />
+          <Menu items={this.getFilteredItems()} onItemClick={onSelect} />
         </main>
       </div>
     );
