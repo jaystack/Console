@@ -42,18 +42,18 @@ export const updateConfig = nextConfig => state => async (dispatch, getState, { 
 };
 
 export const readAccounts = () => state => async (dispatch, getState, { db }) => {
-  const accounts = await db.select('accounts').find();
+  const accounts = await db.select('accounts').find({}, { sort: { created: 1 } });
   dispatch(state => ({ ...state, accounts }));
 };
 
-export const createAccount = account => state => async (dispatch, getState, { db }) => {
-  await db.select('accounts').insert(account);
-  await dispatch(readAccounts());
+export const createAccount = account => state => async (dispatch, getState, { db, time }) => {
+  const insertedAccount = await db.select('accounts').insert({ ...account, created: time.getNow(true) });
+  dispatch(state => ({ ...state, accounts: [ ...state.accounts, insertedAccount ] }));
 };
 
 export const removeAccount = _id => state => async (dispatch, getState, { db }) => {
   await db.select('accounts').remove({ _id });
-  await dispatch(readAccounts());
+  dispatch(state => ({ ...state, accounts: state.accounts.filter(account => account._id !== _id) }));
 };
 
 export const resolveSlackAccount = token => state => async (dispatch, getState, { connectors }) => {
@@ -67,29 +67,44 @@ export const resolveGithubAccount = token => state => async (dispatch, getState,
 };
 
 export const readProjects = () => state => async (dispatch, getState, { db }) => {
-  const projects = await db.select('projects').find();
+  const projects = await db.select('projects').find({}, { sort: { created: 1 } });
   dispatch(state => ({ ...state, projects, selectedProjectId: projects.length > 0 ? projects[0]._id : null }));
 };
 
-export const createProject = name => state => async (dispatch, getState, { db }) => {
-  const { _id } = await db.select('projects').insert({ name, sources: [] });
-  await dispatch(readProjects());
-  dispatch(selectProject(_id));
+export const createProject = name => state => async (dispatch, getState, { db, time }) => {
+  const project = await db.select('projects').insert({ name, created: time.getNow(true), sources: [] });
+  dispatch(state => ({ ...state, projects: [ ...state.projects, project ], selectedProjectId: project._id }));
 };
 
 export const removeProject = _id => state => async (dispatch, getState, { db }) => {
   await db.select('projects').remove({ _id });
-  await dispatch(readProjects());
+  dispatch(state => {
+    const nextProjects = state.projects.filter(project => project._id !== _id);
+    return {
+      ...state,
+      projects: nextProjects,
+      selectedProjectId: nextProjects.length > 0 ? nextProjects[0]._id : null
+    };
+  });
 };
 
 export const renameProject = (_id, name) => state => async (dispatch, getState, { db }) => {
-  await db.select('projects').update({ _id }, { name });
-  await dispatch(readProjects());
+  await db.select('projects').update({ _id }, { $set: { name } });
+  dispatch(state => ({
+    ...state,
+    projects: state.projects.map(project => (project._id === _id ? { ...project, name } : project))
+  }));
 };
 
 export const selectProject = selectedProjectId => state => ({ ...state, selectedProjectId });
 
-export const addSource = source => state => async (dispatch, getState, {}) => {
+export const addSource = source => state => async (dispatch, getState, { db }) => {
   const projectId = getSelectedProjectId(getState());
-  console.log(projectId, source);
+  await db.select('projects').update({ _id: projectId }, { $push: { sources: source } });
+  dispatch(state => ({
+    ...state,
+    projects: state.projects.map(
+      project => (project._id === projectId ? { ...project, sources: [ ...project.sources, source ] } : project)
+    )
+  }));
 };
