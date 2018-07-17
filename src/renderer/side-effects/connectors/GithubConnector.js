@@ -6,6 +6,8 @@ export default class GithubConnector extends BaseConnector {
 
   static async resolveAccountByToken(token) {
     const { id, login: username } = await this.request(token, 'get', 'user');
+    const res = await this.request(token, 'get', 'user/repos', { query: { per_page: 100 } });
+    console.log(res);
     return { id, username };
   }
 

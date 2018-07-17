@@ -14,8 +14,11 @@ export default class extends React.PureComponent {
   timer = null;
 
   state = {
-    id: null,
-    username: null,
+    account: {
+      id: null,
+      username: null,
+      repos: null
+    },
     token: ''
   };
 
@@ -24,30 +27,31 @@ export default class extends React.PureComponent {
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
-        if (!this.state.token) return this.setState({ id: null, username: null });
-        const { id, username } = await this.props.resolveGithubAccount(this.state.token);
-        this.setState({ id, username });
+        if (!this.state.token) return this.setState({ account: undefined });
+        const account = await this.props.resolveGithubAccount(this.state.token);
+        this.setState({ account });
       } catch (error) {
-        this.setState({ id: null, username: null });
+        this.setState({ account: undefined });
       }
     }, 300);
   };
 
   handleExit = () => {
-    this.setState({ id: null, username: null, token: '' });
+    this.setState({ account: undefined, token: '' });
   };
 
   handleSubmit = () => {
-    this.props.onSubmit(this.state);
+    if (!this.state.account) return;
+    this.props.onSubmit({ ...this.state.account, token: this.state.token });
     this.props.onClose();
   };
 
   render() {
     const { open, onClose } = this.props;
-    const { token, id, username } = this.state;
+    const { token, account: { id, username } = {} } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
-        <DialogTitle id="form-dialog-title">Configure Github Account</DialogTitle>
+        <DialogTitle>Configure Github Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Provide your personal token. Read more{' '}

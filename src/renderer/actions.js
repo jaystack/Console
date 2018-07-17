@@ -56,13 +56,11 @@ export const removeAccount = _id => state => async (dispatch, getState, { db }) 
   dispatch(state => ({ ...state, accounts: state.accounts.filter(account => account._id !== _id) }));
 };
 
-export const resolveSlackAccount = token => state => async (dispatch, getState, { connectors }) => {
-  const slack = connectors.getConstructor('slack');
+export const resolveSlackAccount = token => state => async (dispatch, getState, { slack }) => {
   return await slack.resolveAccountByToken(token);
 };
 
-export const resolveGithubAccount = token => state => async (dispatch, getState, { connectors }) => {
-  const github = connectors.getConstructor('github');
+export const resolveGithubAccount = token => state => async (dispatch, getState, { github }) => {
   return await github.resolveAccountByToken(token);
 };
 

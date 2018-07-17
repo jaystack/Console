@@ -58,7 +58,7 @@ export default class extends React.PureComponent {
     const { token, id, username, teamName } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
-        <DialogTitle id="form-dialog-title">Configure Slack Account</DialogTitle>
+        <DialogTitle>Configure Slack Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Provide your legacy token. You can create one{' '}
