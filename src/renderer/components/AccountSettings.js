@@ -36,7 +36,7 @@ export default class extends React.PureComponent {
     const { removableAccountId } = this.state;
     if (!removableAccountId) return '';
     const account = this.props.accounts.find(account => account._id === removableAccountId);
-    return `Delete ${account.name} ${account.type} account`;
+    return `Delete ${account.type} account`;
   }
 
   renderEmptyContent() {
