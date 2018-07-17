@@ -12,7 +12,7 @@ import { getRepos } from '../selectors';
 export default class extends React.PureComponent {
   getListItems() {
     return this.props.repos.map(repo => {
-      return { id: repo.id, label: repo.name };
+      return { id: repo.id, label: repo.name, sublabel: repo.owner };
     });
   }
 
@@ -20,7 +20,7 @@ export default class extends React.PureComponent {
     const { open, onClose, onSelect } = this.props;
     return (
       <Dialog open={open} onExited={this.handleExit}>
-        <DialogTitle id="form-dialog-title">Add Slack Conversation</DialogTitle>
+        <DialogTitle>Add Github Repository</DialogTitle>
         <DialogContent classes={{ root: 'slack-source-configuration-dialog-content' }}>
           <SearchableList items={this.getListItems()} onSelect={onSelect} />
         </DialogContent>

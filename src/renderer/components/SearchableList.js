@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Menu from './Menu';
 
 const MAX = 50;
+const WHITESPACES = /\s+/g;
 
 export default class extends React.PureComponent {
   static propTypes = {
@@ -11,7 +12,8 @@ export default class extends React.PureComponent {
       PropTypes.shape({
         id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]).isRequired,
         label: PropTypes.string.isRequired,
-        icon: PropTypes.string
+        icon: PropTypes.string,
+        sublabel: PropTypes.string
       })
     ).isRequired
   };
@@ -34,7 +36,15 @@ export default class extends React.PureComponent {
   getFilteredItems() {
     const { items } = this.props;
     const { search, max } = this.state;
-    return (search ? items.filter(item => new RegExp(search, 'ig').test(item.label)) : items).slice(0, max);
+    const patterns = search.split(WHITESPACES).filter(_ => _).map(word => new RegExp(word, 'i'));
+    return (patterns.length > 0
+      ? items.filter(
+          item =>
+            !!item.sublabel
+              ? patterns.every(pattern => pattern.test(item.label + ' ' + item.sublabel))
+              : patterns.every(pattern => pattern.test(item.label))
+        )
+      : items).slice(0, max);
   }
 
   render() {

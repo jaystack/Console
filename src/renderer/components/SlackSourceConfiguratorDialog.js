@@ -29,7 +29,7 @@ export default class extends React.PureComponent {
     const { open, onClose, onSelect } = this.props;
     return (
       <Dialog open={open} onExited={this.handleExit}>
-        <DialogTitle id="form-dialog-title">Add Slack Conversation</DialogTitle>
+        <DialogTitle>Add Slack Conversation</DialogTitle>
         <DialogContent classes={{ root: 'slack-source-configuration-dialog-content' }}>
           <SearchableList items={this.getListItems()} onSelect={onSelect} />
         </DialogContent>

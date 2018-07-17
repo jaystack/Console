@@ -15,8 +15,9 @@ export default class extends React.PureComponent {
     items: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]).isRequired,
+        label: PropTypes.string.isRequired,
         icon: PropTypes.string,
-        label: PropTypes.string
+        sublabel: PropTypes.string
       })
     ).isRequired,
     selected: PropTypes.arrayOf(PropTypes.string),
@@ -57,7 +58,7 @@ export default class extends React.PureComponent {
           classes={{ root: classnames('menu-list', scrollable && 'scrollable') }}
           onScroll={this.handleScroll}
         >
-          {items.slice(0, max).map(({ id, icon, label }) => (
+          {items.slice(0, max).map(({ id, icon, label, sublabel }) => (
             <MenuItem key={id} onClick={this.handleItemClick(id)} selected={selected.includes(id)}>
               {icon && (
                 <ListItemIcon>
@@ -66,7 +67,12 @@ export default class extends React.PureComponent {
                   </Icon>
                 </ListItemIcon>
               )}
-              {icon ? <ListItemText classes={{ primary: 'menu-item-text' }} inset primary={label} /> : label}
+              <ListItemText
+                classes={{ primary: 'menu-item-text' }}
+                inset={!!icon}
+                primary={label}
+                secondary={sublabel}
+              />
             </MenuItem>
           ))}
         </MenuList>
