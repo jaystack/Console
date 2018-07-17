@@ -6,22 +6,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import SearchableList from './SearchableList';
-import { getResolvedConversations } from '../selectors';
+import { getRepos } from '../selectors';
 
-@connect((state, { accountId }) => ({ conversations: getResolvedConversations(state, accountId) }))
+@connect((state, { accountId }) => ({ repos: getRepos(state, accountId) }))
 export default class extends React.PureComponent {
   getListItems() {
-    return this.props.conversations.map(conversation => {
-      switch (conversation.type) {
-        case 'im':
-          return { id: conversation.id, label: conversation.user, icon: 'person' };
-        case 'group':
-          return { id: conversation.id, label: conversation.users.join(', '), icon: 'people' };
-        case 'channel':
-          return { id: conversation.id, label: conversation.name, icon: 'mdi mdi-pound' };
-        default:
-          return null;
-      }
+    return this.props.repos.map(repo => {
+      return { id: repo.id, label: repo.name };
     });
   }
 

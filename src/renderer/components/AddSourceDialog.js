@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import AccountSelectorDialog from './AccountSelectorDialog';
 import SlackConfigurator from './SlackSourceConfiguratorDialog';
+import GithubConfigurator from './GithubSourceConfiguratorDialog';
 import { addSource } from '../actions';
 
 @connect(null, { addSource })
@@ -35,6 +36,12 @@ export default class extends React.PureComponent {
         <AccountSelectorDialog open={open && account === null} onSelect={this.handleSelectAccount} onClose={onClose} />
         <SlackConfigurator
           open={open && !!account && account.type === 'slack'}
+          onClose={onClose}
+          onSelect={this.handleSelect}
+          accountId={account ? account._id : null}
+        />
+        <GithubConfigurator
+          open={open && !!account && account.type === 'github'}
           onClose={onClose}
           onSelect={this.handleSelect}
           accountId={account ? account._id : null}

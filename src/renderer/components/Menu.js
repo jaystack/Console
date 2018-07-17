@@ -11,9 +11,9 @@ export default class extends React.PureComponent {
   static propTypes = {
     items: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        id: PropTypes.oneOfType([ PropTypes.string, PropTypes.number ]).isRequired,
         icon: PropTypes.string,
-        label: PropTypes.string.isRequired
+        label: PropTypes.string
       })
     ).isRequired,
     selected: PropTypes.arrayOf(PropTypes.string),

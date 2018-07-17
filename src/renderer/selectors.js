@@ -29,11 +29,17 @@ export const getAccount =
     accounts.find(account => account._id === accountId)
   ) || null;
 
-export const getConversations = createSelector(getAccount, account => (account ? account.conversations : []));
+export const getConversations = createSelector(
+  getAccount,
+  account => (account && account.type === 'slack' ? account.conversations : [])
+);
 
-export const getUsers = createSelector(getAccount, account => (account ? account.users : []));
+export const getSlackUsers = createSelector(
+  getAccount,
+  account => (account && account.type === 'slack' ? account.users : [])
+);
 
-export const getResolvedConversations = createSelector([ getConversations, getUsers ], (conversations, users) =>
+export const getResolvedConversations = createSelector([ getConversations, getSlackUsers ], (conversations, users) =>
   conversations.map(conversation => {
     switch (conversation.type) {
       case 'im':
@@ -47,4 +53,9 @@ export const getResolvedConversations = createSelector([ getConversations, getUs
         return conversation;
     }
   })
+);
+
+export const getRepos = createSelector(
+  getAccount,
+  account => (account && account.type === 'github' ? account.repos : [])
 );
