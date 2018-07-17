@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import DoneIcon from '@material-ui/icons/Done';
-import ClearIcon from '@material-ui/icons/Clear';
 import TextField from '@material-ui/core/TextField';
 import { createProject } from '../actions';
 
@@ -13,26 +12,20 @@ export default class extends React.PureComponent {
     name: null
   };
 
-  handleNameChange = evt => {
-    this.setState({ name: evt.target.value });
-  };
+  handleNameChange = evt => this.setState({ name: evt.target.value });
 
-  handleClick = () => {
-    this.setState({ name: '' });
-  };
+  handleClick = () => this.setState({ name: '' });
 
   handleKeyPress = evt => {
     if (evt.key === 'Enter') this.submit();
-    if (evt.key === 'Escape' && this.props.cancellable) this.cancel();
+    if (evt.key === 'Escape') this.cancel();
   };
 
-  handleCancel = () => {
-    this.cancel();
+  handleBlur = () => {
+    if (!this.state.name) this.cancel();
   };
 
-  handleSubmit = () => {
-    this.submit();
-  };
+  handleSubmit = () => this.submit();
 
   submit() {
     if (!this.state.name) return;
@@ -41,11 +34,12 @@ export default class extends React.PureComponent {
   }
 
   cancel() {
+    if (!this.props.cancellable) return;
     this.setState({ name: null });
   }
 
   render() {
-    const { buttonLabel, buttonSize, cancellable } = this.props;
+    const { buttonLabel, buttonSize } = this.props;
     const { name } = this.state;
     return (
       <div className="rapid-project-creator">
@@ -60,16 +54,12 @@ export default class extends React.PureComponent {
               value={name}
               onChange={this.handleNameChange}
               onKeyUp={this.handleKeyPress}
+              onBlur={this.handleBlur}
               autoFocus
             />
             <IconButton aria-label="Go" disabled={!name} onClick={this.handleSubmit}>
               <DoneIcon />
             </IconButton>
-            {cancellable && (
-              <IconButton aria-label="Cancel" onClick={this.handleCancel}>
-                <ClearIcon />
-              </IconButton>
-            )}
           </div>
         )}
       </div>
