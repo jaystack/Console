@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { resolveSlackAccount } from '../actions';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,6 +7,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { resolveSlackAccount } from '../actions';
 
 @connect(null, { resolveSlackAccount })
 export default class extends React.PureComponent {
@@ -15,25 +16,27 @@ export default class extends React.PureComponent {
 
   state = {
     account: undefined,
+    inProgress: false,
     token: ''
   };
 
   handleChange = evt => {
-    this.setState({ token: evt.target.value });
+    this.setState({ token: evt.target.value, inProgress: false });
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
         if (!this.state.token) return this.setState({ account: undefined });
+        this.setState({ inProgress: true });
         const account = await this.props.resolveSlackAccount(this.state.token);
-        this.setState({ account });
+        this.setState({ account, inProgress: false });
       } catch (error) {
-        this.setState({ account: undefined });
+        this.setState({ account: undefined, inProgress: false });
       }
     }, 300);
   };
 
   handleExit = () => {
-    this.setState({ account: undefined, token: '' });
+    this.setState({ account: undefined, token: '', inProgress: false });
   };
 
   handleSubmit = () => {
@@ -44,7 +47,7 @@ export default class extends React.PureComponent {
 
   render() {
     const { open, onClose } = this.props;
-    const { token, account: { id, username, teamName } = {} } = this.state;
+    const { token, inProgress, account: { id, username, teamName } = {} } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle>Configure Slack Account</DialogTitle>
@@ -62,6 +65,7 @@ export default class extends React.PureComponent {
             value={token}
             onChange={this.handleChange}
           />
+          {inProgress && <LinearProgress />}
           {username &&
           teamName && (
             <DialogContentText>
