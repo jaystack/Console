@@ -14,11 +14,7 @@ export default class extends React.PureComponent {
   timer = null;
 
   state = {
-    account: {
-      id: null,
-      username: null,
-      repos: null
-    },
+    account: undefined,
     token: ''
   };
 

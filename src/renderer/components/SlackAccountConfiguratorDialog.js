@@ -13,49 +13,38 @@ import Button from '@material-ui/core/Button';
 export default class extends React.PureComponent {
   timer = null;
 
-  state = this.getInitialState();
-
-  getInitialState(includeToken = true) {
-    return {
-      id: null,
-      username: null,
-      teamName: null,
-      conversations: [],
-      users: [],
-      ...(includeToken ? { token: '' } : {})
-    };
-  }
-
-  resetAccountDetails() {
-    this.setState(this.getInitialState(false));
-  }
+  state = {
+    account: undefined,
+    token: ''
+  };
 
   handleChange = evt => {
     this.setState({ token: evt.target.value });
     if (this.timer) clearTimeout(this.timer);
     this.timer = setTimeout(async () => {
       try {
-        if (!this.state.token) return this.resetAccountDetails();
+        if (!this.state.token) return this.setState({ account: undefined });
         const account = await this.props.resolveSlackAccount(this.state.token);
-        this.setState(account);
+        this.setState({ account });
       } catch (error) {
-        this.resetAccountDetails();
+        this.setState({ account: undefined });
       }
     }, 300);
   };
 
   handleExit = () => {
-    this.setState(this.getInitialState());
+    this.setState({ account: undefined, token: '' });
   };
 
   handleSubmit = () => {
-    this.props.onSubmit(this.state);
+    if (!this.state.account) return;
+    this.props.onSubmit({ ...this.state.account, token: this.state.token });
     this.props.onClose();
   };
 
   render() {
     const { open, onClose } = this.props;
-    const { token, id, username, teamName } = this.state;
+    const { token, account: { id, username, teamName } = {} } = this.state;
     return (
       <Dialog open={open} onExited={this.handleExit}>
         <DialogTitle>Configure Slack Account</DialogTitle>
