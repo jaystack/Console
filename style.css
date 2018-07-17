@@ -284,5 +284,20 @@ body {
 
 .searchable-list main {
   flex: 1 1 0;
+  display: flex;
+  overflow-y: auto;
+}
+
+.menu {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu .menu-list {
+  flex: 1 1 0;
+}
+
+.menu .menu-list.scrollable {
   overflow-y: auto;
 }

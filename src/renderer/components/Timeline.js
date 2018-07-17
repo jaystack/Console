@@ -3,15 +3,17 @@ import { connect } from 'react-redux';
 import { getItems } from '../selectors';
 import SlackMessage from './SlackMessage';
 
+const MAX = 25;
+
 @connect(state => ({ items: getItems(state) }))
 export default class extends React.PureComponent {
   state = {
-    max: 25
+    max: MAX
   };
 
   handleScroll = evt => {
     if (evt.target.scrollTop >= evt.target.scrollHeight - evt.target.offsetHeight - 100) {
-      this.setState({ max: this.state.max + 25 });
+      this.setState({ max: this.state.max + MAX });
     }
   };
 
