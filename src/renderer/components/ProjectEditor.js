@@ -113,10 +113,24 @@ export default class extends React.PureComponent {
     );
   }
 
+  renderEmptyContent() {
+    return (
+      <div className="empty-content">
+        <Typography variant="subheading" gutterBottom align="center">
+          You have no sources.
+        </Typography>
+        <Button variant="contained" color="primary" size="medium" onClick={this.handleAddSource}>
+          Add your first source
+        </Button>
+      </div>
+    );
+  }
+
   render() {
     const { project, sources } = this.props;
     const { isRemoveRequest, isOpenAddSourceDialog, removableSourceIndex } = this.state;
     if (!project) return null;
+    const hasSources = sources.length > 0;
     return (
       <div className="project-editor">
         <AddSourceDialog open={isOpenAddSourceDialog} onClose={this.handleAddSourceDialogClose} />
@@ -136,24 +150,29 @@ export default class extends React.PureComponent {
         />
         <header>
           {this.renderTitle()}
-          <Button variant="contained" color="primary" onClick={this.handleAddSource}>
-            Add source
-          </Button>
+          {hasSources && (
+            <Button variant="contained" color="primary" onClick={this.handleAddSource}>
+              Add source
+            </Button>
+          )}
           <Button variant="contained" color="secondary" onClick={this.handleRemoveProject}>
             Delete
           </Button>
         </header>
         <main>
-          <div className="source-grid">
-            {sources.map((source, i) => (
-              <SourceTile
-                key={i}
-                accountIcon={getAccountIcon(source.type)}
-                {...getSourceTileProps(source)}
-                onRemove={this.handleRemoveSource(i)}
-              />
-            ))}
-          </div>
+          {hasSources && (
+            <div className="source-grid">
+              {sources.map((source, i) => (
+                <SourceTile
+                  key={i}
+                  accountIcon={getAccountIcon(source.type)}
+                  {...getSourceTileProps(source)}
+                  onRemove={this.handleRemoveSource(i)}
+                />
+              ))}
+            </div>
+          )}
+          {!hasSources && this.renderEmptyContent()}
         </main>
       </div>
     );
