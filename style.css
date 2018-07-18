@@ -243,6 +243,7 @@ body {
 
 .project-editor > header > h1 {
   margin-bottom: 0;
+  border-bottom: 1px solid transparent;
   flex: 1 1 0;
 }
 
@@ -251,9 +252,10 @@ body {
 }
 
 .project-editor > header > .rename-input {
-  height: 48px;
+  height: 51px;
   font-size: 45px !important;
   flex: 1 1 0;
+  line-height: 1.13333em;
 }
 
 .project-editor > header > button {
@@ -352,4 +354,9 @@ body {
 
 .menu .menu-list.scrollable {
   overflow-y: auto;
+}
+
+.icon.mdi {
+  margin-top: -1%;
+  overflow: visible;
 }
