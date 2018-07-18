@@ -22,6 +22,7 @@ import { getAccountIcon, getConversationName, getConversationIcon } from '../uti
 export default class extends React.PureComponent {
   state = {
     isRemoveRequest: false,
+    removableSourceIndex: null,
     newName: null,
     isOpenAddSourceDialog: false
   };
@@ -77,8 +78,17 @@ export default class extends React.PureComponent {
     this.setState({ isOpenAddSourceDialog: false });
   };
 
-  handleRemoveSource = sourceIndex => () => {
-    this.props.removeSource(sourceIndex);
+  handleRemoveSource = removableSourceIndex => () => {
+    this.setState({ removableSourceIndex });
+  };
+
+  handleRemoveSourceDialogCancel = () => {
+    this.setState({ removableSourceIndex: null });
+  };
+
+  handleRemoveSourceDialogSubmit = () => {
+    this.props.removeSource(this.state.removableSourceIndex);
+    this.setState({ removableSourceIndex: null });
   };
 
   renderTitle() {
@@ -105,7 +115,7 @@ export default class extends React.PureComponent {
 
   render() {
     const { project, sources } = this.props;
-    const { isRemoveRequest, isOpenAddSourceDialog } = this.state;
+    const { isRemoveRequest, isOpenAddSourceDialog, removableSourceIndex } = this.state;
     if (!project) return null;
     return (
       <div className="project-editor">
@@ -115,6 +125,13 @@ export default class extends React.PureComponent {
           text="Are you sure you want to delete this project?"
           onClose={this.handleRemoveDialogCancel}
           onSubmit={this.handleRemoveDialogSubmit}
+          confirmButtonLabel="Delete"
+        />
+        <ConfirmDialog
+          open={removableSourceIndex !== null}
+          text="Are you sure you want to delete this source?"
+          onClose={this.handleRemoveSourceDialogCancel}
+          onSubmit={this.handleRemoveSourceDialogSubmit}
           confirmButtonLabel="Delete"
         />
         <header>
