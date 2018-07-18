@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ConfirmDialog from './ConfirmDialog';
 import { getAccounts } from '../selectors';
 import { removeAccount } from '../actions';
+import { getIconOfAccount } from '../utils';
 
 @connect(state => ({ accounts: getAccounts(state) }), { removeAccount })
 export default class extends React.PureComponent {
@@ -71,6 +72,7 @@ export default class extends React.PureComponent {
                 type={account.type}
                 title={account.username}
                 subtitle={account.type === 'slack' ? account.teamName : ''}
+                imgSrc={getIconOfAccount(account.type)}
               />
             ))}
           </div>
@@ -100,29 +102,16 @@ export default class extends React.PureComponent {
 }
 
 class Account extends React.PureComponent {
-  getImg() {
-    switch (this.props.type) {
-      case 'slack':
-        return 'static/slack-logo.png';
-      case 'github':
-        return 'static/github-logo.png';
-      case 'email':
-        return 'static/email-logo.png';
-      default:
-        return '';
-    }
-  }
-
   handleRemoveClick = () => {
     this.props.onRemove(this.props._id);
   };
 
   render() {
-    const { title, subtitle } = this.props;
+    const { title, subtitle, imgSrc } = this.props;
     return (
       <Paper classes={{ root: 'account-tile' }}>
         <div className="img-container">
-          <img alt="account-type" src={this.getImg()} />
+          <img alt="account-type" src={imgSrc} />
         </div>
         <div className="name-container">
           <Typography variant="title" color="textSecondary">

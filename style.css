@@ -260,6 +260,49 @@ body {
   margin-left: 20px;
 }
 
+.project-editor > main {
+  flex: 1 1 0;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.project-editor .source-grid {
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.project-editor .source-grid .source-tile {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-editor .source-grid .source-tile > header {
+  flex: 0 0 auto;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.project-editor .source-grid .source-tile > header .icon {
+  margin-right: 10px;
+}
+
+.project-editor .source-grid .source-tile > header .title {
+  flex: 1 1 0;
+}
+
+.project-editor .source-grid .source-tile > footer {
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.project-editor .source-grid .source-tile > footer .account-icon {
+  width: 17px;
+  height: 17px;
+  margin-right: 10px;
+}
+
 .menu-item-text {
   white-space: normal;
 }

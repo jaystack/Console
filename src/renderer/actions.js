@@ -1,4 +1,4 @@
-import { getConfig, getQuery, getSelectedProjectId } from './selectors';
+import { getConfig, getQuery, getSelectedProjectId, getSelectedProject } from './selectors';
 import searchByQuery from './utils/search';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
@@ -103,6 +103,22 @@ export const addSource = source => state => async (dispatch, getState, { db }) =
     ...state,
     projects: state.projects.map(
       project => (project._id === projectId ? { ...project, sources: [ ...project.sources, source ] } : project)
+    )
+  }));
+};
+
+export const removeSource = sourceIndex => state => async (dispatch, getState, { db }) => {
+  const project = getSelectedProject(getState());
+  const source = project.sources[sourceIndex];
+  console.log(sourceIndex, source);
+  await db.select('projects').update({ _id: project._id }, { $pull: { sources: source } });
+  dispatch(state => ({
+    ...state,
+    projects: state.projects.map(
+      project =>
+        project._id === project._id
+          ? { ...project, sources: project.sources.filter((_, i) => i !== sourceIndex) }
+          : project
     )
   }));
 };

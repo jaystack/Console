@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import SearchableList from './SearchableList';
 import { getResolvedConversations } from '../selectors';
+import { getConversationIcon } from '../utils';
 
 @connect((state, { accountId }) => ({ conversations: getResolvedConversations(state, accountId) }))
 export default class extends React.PureComponent {
@@ -14,11 +15,15 @@ export default class extends React.PureComponent {
     return this.props.conversations.map(conversation => {
       switch (conversation.type) {
         case 'im':
-          return { id: conversation.id, label: conversation.user, icon: 'person' };
+          return { id: conversation.id, label: conversation.user, icon: getConversationIcon(conversation.type) };
         case 'group':
-          return { id: conversation.id, label: conversation.users.join(', '), icon: 'people' };
+          return {
+            id: conversation.id,
+            label: conversation.users.join(', '),
+            icon: getConversationIcon(conversation.type)
+          };
         case 'channel':
-          return { id: conversation.id, label: conversation.name, icon: 'mdi mdi-pound' };
+          return { id: conversation.id, label: conversation.name, icon: getConversationIcon(conversation.type) };
         default:
           return null;
       }

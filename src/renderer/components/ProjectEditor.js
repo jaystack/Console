@@ -3,12 +3,22 @@ import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
+import Paper from '@material-ui/core/Paper';
+import Avatar from '@material-ui/core/Avatar';
+import Icon from './Icon';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ConfirmDialog from './ConfirmDialog';
 import AddSourceDialog from './AddSourceDialog';
-import { getSelectedProject } from '../selectors';
-import { removeProject, renameProject } from '../actions';
+import { getSelectedProject, getResolvedSourcesOfSelectedProject } from '../selectors';
+import { removeProject, renameProject, removeSource } from '../actions';
+import { getAccountIcon, getConversationName, getConversationIcon } from '../utils';
 
-@connect(state => ({ project: getSelectedProject(state) }), { removeProject, renameProject })
+@connect(state => ({ project: getSelectedProject(state), sources: getResolvedSourcesOfSelectedProject(state) }), {
+  removeProject,
+  renameProject,
+  removeSource
+})
 export default class extends React.PureComponent {
   state = {
     isRemoveRequest: false,
@@ -67,6 +77,10 @@ export default class extends React.PureComponent {
     this.setState({ isOpenAddSourceDialog: false });
   };
 
+  handleRemoveSource = sourceIndex => () => {
+    this.props.removeSource(sourceIndex);
+  };
+
   renderTitle() {
     const { project: { name } } = this.props;
     const { newName } = this.state;
@@ -90,7 +104,7 @@ export default class extends React.PureComponent {
   }
 
   render() {
-    const { project } = this.props;
+    const { project, sources } = this.props;
     const { isRemoveRequest, isOpenAddSourceDialog } = this.state;
     if (!project) return null;
     return (
@@ -112,7 +126,129 @@ export default class extends React.PureComponent {
             Delete
           </Button>
         </header>
+        <main>
+          <div className="source-grid">
+            {sources.map((source, i) => (
+              <SourceTile
+                key={i}
+                accountIcon={getAccountIcon(source.type)}
+                {...getSourceTileProps(source)}
+                onRemove={this.handleRemoveSource(i)}
+              />
+            ))}
+          </div>
+        </main>
       </div>
     );
   }
 }
+
+class SourceTile extends React.PureComponent {
+  render() {
+    const { icon, accountIcon, title, subtitle, onRemove } = this.props;
+    return (
+      <Paper classes={{ root: 'source-tile slack-source-tile' }}>
+        <header>
+          <Icon>{icon}</Icon>
+          <Typography variant="subheading" classes={{ subheading: 'title' }}>
+            {title}
+          </Typography>
+          <IconButton onClick={onRemove}>
+            <DeleteIcon />
+          </IconButton>
+        </header>
+        <footer>
+          <Avatar alt="slack-logo" src={accountIcon} classes={{ root: 'account-icon' }} />
+          <Typography variant="caption">{subtitle}</Typography>
+        </footer>
+      </Paper>
+    );
+  }
+}
+
+const getSourceTileProps = source => {
+  switch (source.type) {
+    case 'slack':
+      return {
+        icon: getConversationIcon(source.conversation.type),
+        title: getConversationName(source.conversation),
+        subtitle: source.accountDetails.teamName
+      };
+    case 'github':
+      return {
+        icon: 'mdi mdi-source-fork',
+        title: source.repo.name,
+        subtitle: source.repo.owner
+      };
+    default:
+      return {};
+  }
+};
+
+/* const getSourceTileComponent = (source, i) => {
+  switch (source.type) {
+    case 'slack':
+      return <SlackSourceTile key={i} source={source} index={i} />;
+    case 'github':
+      return <GithubSourceTile key={i} source={source} index={i} />;
+    default:
+      return null;
+  }
+};
+
+@connect(null, { removeSource })
+class SlackSourceTile extends React.PureComponent {
+  handleRemove = () => {
+    this.props.removeSource(this.props.index);
+  };
+
+  render() {
+    const { source } = this.props;
+    return (
+      <Paper classes={{ root: 'source-tile slack-source-tile' }}>
+        <header>
+          <Icon>{getConversationIcon(source.conversation.type)}</Icon>
+          <Typography variant="subheading" classes={{ subheading: 'title' }}>
+            {getConversationName(source.conversation)}
+          </Typography>
+          <IconButton onClick={this.handleRemove}>
+            <DeleteIcon />
+          </IconButton>
+        </header>
+        <footer>
+          <Avatar alt="slack-logo" src={getAccountIcon(source.type)} classes={{ root: 'account-icon' }} />
+          <Typography variant="caption">{source.accountDetails.teamName}</Typography>
+        </footer>
+      </Paper>
+    );
+  }
+}
+
+@connect(null, { removeSource })
+class GithubSourceTile extends React.PureComponent {
+  handleRemove = () => {
+    this.props.removeSource(this.props.index);
+  };
+
+  render() {
+    const { source } = this.props;
+    return (
+      <Paper classes={{ root: 'source-tile github-source-tile' }}>
+        <header>
+          <Icon>mdi mdi-source-fork</Icon>
+          <Typography variant="subheading" classes={{ subheading: 'title' }}>
+            {source.repo.name}
+          </Typography>
+          <IconButton onClick={this.handleRemove}>
+            <DeleteIcon />
+          </IconButton>
+        </header>
+        <footer>
+          <Avatar alt="github-logo" src={getAccountIcon(source.type)} classes={{ root: 'account-icon' }} />
+          <Typography variant="caption">{source.repo.owner}</Typography>
+        </footer>
+      </Paper>
+    );
+  }
+}
+ */

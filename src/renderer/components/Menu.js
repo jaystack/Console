@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Icon from '@material-ui/core/Icon';
+import Icon from './Icon';
 import MenuList from '@material-ui/core/MenuList';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -62,9 +62,7 @@ export default class extends React.PureComponent {
             <MenuItem key={id} onClick={this.handleItemClick(id)} selected={selected.includes(id)}>
               {icon && (
                 <ListItemIcon>
-                  <Icon className={getIconAsClass(icon)} color="primary">
-                    {getIconAsChild(icon)}
-                  </Icon>
+                  <Icon>{icon}</Icon>
                 </ListItemIcon>
               )}
               <ListItemText
@@ -80,8 +78,3 @@ export default class extends React.PureComponent {
     );
   }
 }
-
-const mdiPattern = /^mdi /;
-
-const getIconAsClass = icon => (mdiPattern.test(icon) ? icon : '');
-const getIconAsChild = icon => (mdiPattern.test(icon) ? '' : icon);

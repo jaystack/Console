@@ -9,6 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Avatar from '@material-ui/core/Avatar';
 import { getAccounts } from '../selectors';
+import { getAccountName } from '../utils';
 
 @connect(state => ({ accounts: getAccounts(state) }))
 export default class extends React.PureComponent {
@@ -33,12 +34,3 @@ export default class extends React.PureComponent {
     );
   }
 }
-
-const getAccountName = account => {
-  switch (account.type) {
-    case 'slack':
-      return `${account.username} at ${account.teamName}`;
-    default:
-      return account.username;
-  }
-};
