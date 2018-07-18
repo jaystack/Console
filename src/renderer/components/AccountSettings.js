@@ -9,7 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ConfirmDialog from './ConfirmDialog';
 import { getAccounts } from '../selectors';
 import { removeAccount } from '../actions';
-import { getIconOfAccount } from '../utils';
+import { getAccountIcon } from '../utils';
 
 @connect(state => ({ accounts: getAccounts(state) }), { removeAccount })
 export default class extends React.PureComponent {
@@ -72,7 +72,7 @@ export default class extends React.PureComponent {
                 type={account.type}
                 title={account.username}
                 subtitle={account.type === 'slack' ? account.teamName : ''}
-                imgSrc={getIconOfAccount(account.type)}
+                imgSrc={getAccountIcon(account.type)}
               />
             ))}
           </div>
