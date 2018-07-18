@@ -90,7 +90,7 @@ export default class extends React.PureComponent {
         <ConfirmDialog
           open={!!removableAccountId}
           title={this.getRemovableAccountTitle()}
-          text="Are you sure you want to delete this account?"
+          text="Are you sure you want to delete this account? This will remove the related sources too."
           onClose={this.handleRemoveDialogCancel}
           onSubmit={this.handleRemoveDialogSubmit}
           confirmButtonLabel="Delete"

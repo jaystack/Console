@@ -53,7 +53,15 @@ export const createAccount = account => state => async (dispatch, getState, { db
 
 export const removeAccount = _id => state => async (dispatch, getState, { db }) => {
   await db.select('accounts').remove({ _id });
-  dispatch(state => ({ ...state, accounts: state.accounts.filter(account => account._id !== _id) }));
+  await db.select('projects').update({}, { $pull: { sources: { accountId: _id } } }, { multi: true });
+  dispatch(state => ({
+    ...state,
+    accounts: state.accounts.filter(account => account._id !== _id),
+    projects: state.projects.map(project => ({
+      ...project,
+      sources: project.sources.filter(source => source.accountId !== _id)
+    }))
+  }));
 };
 
 export const resolveSlackAccount = token => state => async (dispatch, getState, { slack }) => {
