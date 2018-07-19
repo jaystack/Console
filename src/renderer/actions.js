@@ -116,15 +116,14 @@ export const addSource = source => state => async (dispatch, getState, { db }) =
 };
 
 export const removeSource = sourceIndex => state => async (dispatch, getState, { db }) => {
-  const project = getSelectedProject(getState());
-  const source = project.sources[sourceIndex];
-  console.log(sourceIndex, source);
-  await db.select('projects').update({ _id: project._id }, { $pull: { sources: source } });
+  const selectedProject = getSelectedProject(getState());
+  const source = selectedProject.sources[sourceIndex];
+  await db.select('projects').update({ _id: selectedProject._id }, { $pull: { sources: source } });
   dispatch(state => ({
     ...state,
     projects: state.projects.map(
       project =>
-        project._id === project._id
+        project._id === selectedProject._id
           ? { ...project, sources: project.sources.filter((_, i) => i !== sourceIndex) }
           : project
     )
