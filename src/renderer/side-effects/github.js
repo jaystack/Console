@@ -1,7 +1,9 @@
 import coreInvoke from './request';
 import { sleep } from './time';
 
-const baseUrl = 'https://api.github.com';
+const BASE_URL = 'https://api.github.com';
+const LIMIT = 100;
+const REST_TIME = 1000;
 
 const getNext = links => {
   if (!links) return null;
@@ -29,7 +31,7 @@ export default () => {
     if (!request) return;
     queue.inProgress = true;
     await fetch(request);
-    await sleep(1000);
+    await sleep(REST_TIME);
     queue.inProgress = false;
     trigger(queue);
   };
@@ -51,15 +53,14 @@ export default () => {
     const response = await addToQueue({
       token,
       method,
-      url: isNext ? url : baseUrl + url,
+      url: isNext ? url : BASE_URL + url,
       headers: { ...headers, Authorization: `Bearer ${token}` },
-      query: isNext ? {} : { ...query, per_page: 100 },
+      query: isNext ? {} : { ...query, per_page: LIMIT },
       body
     });
     const result = prevResults ? [ ...prevResults, ...response.data ] : response.data;
     const next = getNext(response.headers.link);
     if (next) {
-      await sleep(1000);
       return await invoke(token, method, next, { isNext: true, prevResults: result });
     } else {
       return result;
