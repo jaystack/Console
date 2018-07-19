@@ -10,10 +10,10 @@ const request = (token, method, url, { headers = {}, ...args } = {}) =>
 export const resolveAccountByToken = async token => {
   const { team: { id, name: teamName } } = await request(token, 'get', 'team.info');
   const { profile: { real_name: username } } = await request(token, 'get', 'users.profile.get');
-  const { ims } = await request(token, 'get', 'im.list');
+  const { ims } = await request(token, 'get', 'im.list'); // cursor
   const { groups } = await request(token, 'get', 'groups.list');
-  const { channels } = await request(token, 'get', 'channels.list');
-  const { members } = await request(token, 'get', 'users.list');
+  const { channels } = await request(token, 'get', 'channels.list'); // cursor
+  const { members } = await request(token, 'get', 'users.list'); // cursor
   const conversations = [
     ...ims.map(({ id, user: userId }) => ({ type: 'im', id, userId })),
     ...groups.map(({ id, members: userIds }) => ({ type: 'group', id, userIds })),

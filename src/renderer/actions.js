@@ -1,4 +1,4 @@
-import { getConfig, getQuery, getSelectedProjectId, getSelectedProject } from './selectors';
+import { getConfig, getQuery, getSelectedProjectId, getSelectedProject, getProjects } from './selectors';
 import searchByQuery from './utils/search';
 
 export const toggleFetching = isFetching => state => ({ ...state, isFetching });
@@ -16,6 +16,11 @@ export const init = () => state => async (dispatch, getState, { connectors }) =>
   await dispatch(initSources());
   await dispatch(search());
   dispatch(toggleFetching(false));
+};
+
+export const sync = () => state => async (dispatch, getState, { db }) => {
+  const projects = getProjects(getState());
+  
 };
 
 export const initSources = () => state => async (dispatch, getState, { connectors }) => {
